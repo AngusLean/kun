@@ -1,7 +1,5 @@
-package com.doubleysoft.kun.kun;
+package com.doubleysoft.kun;
 
-import com.doubleysoft.kun.Ioc;
-import com.doubleysoft.kun.KunIoc;
 import com.doubleysoft.kun.exception.StateException;
 import lombok.Getter;
 import lombok.Setter;

@@ -8,33 +8,34 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by anguslean
  * 18-9-9 下午2:33
  */
 @Slf4j
-public class ClassPathBeanScannerImpl implements Scanner {
+public class ClassPathScannerImpl implements Scanner {
+
     @Override
     public Set<ClassInfo> scan(String packages) {
-        Set<ClassInfo> lists = Collections.EMPTY_SET;
+        Set<ClassInfo> lists = new HashSet<>();
         String packagesPath = packages.replace(".", "/");
         try {
-            Enumeration<URL> urls = ClassPathBeanScannerImpl.class.getClassLoader().getResources(packagesPath);
+            Enumeration<URL> urls = ClassPathScannerImpl.class.getClassLoader().getResources(packagesPath);
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 String file = new URI(url.getFile()).getPath();
-                lists = listFiles(file, packages);
+                lists.addAll(listFiles(file, packages));
             }
         } catch (Exception e) {
             log.error("fail in scan package :{} ", packages, e);
             throw new StateException("fail in scan packages");
         }
-        return lists;
+        return lists.stream().filter(this::classFilter).collect(Collectors.toSet());
     }
 
     private Set<ClassInfo> listFiles(String path, String packageName) {
@@ -52,10 +53,13 @@ public class ClassPathBeanScannerImpl implements Scanner {
                             .build());
                 }
             });
-
         } catch (Exception e) {
             log.error("fail in scan package {}", packageName, e);
         }
         return results;
+    }
+
+    protected boolean classFilter(ClassInfo classInfo) {
+        return true;
     }
 }
