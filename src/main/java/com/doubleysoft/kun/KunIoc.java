@@ -1,6 +1,7 @@
-package com.doubleysoft.kun.kun;
+package com.doubleysoft.kun;
 
-import com.doubleysoft.kun.kun.context.BeanDifination;
+
+import com.doubleysoft.kun.context.BeanDifination;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

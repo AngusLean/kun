@@ -1,4 +1,4 @@
-package com.doubleysoft.kun.kun;
+package com.doubleysoft.kun;
 
 /**
  * @author anguslean

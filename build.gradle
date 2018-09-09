@@ -5,7 +5,7 @@ plugins {
 
 group 'com.doubleysoft'
 version '0.0.1-SNAPSHOT'
-
+description 'a simple ioc container'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -16,11 +16,12 @@ sourceCompatibility = 1.8
 
 repositories {
     jcenter() // or Maven central, required for Lombok dependency
+    mavenCentral()
 }
 
 dependencies{
     compile  'org.slf4j:slf4j-api:1.7.25'
-    testCompile 'org.slf4j:slf4j-simple:1.6.1'
 
+    testCompile 'org.slf4j:slf4j-simple:1.6.1'
     testCompile 'junit:junit:4.12'
 }

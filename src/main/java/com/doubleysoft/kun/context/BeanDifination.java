@@ -1,6 +1,6 @@
-package com.doubleysoft.kun.kun.context;
+package com.doubleysoft.kun.context;
 
-import com.doubleysoft.kun.kun.exception.StateException;
+import com.doubleysoft.kun.exception.StateException;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.doubleysoft.kun.kun.exception;
+package com.doubleysoft.kun.exception;
 
 /**
  * @author anguslean
