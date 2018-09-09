@@ -21,7 +21,7 @@ public class DefaultClassPathScannerImplTest {
     }
 
     /**
-     * should only scan class been annotated by Resource
+     * should only scan class which annotated by Resource
      */
     @Test
     public void testScanWithFilter() {

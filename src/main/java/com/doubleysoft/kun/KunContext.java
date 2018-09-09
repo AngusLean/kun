@@ -1,7 +1,7 @@
 package com.doubleysoft.kun;
 
 import com.doubleysoft.kun.context.ClassInfo;
-import com.doubleysoft.kun.scanner.ClassPathScannerImpl;
+import com.doubleysoft.kun.scanner.DefaultClassPathScannerImpl;
 import com.doubleysoft.kun.scanner.Scanner;
 
 import java.util.Set;
@@ -20,7 +20,7 @@ public class KunContext {
     }
 
     public KunContext(String packages) {
-        this.scanner = new ClassPathScannerImpl();
+        this.scanner = new DefaultClassPathScannerImpl();
         this.ioc = new KunIoc();
         this.packages = packages;
     }
