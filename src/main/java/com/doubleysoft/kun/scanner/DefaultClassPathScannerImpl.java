@@ -11,6 +11,6 @@ public class DefaultClassPathScannerImpl extends ClassPathScannerImpl
 
     @Override
     protected boolean classFilter(ClassInfo classInfo) {
-        return this.classFilter(classInfo);
+        return this.filterClassInfoTrait(classInfo);
     }
 }

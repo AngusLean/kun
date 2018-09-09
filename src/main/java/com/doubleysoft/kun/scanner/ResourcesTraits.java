@@ -9,7 +9,7 @@ import javax.annotation.Resource;
  * 18-9-9 下午7:03
  */
 public interface ResourcesTraits {
-    default boolean filterClassInfo(ClassInfo classInfo) {
-        return classInfo.getKlass().isAnnotationPresent(Resource.class);
+    default boolean filterClassInfoTrait(ClassInfo classInfo) {
+        return !classInfo.getKlass().isAnnotationPresent(Resource.class);
     }
 }

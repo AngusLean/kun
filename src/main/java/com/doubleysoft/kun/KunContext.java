@@ -16,9 +16,13 @@ public class KunContext {
     private Ioc ioc;
 
     public KunContext() {
-        scanner = new ClassPathScannerImpl();
-        ioc = new KunIoc();
-        packages = this.getClass().getPackage().getName();
+        this(KunContext.class.getPackage().getName());
+    }
+
+    public KunContext(String packages) {
+        this.scanner = new ClassPathScannerImpl();
+        this.ioc = new KunIoc();
+        this.packages = packages;
     }
 
     public void init() {

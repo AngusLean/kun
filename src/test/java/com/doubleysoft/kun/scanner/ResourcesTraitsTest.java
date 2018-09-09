@@ -23,7 +23,7 @@ public class ResourcesTraitsTest {
         ClassInfo classInfo = ClassInfo.builder()
                 .className("com.doubleysoft.kun.scanner.test2.ResourcesTraitsTestBean")
                 .build();
-        Assert.assertTrue(resourcesTraits.filterClassInfo(classInfo));
+        Assert.assertTrue(resourcesTraits.filterClassInfoTrait(classInfo));
     }
 
 }
