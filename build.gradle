@@ -21,7 +21,9 @@ repositories {
 
 dependencies{
     compile  'org.slf4j:slf4j-api:1.7.25'
+    compile 'javax.inject:javax.inject:1'
 
     testCompile 'org.slf4j:slf4j-simple:1.6.1'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.22.0'
 }

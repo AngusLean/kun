@@ -7,7 +7,7 @@ import com.doubleysoft.kun.context.ClassInfo;
  * 18-9-9 下午7:05
  */
 public class DefaultClassPathScannerImpl extends ClassPathScannerImpl
-        implements ResourcesTraits {
+        implements JavaxAnotationResourcesTraits {
 
     @Override
     protected boolean classFilter(ClassInfo classInfo) {

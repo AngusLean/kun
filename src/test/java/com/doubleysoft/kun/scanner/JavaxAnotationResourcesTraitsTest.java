@@ -9,12 +9,12 @@ import org.junit.Test;
  * Created by anguslean
  * 18-9-9 下午7:06
  */
-public class ResourcesTraitsTest {
-    private ResourcesTraits resourcesTraits;
+public class JavaxAnotationResourcesTraitsTest {
+    private JavaxAnotationResourcesTraits JavaxAnotationResourcesTraits;
 
     @Before
     public void setUp() throws Exception {
-        resourcesTraits = new ResourcesTraits() {
+        JavaxAnotationResourcesTraits = new JavaxAnotationResourcesTraits() {
         };
     }
 
@@ -23,7 +23,7 @@ public class ResourcesTraitsTest {
         ClassInfo classInfo = ClassInfo.builder()
                 .className("com.doubleysoft.kun.scanner.test2.ResourcesTraitsTestBean")
                 .build();
-        Assert.assertTrue(resourcesTraits.filterClassInfoTrait(classInfo));
+        Assert.assertFalse(JavaxAnotationResourcesTraits.filterClassInfoTrait(classInfo));
     }
 
 }

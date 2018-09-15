@@ -36,4 +36,5 @@ public class ClassPathScannerImplTest {
         Assert.assertEquals(klass, Demo3.class);
     }
 
+
 }
