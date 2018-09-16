@@ -23,18 +23,17 @@ public class KunIoc implements Ioc {
     }
 
     @Override
-    public <T> T addBean(Class<T> klass) {
+    public <T> void addBean(Class<T> klass) {
         String simpleName = klass.getSimpleName();
         container.computeIfAbsent(simpleName, key -> {
             BeanDifination<T> beanDifination = new BeanDifination<T>();
             beanDifination.setKlass(klass);
             return beanDifination;
         });
-        return container.get(simpleName).getInstance();
     }
 
     @Override
     public <T> T getBean(Class<T> klass) {
-        return container.get(klass.getSimpleName()).getInstance();
+        return container.get(klass.getSimpleName()).getInstance(KunConfig.getInjectAnotations(), this);
     }
 }

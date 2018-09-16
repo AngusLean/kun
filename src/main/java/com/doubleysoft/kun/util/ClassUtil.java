@@ -5,9 +5,7 @@ import com.doubleysoft.kun.exception.StateException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by anguslean
@@ -22,6 +20,7 @@ public class ClassUtil {
             Constructor<?>[] declaredConstructors = klass.getDeclaredConstructors();
             Constructor<?> injectConstruct = null;
             //first find any constrcutor annotation with inject interface
+            //todo performence change
             for (Constructor<?> constructor : declaredConstructors) {
                 if (injectAnotations.stream().anyMatch(row -> constructor.getDeclaredAnnotation(row) != null)) {
                     injectConstruct = constructor;
@@ -36,10 +35,18 @@ public class ClassUtil {
                 return getInstance(klass, declaredConstructors[0], ioc);
             }
 
+            Optional<Constructor<?>> noParamConstruct = Arrays.stream(declaredConstructors).filter(row -> row.getParameterCount() == 0)
+                    .findAny();
+            if (!noParamConstruct.isPresent()) {
+                log.error("error in init class :{}, find many constructor but has not  annotation with :{} find", klass, injectAnotations);
+                throw new StateException("error in init bean " + klass.getName());
+            }
             //last call newInstance method directly
             instance = klass.newInstance();
+        } catch (StateException e) {
+            throw e;
         } catch (InstantiationException e) {
-            log.error("error in init class {}", klass);
+            log.error("error in init class {}", klass, e);
             throw new StateException("error in init bean " + klass.getName());
         } catch (IllegalAccessException e) {
             log.error("error in init class {}, IllegalAccess", klass);

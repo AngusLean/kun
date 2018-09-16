@@ -14,7 +14,7 @@ public interface Ioc {
      * @param <T>   type
      * @return instance of type klass
      */
-    <T> T addBean(Class<T> klass);
+    <T> void addBean(Class<T> klass);
 
     /**
      * get a specified type of bean instance

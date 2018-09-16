@@ -22,7 +22,8 @@ public class KunIocTest {
 
     @Test
     public void addBean() {
-        TestKlass val = ioc.addBean(TestKlass.class);
+        ioc.addBean(TestKlass.class);
+        TestKlass val = ioc.getBean(TestKlass.class);
         Assert.assertNotNull(val);
 
         //should not equal new() object
@@ -36,15 +37,18 @@ public class KunIocTest {
 
     @Test(expected = StateException.class)
     public void addPrivateBean() {
-        PrivateTestKlass val = ioc.addBean(PrivateTestKlass.class);
+        ioc.addBean(PrivateTestKlass.class);
+        PrivateTestKlass val = ioc.getBean(PrivateTestKlass.class);
         Assert.assertNotNull(val);
     }
 
     @Test
     public void addDuplicateClass() {
-        TestKlass val = ioc.addBean(TestKlass.class);
+        ioc.addBean(TestKlass.class);
+        TestKlass val = ioc.getBean(TestKlass.class);
         Assert.assertNotNull(val);
-        TestKlass val1 = ioc.addBean(TestKlass.class);
+        ioc.addBean(TestKlass.class);
+        TestKlass val1 = ioc.getBean(TestKlass.class);
         Assert.assertNotNull(val);
         //should be one object
         Assert.assertTrue(val == val1);
