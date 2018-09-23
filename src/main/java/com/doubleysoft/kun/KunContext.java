@@ -1,5 +1,6 @@
 package com.doubleysoft.kun;
 
+import com.doubleysoft.kun.context.ApplicationContext;
 import com.doubleysoft.kun.context.ClassInfo;
 import com.doubleysoft.kun.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.scanner.DefaultClassPathScannerImpl;
@@ -11,7 +12,7 @@ import java.util.Set;
  * Created by anguslean
  * 18-9-9 下午6:48
  */
-public class KunContext {
+public class KunContext extends ApplicationContext {
     private String packages;
 
     /**
@@ -34,6 +35,7 @@ public class KunContext {
     }
 
     public KunContext(String packages) {
+        super();
         this.scanner = new DefaultClassPathScannerImpl();
         this.ioc = new KunIoc();
         this.packages = packages;
