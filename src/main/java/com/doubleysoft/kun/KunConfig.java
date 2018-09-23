@@ -10,7 +10,9 @@ import java.util.Set;
  * @since 0.0.1
  */
 class KunConfig {
-
+    /**
+     * default cached class pool size. the capicity is 1
+     */
     private static int defaultPoolSize = 32;
     private static Set<Class> anotations = new HashSet<Class>() {{
         add(Inject.class);
@@ -20,7 +22,10 @@ class KunConfig {
         return defaultPoolSize;
     }
 
-
+    /**
+     * get the default inject annotations class
+     * @return
+     */
     static final Set<Class> getInjectAnotations() {
         return anotations;
     }

@@ -34,6 +34,7 @@ public class KunIoc implements Ioc {
 
     @Override
     public <T> T getBean(Class<T> klass) {
+        //maybe call Ioc.getBean recycle
         return container.get(klass.getSimpleName()).getInstance(KunConfig.getInjectAnotations(), this);
     }
 }
