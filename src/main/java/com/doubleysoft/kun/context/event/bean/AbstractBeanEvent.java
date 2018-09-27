@@ -1,7 +1,6 @@
 package com.doubleysoft.kun.context.event.bean;
 
-import com.doubleysoft.kun.context.ApplicationContext;
-import com.doubleysoft.kun.context.ApplicationEvent;
+import com.doubleysoft.kun.context.AbstractApplicationContext;
 import com.doubleysoft.kun.context.event.ApplicationContextEvent;
 
 /**
@@ -15,7 +14,7 @@ public class AbstractBeanEvent extends ApplicationContextEvent {
      */
     private String beanName;
 
-    public AbstractBeanEvent(String beanName, ApplicationContext source) {
+    public AbstractBeanEvent(String beanName, AbstractApplicationContext source) {
         super(source);
         this.beanName = beanName;
     }

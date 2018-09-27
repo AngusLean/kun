@@ -1,29 +1,28 @@
 package com.doubleysoft.kun;
 
-import com.doubleysoft.kun.context.ApplicationContext;
+import com.doubleysoft.kun.context.AbstractApplicationContext;
 import com.doubleysoft.kun.context.ClassInfo;
 import com.doubleysoft.kun.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.scanner.DefaultClassPathScannerImpl;
 import com.doubleysoft.kun.scanner.Scanner;
 
+import java.util.Iterator;
 import java.util.Set;
 
 /**
  * Created by anguslean
  * 18-9-9 下午6:48
  */
-public class KunContext extends ApplicationContext {
+public class KunContext extends AbstractApplicationContext {
+    /**
+     * package
+     */
     private String packages;
 
     /**
      * class scanner
      */
     private Scanner scanner;
-
-    /**
-     * ioc container
-     */
-    private Ioc ioc;
 
     /**
      * event register
@@ -35,17 +34,17 @@ public class KunContext extends ApplicationContext {
     }
 
     public KunContext(String packages) {
-        super();
+        super(new KunIoc());
         this.scanner = new DefaultClassPathScannerImpl();
-        this.ioc = new KunIoc();
         this.packages = packages;
     }
 
     public void init() {
         Set<ClassInfo> classInfos = scanner.scan(packages);
-        while (classInfos.iterator().hasNext()) {
-            ClassInfo classInfo = classInfos.iterator().next();
-            ioc.addBean(classInfo.getKlass());
+        Iterator<ClassInfo> iterator = classInfos.iterator();
+        while (iterator.hasNext()) {
+            ClassInfo classInfo = iterator.next();
+            this.addBean(classInfo.getKlass());
         }
     }
 }

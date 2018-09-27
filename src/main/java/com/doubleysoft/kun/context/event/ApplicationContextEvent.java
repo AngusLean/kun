@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.context.event;
 
-import com.doubleysoft.kun.context.ApplicationContext;
+import com.doubleysoft.kun.context.AbstractApplicationContext;
 import com.doubleysoft.kun.context.ApplicationEvent;
 
 /**
@@ -8,11 +8,11 @@ import com.doubleysoft.kun.context.ApplicationEvent;
  * 18-9-23 下午5:32
  */
 public class ApplicationContextEvent extends ApplicationEvent {
-    public ApplicationContextEvent(ApplicationContext context) {
+    public ApplicationContextEvent(AbstractApplicationContext context) {
         super(context);
     }
 
-    public ApplicationContext getApplicationContext(){
-        return (ApplicationContext)super.getSource();
+    public AbstractApplicationContext getApplicationContext() {
+        return (AbstractApplicationContext) super.getSource();
     }
 }

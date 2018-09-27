@@ -53,11 +53,12 @@ public class ClassUtil {
             throw new StateException("error in init bean " + klass.getName() + ", illegal access");
         }
 
-        return (T) instance;
+        return instance;
     }
 
     private static <T> T getInstance(Class<T> klass, Constructor<?> constructor, Ioc ioc) {
         Class<?>[] parameterTypes = constructor.getParameterTypes();
+
         List<Object> paramterObjects = new ArrayList<>(constructor.getParameterCount());
         for (Class<?> paramterType : parameterTypes) {
             Object param = ioc.getBean(paramterType);
