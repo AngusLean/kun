@@ -21,9 +21,9 @@ public class BeanDifination<T> {
 
     private T instance;
 
-    public <T> T getInstance(Set<Class> anotations, Ioc ioc) {
+    public <T> T getInstance(Set<Class> annotations, Ioc ioc) {
         if (instance == null) {
-            instance = ClassUtil.getInstance(klass, anotations, ioc);
+            instance = ClassUtil.getInstance(klass, annotations, ioc);
         }
         return (T) instance;
     }

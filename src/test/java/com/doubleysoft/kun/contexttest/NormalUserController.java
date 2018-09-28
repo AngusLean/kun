@@ -1,17 +1,11 @@
 package com.doubleysoft.kun.contexttest;
 
-import lombok.AllArgsConstructor;
-
-import javax.inject.Singleton;
-
 /**
  * @author anguslean
- * 18-9-27 下午5:34
+ * 18-9-28 下午6:38
  * @since 0.0.1
  */
-@Singleton
-@AllArgsConstructor
-public class ConstructUserController {
+public class NormalUserController {
     private UserDao userDao;
 
     public UserDO getUserInfo() {

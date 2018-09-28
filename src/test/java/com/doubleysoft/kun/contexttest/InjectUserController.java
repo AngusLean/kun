@@ -16,4 +16,8 @@ public class InjectUserController {
     public UserDO getUserInfo() {
         return userDao.getUserDo();
     }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
 }
