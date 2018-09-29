@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.scanner;
 
 import com.doubleysoft.kun.context.ClassInfo;
-import com.doubleysoft.kun.scanner.defaultcps.DefaultCps1;
+import com.doubleysoft.kun.scanner.defaultcps.DefaultCps2;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +28,6 @@ public class DefaultAbstractClassPathScannerImplTest {
         Set<ClassInfo> classInfoSet = defaultClassPathScanner.scan("com.doubleysoft.kun.scanner.defaultcps");
         Assert.assertEquals(classInfoSet.size(), 1);
         ClassInfo classInfo = classInfoSet.iterator().next();
-        Assert.assertEquals(DefaultCps1.class, classInfo.getKlass());
+        Assert.assertEquals(DefaultCps2.class, classInfo.getKlass());
     }
 }

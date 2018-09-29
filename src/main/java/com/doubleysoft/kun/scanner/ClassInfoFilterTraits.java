@@ -20,7 +20,8 @@ public interface ClassInfoFilterTraits {
      * @return
      */
     default boolean filterResourceClassInfo(ClassInfo classInfo) {
-        return classInfo.getKlass().isAnnotationPresent(Singleton.class);
+        return classInfo.getKlass().isAnnotationPresent(Singleton.class) ||
+                classInfo.getKlass().isAnnotationPresent(Resource.class);
     }
 
     /**

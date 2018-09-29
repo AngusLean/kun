@@ -17,7 +17,12 @@ public class AbstractClassPathScannerImplTest {
 
     @Before
     public void setUp() {
-        scanner = new DefaultClassPathScannerImpl();
+        scanner = new AbstractClassPathScannerImpl() {
+            @Override
+            boolean classFilter(ClassInfo classInfo) {
+                return true;
+            }
+        };
     }
 
     @Test
