@@ -1,12 +1,12 @@
 package com.doubleysoft.kun.scanner.test2;
 
-import javax.annotation.Resource;
+import javax.inject.Singleton;
 
 /**
  * Created by anguslean
  * 18-9-9 下午7:09
  * test usage
  */
-@Resource
+@Singleton
 public class ResourcesTraitsTestBean {
 }

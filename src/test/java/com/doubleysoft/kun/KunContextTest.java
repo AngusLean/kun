@@ -39,7 +39,6 @@ public class KunContextTest {
         Assert.assertEquals(constructUserController.getUserDao(), userDao);
         Assert.assertEquals(injectUserController.getUserDao(), constructUserController.getUserDao());
 
-
         NormalUserController normalUserController = kunContext.getBean(NormalUserController.class);
         Assert.assertNull(normalUserController);
     }

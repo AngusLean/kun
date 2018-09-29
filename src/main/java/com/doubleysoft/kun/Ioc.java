@@ -17,7 +17,8 @@ public interface Ioc {
     <T> void addBean(Class<T> klass);
 
     /**
-     * get a specified type of bean instance
+     * get a specified type of bean instance, if current instance have not created,
+     * this method will create a new instance。
      *
      * @param klass the class
      * @param <T>   type

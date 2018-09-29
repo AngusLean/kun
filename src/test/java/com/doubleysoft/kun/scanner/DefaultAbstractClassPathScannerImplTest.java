@@ -12,11 +12,11 @@ import java.util.Set;
  * Created by anguslean
  * 18-9-9 下午7:16
  */
-public class DefaultClassPathScannerImplTest {
+public class DefaultAbstractClassPathScannerImplTest {
     private DefaultClassPathScannerImpl defaultClassPathScanner;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         defaultClassPathScanner = new DefaultClassPathScannerImpl();
     }
 

@@ -18,7 +18,7 @@ public class KunIoc implements Ioc {
         this(KunConfig.getDefaultPoolSize());
     }
 
-    public KunIoc(int poolSize) {
+    private KunIoc(int poolSize) {
         container = new ConcurrentHashMap<>(poolSize, 1);
     }
 
@@ -26,7 +26,7 @@ public class KunIoc implements Ioc {
     public <T> void addBean(Class<T> klass) {
         String simpleName = klass.getSimpleName();
         container.computeIfAbsent(simpleName, key -> {
-            BeanDifination<T> beanDifination = new BeanDifination<T>();
+            BeanDifination<T> beanDifination = new BeanDifination<>();
             beanDifination.setKlass(klass);
             return beanDifination;
         });
@@ -34,7 +34,10 @@ public class KunIoc implements Ioc {
 
     @Override
     public <T> T getBean(Class<T> klass) {
-        //maybe call Ioc.getBean recycle
-        return container.get(klass.getSimpleName()).getInstance(KunConfig.getInjectAnotations(), this);
+        if (container.containsKey(klass.getSimpleName())) {
+            //maybe call Ioc.getBean recycle
+            return container.get(klass.getSimpleName()).getInstance(KunConfig.getInjectAnotations(), this);
+        }
+        return null;
     }
 }
