@@ -9,7 +9,7 @@ import java.util.Set;
  * 18-9-6 下午10:07
  * @since 0.0.1
  */
-class KunConfig {
+public class KunConfig {
     /**
      * default cached class pool size. the capicity is 1
      */
@@ -30,4 +30,12 @@ class KunConfig {
         return anotations;
     }
 
+    /**
+     * is create bean instance when init context
+     *
+     * @return
+     */
+    static boolean isCreateBeanOnInit() {
+        return true;
+    }
 }

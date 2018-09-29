@@ -1,6 +1,7 @@
-package com.doubleysoft.kun.context.event;
+package com.doubleysoft.kun.context.event.bean;
 
 import com.doubleysoft.kun.context.AbstractApplicationContext;
+import com.doubleysoft.kun.context.event.ApplicationContextEvent;
 
 /**
  * Created by anguslean
