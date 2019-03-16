@@ -3,6 +3,9 @@ package com.doubleysoft.kun;
 import com.doubleysoft.kun.context.AbstractApplicationContext;
 import com.doubleysoft.kun.context.ClassInfo;
 import com.doubleysoft.kun.context.event.ApplicationEventRegister;
+import com.doubleysoft.kun.context.event.bean.BeanAfterConstructEvent;
+import com.doubleysoft.kun.context.event.bean.BeanBeforeConstructEvent;
+import com.doubleysoft.kun.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.scanner.DefaultClassPathScannerImpl;
 import com.doubleysoft.kun.scanner.Scanner;
 
@@ -45,6 +48,22 @@ public class KunContext extends AbstractApplicationContext {
         while (iterator.hasNext()) {
             ClassInfo classInfo = iterator.next();
             this.addBean(classInfo.getKlass());
+        }
+
+        this.publishEvent(new ContextStartedEvent(this));
+    }
+
+    @Override
+    public void addBean(Class<?> klass) {
+        super.addBean(klass);
+        doCreateBean(klass);
+    }
+
+    private void doCreateBean(Class<?> klass) {
+        if (KunConfig.isCreateBeanOnInit()) {
+            this.publishEvent(new BeanBeforeConstructEvent(klass.getSimpleName(), this));
+            this.getBean(klass);
+            this.publishEvent(new BeanAfterConstructEvent(klass.getSimpleName(), this));
         }
     }
 }

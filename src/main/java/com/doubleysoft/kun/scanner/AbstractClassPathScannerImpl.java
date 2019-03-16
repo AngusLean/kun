@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
  * 18-9-9 下午2:33
  */
 @Slf4j
-public class ClassPathScannerImpl implements Scanner {
+public abstract class AbstractClassPathScannerImpl implements Scanner {
 
     @Override
     public Set<ClassInfo> scan(String packages) {
         Set<ClassInfo> lists = new HashSet<>();
         String packagesPath = packages.replace(".", "/");
         try {
-            Enumeration<URL> urls = ClassPathScannerImpl.class.getClassLoader().getResources(packagesPath);
+            Enumeration<URL> urls = AbstractClassPathScannerImpl.class.getClassLoader().getResources(packagesPath);
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 String file = new URI(url.getFile()).getPath();
@@ -59,7 +59,5 @@ public class ClassPathScannerImpl implements Scanner {
         return results;
     }
 
-    protected boolean classFilter(ClassInfo classInfo) {
-        return true;
-    }
+    abstract boolean classFilter(ClassInfo classInfo);
 }

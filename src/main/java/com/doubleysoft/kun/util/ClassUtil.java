@@ -34,10 +34,12 @@ public class ClassUtil {
             return getInstance(klass, declaredConstructors[0], injectAnnotations, ioc);
         }
 
-        Optional<Constructor<?>> noParamConstruct = Arrays.stream(declaredConstructors).filter(row -> row.getParameterCount() == 0)
+        Optional<Constructor<?>> noParamConstruct = Arrays.stream(declaredConstructors)
+                .filter(row -> row.getParameterCount() == 0)
                 .findAny();
         if (!noParamConstruct.isPresent()) {
-            log.error("error in init class :{}, find many constructor but has not  annotation with :{} find", klass, injectAnnotations);
+            log.error("error in init class :{}, find many constructor but has not  annotation with :{} find",
+                    klass, injectAnnotations);
             throw new StateException("error in init bean " + klass.getName());
         }
         //last call newInstance method directly

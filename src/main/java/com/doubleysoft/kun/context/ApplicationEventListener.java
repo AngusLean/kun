@@ -7,5 +7,10 @@ import java.util.EventListener;
  * 18-9-23 下午4:35
  */
 public interface ApplicationEventListener<T extends ApplicationEvent> extends EventListener {
-    void listen(T event);
+    /**
+     * onEvent specified event type, this method will aotumic call
+     *
+     * @param event
+     */
+    void onEvent(T event);
 }

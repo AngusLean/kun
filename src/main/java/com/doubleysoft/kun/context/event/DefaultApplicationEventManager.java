@@ -10,7 +10,7 @@ import java.util.*;
  * 18-9-23 下午4:32
  */
 public class DefaultApplicationEventManager implements ApplicationEventDispatch,ApplicationEventRegister {
-    private Map<ApplicationEvent, List<ApplicationEventListener>> handlers;
+    private Map<Class<? extends ApplicationEvent>, List<ApplicationEventListener>> handlers;
 
     public DefaultApplicationEventManager(){
         handlers = new HashMap<>(10, 1);
@@ -18,13 +18,13 @@ public class DefaultApplicationEventManager implements ApplicationEventDispatch,
 
     @Override
     public void publishEvent(ApplicationEvent event) {
-        for(ApplicationEventListener listener : handlers.getOrDefault(event, Collections.emptyList())){
-            listener.listen(event);
+        for (ApplicationEventListener listener : handlers.getOrDefault(event.getClass(), Collections.emptyList())) {
+            listener.onEvent(event);
         }
     }
 
     @Override
-    public void registerEvent(ApplicationEvent event, ApplicationEventListener listener) {
-        handlers.getOrDefault(event, new ArrayList<>()).add(listener);
+    public void registerEvent(Class<? extends ApplicationEvent> eventType, ApplicationEventListener listener) {
+        handlers.getOrDefault(eventType, new ArrayList<>()).add(listener);
     }
 }

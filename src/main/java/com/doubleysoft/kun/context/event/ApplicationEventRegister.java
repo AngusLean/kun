@@ -8,5 +8,5 @@ import com.doubleysoft.kun.context.ApplicationEventListener;
  * 18-9-23 下午4:38
  */
 public interface ApplicationEventRegister {
-    void registerEvent(ApplicationEvent event, ApplicationEventListener listener);
+    void registerEvent(Class<? extends ApplicationEvent> eventType, ApplicationEventListener listener);
 }

@@ -12,12 +12,17 @@ import java.util.Set;
  * Created by anguslean
  * 18-9-9 下午3:06
  */
-public class ClassPathScannerImplTest {
+public class AbstractClassPathScannerImplTest {
     private Scanner scanner;
 
     @Before
-    public void setUp() throws Exception {
-        scanner = new ClassPathScannerImpl();
+    public void setUp() {
+        scanner = new AbstractClassPathScannerImpl() {
+            @Override
+            boolean classFilter(ClassInfo classInfo) {
+                return true;
+            }
+        };
     }
 
     @Test
@@ -30,9 +35,9 @@ public class ClassPathScannerImplTest {
     public void testScanCs() throws ClassNotFoundException {
         Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.scanner.test1");
         Assert.assertTrue(results.iterator().hasNext());
-        String klassName = results.iterator().next().getClassName();
-        Assert.assertEquals("com.doubleysoft.kun.scanner.test1.Demo3", klassName);
-        Class klass = Class.forName(klassName);
+        String className = results.iterator().next().getClassName();
+        Assert.assertEquals("com.doubleysoft.kun.scanner.test1.Demo3", className);
+        Class klass = Class.forName(className);
         Assert.assertEquals(klass, Demo3.class);
     }
 
