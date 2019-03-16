@@ -65,6 +65,8 @@ public class ClassUtil {
 
         List<Object> paramObjects = new ArrayList<>(constructParamCount);
         for (Class<?> paramType : parameterTypes) {
+            //firstly we try to add a new instance
+            ioc.addBean(paramType);
             Object param = ioc.getBean(paramType);
             if (param == null) {
                 log.error("can not get instance of class :{}, construct : {} , param type: {} " +
