@@ -15,7 +15,7 @@ apply plugin: 'idea'
 sourceCompatibility = 1.8
 
 repositories {
-    jcenter() // or Maven central, required for Lombok dependency
+    jcenter()
     mavenCentral()
 }
 

@@ -1,0 +1,13 @@
+language: java
+script: "mvn cobertura:cobertura"
+
+jdk:
+  - oraclejdk8
+before_install:
+  - pip install --user codecov
+after_success:
+  - codecov
+  - bash <(curl -s https://codecov.io/bash)
+branches:
+  except:
+    - appveyor
