@@ -1,5 +1,7 @@
 package com.doubleysoft.kun.mvc;
 
+import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
+
 /**
  * @author cupofish@gmail.com
  * 3/17/19 16:06
@@ -23,4 +25,11 @@ public interface Server {
      * stop now, ignore current processing service
      */
     void stopNow();
+
+    /**
+     * bing this socket to a process,sub class must call right process method
+     *
+     * @param requestProcess
+     */
+    void bindProcess(RequestProcess requestProcess);
 }

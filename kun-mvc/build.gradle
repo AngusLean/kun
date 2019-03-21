@@ -11,4 +11,5 @@ repositories {
 dependencies {
     compile project(":kun-ioc")
     testCompile 'org.mockito:mockito-core'
+    compile 'org.slf4j:slf4j-simple'
 }
