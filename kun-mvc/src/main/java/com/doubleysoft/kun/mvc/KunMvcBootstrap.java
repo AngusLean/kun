@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.mvc;
 
 import com.doubleysoft.kun.ioc.KunBootstrap;
-import com.doubleysoft.kun.mvc.server.BlockServer;
+import com.doubleysoft.kun.mvc.server.netty.NettyServer;
 import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
 
 /**
@@ -15,7 +15,7 @@ public class KunMvcBootstrap {
     }
 
     private static void startServer() {
-        Server server = new BlockServer();
+        Server         server         = new NettyServer();
         RequestProcess requestProcess = new RequestProcess();
         server.start(8080);
         server.bindProcess(requestProcess);

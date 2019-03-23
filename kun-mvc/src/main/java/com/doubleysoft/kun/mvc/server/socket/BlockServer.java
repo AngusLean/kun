@@ -1,9 +1,8 @@
-package com.doubleysoft.kun.mvc.server;
+package com.doubleysoft.kun.mvc.server.socket;
 
 import com.doubleysoft.kun.ioc.exception.StateException;
 import com.doubleysoft.kun.mvc.Server;
 import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
-import com.doubleysoft.kun.mvc.server.socket.SocketWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
