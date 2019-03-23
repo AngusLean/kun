@@ -2,6 +2,7 @@ package com.doubleysoft.kun.ioc.context;
 
 import com.doubleysoft.kun.ioc.Ioc;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventDispatch;
+import com.doubleysoft.kun.ioc.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.ioc.context.event.DefaultApplicationEventManager;
 
 /**
@@ -18,14 +19,13 @@ public class AbstractApplicationContext {
      * event dispatch
      */
     private ApplicationEventDispatch applicationEventDispatch;
+    private ApplicationEventRegister applicationEventRegister;
 
     public AbstractApplicationContext(Ioc ioc) {
         this.ioc = ioc;
-        this.applicationEventDispatch = new DefaultApplicationEventManager();
-    }
-
-    public void publishEvent(ApplicationEvent event) {
-        applicationEventDispatch.publishEvent(event);
+        DefaultApplicationEventManager eventManager = new DefaultApplicationEventManager();
+        this.applicationEventDispatch = eventManager;
+        this.applicationEventRegister = eventManager;
     }
 
     public void addBean(Class<?> klass) {
@@ -34,5 +34,13 @@ public class AbstractApplicationContext {
 
     public <T> T getBean(Class<T> klass) {
         return this.ioc.getBean(klass);
+    }
+
+    public void publishEvent(ApplicationEvent event) {
+        applicationEventDispatch.publishEvent(event);
+    }
+
+    public void registerEventListener(Class<? extends ApplicationEvent> eventType, ApplicationEventListener listener) {
+        applicationEventRegister.registerEvent(eventType, listener);
     }
 }

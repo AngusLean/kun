@@ -25,6 +25,9 @@ public class DefaultApplicationEventManager implements ApplicationEventDispatch,
 
     @Override
     public void registerEvent(Class<? extends ApplicationEvent> eventType, ApplicationEventListener listener) {
-        handlers.getOrDefault(eventType, new ArrayList<>()).add(listener);
+        if (!handlers.containsKey(eventType)) {
+            handlers.put(eventType, new ArrayList<>());
+        }
+        handlers.get(eventType).add(listener);
     }
 }

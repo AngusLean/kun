@@ -27,16 +27,16 @@ public class AbstractClassPathScannerImplTest {
 
     @Test
     public void testScan() {
-        Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.scanner.test");
+        Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.ioc.scanner.test");
         Assert.assertEquals(results.size(), 2);
     }
 
     @Test
     public void testScanCs() throws ClassNotFoundException {
-        Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.scanner.test1");
+        Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.ioc.scanner.test1");
         Assert.assertTrue(results.iterator().hasNext());
         String className = results.iterator().next().getClassName();
-        Assert.assertEquals("com.doubleysoft.kun.scanner.test1.Demo3", className);
+        Assert.assertEquals("com.doubleysoft.kun.ioc.scanner.test1.Demo3", className);
         Class klass = Class.forName(className);
         Assert.assertEquals(klass, Demo3.class);
     }

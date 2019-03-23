@@ -1,9 +1,12 @@
 package com.doubleysoft.kun.ioc;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Created by anguslean
  * 18-9-9 下午6:04
  */
+@Slf4j
 public class KunBootstrap {
     public static void start(Class klass) {
 
@@ -19,7 +22,7 @@ public class KunBootstrap {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("fail in start kun ioc", e);
         }
     }
 }

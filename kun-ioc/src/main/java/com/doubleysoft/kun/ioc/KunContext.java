@@ -2,7 +2,6 @@ package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.AbstractApplicationContext;
 import com.doubleysoft.kun.ioc.context.ClassInfo;
-import com.doubleysoft.kun.ioc.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.ioc.context.event.bean.BeanAfterConstructEvent;
 import com.doubleysoft.kun.ioc.context.event.bean.BeanBeforeConstructEvent;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
@@ -27,11 +26,6 @@ public class KunContext extends AbstractApplicationContext {
      */
     private Scanner scanner;
 
-    /**
-     * event register
-     */
-    private ApplicationEventRegister eventRegister;
-
     public KunContext() {
         this(KunContext.class.getPackage().getName());
     }
@@ -49,7 +43,6 @@ public class KunContext extends AbstractApplicationContext {
             ClassInfo classInfo = iterator.next();
             this.addBean(classInfo.getKlass());
         }
-
         this.publishEvent(new ContextStartedEvent(this));
     }
 
@@ -66,4 +59,5 @@ public class KunContext extends AbstractApplicationContext {
             this.publishEvent(new BeanAfterConstructEvent(klass.getSimpleName(), this));
         }
     }
+
 }
