@@ -21,7 +21,7 @@ public class ClassInfoFilterTraitsTest {
     @Test
     public void filterClassInfo() {
         ClassInfo classInfo = ClassInfo.builder()
-                .className("com.doubleysoft.kun.scanner.test2.ResourcesTraitsTestBean")
+                .className("com.doubleysoft.kun.ioc.scanner.test2.ResourcesTraitsTestBean")
                 .build();
         Assert.assertTrue(ClassInfoFilterTraits.filterResourceClassInfo(classInfo));
     }
