@@ -4,6 +4,9 @@ import com.doubleysoft.kun.ioc.contexttest.ConstructUserController;
 import com.doubleysoft.kun.ioc.contexttest.InjectUserController;
 import com.doubleysoft.kun.ioc.contexttest.NormalUserController;
 import com.doubleysoft.kun.ioc.contexttest.UserDao;
+import com.doubleysoft.kun.ioc.contexttest.filter.TestAnnotation;
+import com.doubleysoft.kun.ioc.contexttest.filter.model.ContextFilterTestDO;
+import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +21,12 @@ public class KunContextTest {
     @Before
     public void setUp() {
         kunContext = new KunContext(this.getClass().getPackage().getName() + ".contexttest");
-        kunContext.init();
+
     }
 
     @Test
     public void init() {
+        kunContext.init();
         UserDao userDao = kunContext.getBean(UserDao.class);
         ConstructUserController constructUserController = kunContext.getBean(ConstructUserController.class);
         InjectUserController injectUserController = kunContext.getBean(InjectUserController.class);
@@ -42,4 +46,15 @@ public class KunContextTest {
         NormalUserController normalUserController = kunContext.getBean(NormalUserController.class);
         Assert.assertNull(normalUserController);
     }
+
+    @Test
+    public void testClassInfoFilter() {
+        ClassInfoFilter classInfoFilter = classInfo -> classInfo.getKlass().isAnnotationPresent(TestAnnotation.class);
+        kunContext.addClassInfoFilter(classInfoFilter);
+        kunContext.init();
+        ContextFilterTestDO bean = kunContext.getBean(ContextFilterTestDO.class);
+        Assert.assertNotNull(bean);
+    }
+
+
 }

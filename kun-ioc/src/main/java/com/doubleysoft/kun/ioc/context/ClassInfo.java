@@ -23,4 +23,8 @@ public class ClassInfo {
             throw new StateException("fail in find class");
         }
     }
+
+    public boolean isLazyInit() {
+        return false;
+    }
 }

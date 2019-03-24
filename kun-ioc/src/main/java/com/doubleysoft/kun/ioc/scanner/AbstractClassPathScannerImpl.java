@@ -38,6 +38,17 @@ public abstract class AbstractClassPathScannerImpl implements Scanner, ClassInfo
         return lists.stream().filter(this::filterResourceClassInfo).collect(Collectors.toSet());
     }
 
+    @Override
+    public ClassInfo loadClass(String classPackage) {
+        try {
+            Class klass = this.getClass().getClassLoader().loadClass(classPackage);
+            return ClassInfo.builder().className(klass.getName()).build();
+        } catch (ClassNotFoundException e) {
+            log.error("error in load class :{}", classPackage);
+            throw new StateException("error in load class");
+        }
+    }
+
     private Set<ClassInfo> listFiles(String path, String packageName) {
         Set<ClassInfo> results = new HashSet<>();
         try {

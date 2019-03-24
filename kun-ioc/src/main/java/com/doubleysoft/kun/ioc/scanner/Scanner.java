@@ -18,6 +18,15 @@ public interface Scanner {
     Set<ClassInfo> scan(String packages);
 
     /**
+     * load class
+     *
+     * @param classPackage complete class path
+     * @return
+     */
+    ClassInfo loadClass(String classPackage);
+
+
+    /**
      * add a classInfoFilter, class in package which  any classinfofilter will be managed by {@link com.doubleysoft.kun.ioc.KunIoc}
      *
      * @param classInfoFilter

@@ -42,26 +42,21 @@ public class KunContext extends AbstractApplicationContext {
         Iterator<ClassInfo> iterator   = classInfos.iterator();
         while (iterator.hasNext()) {
             ClassInfo classInfo = iterator.next();
-            this.addBean(classInfo.getKlass());
+            super.addBean(classInfo.getKlass());
+            doCreateBean(classInfo);
         }
         this.publishEvent(new ContextStartedEvent(this));
-    }
-
-    @Override
-    public void addBean(Class<?> klass) {
-        super.addBean(klass);
-        doCreateBean(klass);
     }
 
     public void addClassInfoFilter(ClassInfoFilter classInfoFilter) {
         this.scanner.addClassInfoFilter(classInfoFilter);
     }
 
-    private void doCreateBean(Class<?> klass) {
-        if (KunConfig.isCreateBeanOnInit()) {
-            this.publishEvent(new BeanBeforeConstructEvent(klass.getSimpleName(), this));
-            this.getBean(klass);
-            this.publishEvent(new BeanAfterConstructEvent(klass.getSimpleName(), this));
+    private void doCreateBean(ClassInfo classInfo) {
+        if (KunConfig.isCreateBeanOnInit() && !classInfo.isLazyInit()) {
+            this.publishEvent(new BeanBeforeConstructEvent(classInfo.getKlass().getSimpleName(), this));
+            this.getBean(classInfo.getKlass());
+            this.publishEvent(new BeanAfterConstructEvent(classInfo.getKlass().getSimpleName(), this));
         }
     }
 
