@@ -15,4 +15,7 @@ dependencies {
     compile 'org.slf4j:slf4j-simple'
     compile 'io.netty:netty-all'
 
+    // https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0'
+
 }

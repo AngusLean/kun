@@ -19,9 +19,15 @@ public class AbstractClassPathScannerImplTest {
     public void setUp() {
         scanner = new AbstractClassPathScannerImpl() {
             @Override
-            boolean classFilter(ClassInfo classInfo) {
+            public void addClassInfoFilter(ClassInfoFilter classInfoFilter) {
+
+            }
+
+            @Override
+            public boolean filterResourceClassInfo(ClassInfo classInfo) {
                 return true;
             }
+
         };
     }
 

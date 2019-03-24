@@ -12,8 +12,11 @@ import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
  */
 public class KunMvcBootstrap {
     public static void main(String[] args) {
-//        KunBootstrap.start(KunMvcBootstrap.class);
-        startContext();
+        boot(KunMvcBootstrap.class);
+    }
+
+    public static void boot(Class klass) {
+        startContext(klass);
         startServer();
     }
 
@@ -25,10 +28,9 @@ public class KunMvcBootstrap {
         server.stop();
     }
 
-    private static void startContext() {
-        KunContext kunContext = new KunContext(KunMvcBootstrap.class.getPackage().getName());
+    private static void startContext(Class klass) {
+        KunContext kunContext = new KunContext(klass.getPackage().getName());
         kunContext.registerEventListener(ContextStartedEvent.class, new RouterListener());
         kunContext.init();
-
     }
 }

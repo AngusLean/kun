@@ -5,6 +5,7 @@ import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.context.event.bean.BeanAfterConstructEvent;
 import com.doubleysoft.kun.ioc.context.event.bean.BeanBeforeConstructEvent;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
+import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
 import com.doubleysoft.kun.ioc.scanner.DefaultClassPathScannerImpl;
 import com.doubleysoft.kun.ioc.scanner.Scanner;
 
@@ -12,8 +13,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by anguslean
  * 18-9-9 下午6:48
+ * @author anguslean
  */
 public class KunContext extends AbstractApplicationContext {
     /**
@@ -50,6 +51,10 @@ public class KunContext extends AbstractApplicationContext {
     public void addBean(Class<?> klass) {
         super.addBean(klass);
         doCreateBean(klass);
+    }
+
+    public void addClassInfoFilter(ClassInfoFilter classInfoFilter) {
+        this.scanner.addClassInfoFilter(classInfoFilter);
     }
 
     private void doCreateBean(Class<?> klass) {

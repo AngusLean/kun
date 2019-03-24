@@ -14,11 +14,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Created by anguslean
  * 18-9-9 下午2:33
+ * @author anguslean
  */
 @Slf4j
-public abstract class AbstractClassPathScannerImpl implements Scanner {
+public abstract class AbstractClassPathScannerImpl implements Scanner, ClassInfoFilter {
 
     @Override
     public Set<ClassInfo> scan(String packages) {
@@ -35,7 +35,7 @@ public abstract class AbstractClassPathScannerImpl implements Scanner {
             log.error("fail in scan package :{} ", packages, e);
             throw new StateException("fail in scan packages");
         }
-        return lists.stream().filter(this::classFilter).collect(Collectors.toSet());
+        return lists.stream().filter(this::filterResourceClassInfo).collect(Collectors.toSet());
     }
 
     private Set<ClassInfo> listFiles(String path, String packageName) {
@@ -59,5 +59,5 @@ public abstract class AbstractClassPathScannerImpl implements Scanner {
         return results;
     }
 
-    abstract boolean classFilter(ClassInfo classInfo);
+//    abstract boolean classFilter(ClassInfo classInfo);
 }

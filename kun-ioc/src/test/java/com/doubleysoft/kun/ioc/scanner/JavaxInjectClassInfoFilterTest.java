@@ -9,12 +9,12 @@ import org.junit.Test;
  * Created by anguslean
  * 18-9-9 下午7:06
  */
-public class ClassInfoFilterTraitsTest {
-    private ClassInfoFilterTraits ClassInfoFilterTraits;
+public class JavaxInjectClassInfoFilterTest {
+    private JavaxInjectClassInfoFilter ClassInfoFilterTraits;
 
     @Before
     public void setUp() {
-        ClassInfoFilterTraits = new ClassInfoFilterTraits() {
+        ClassInfoFilterTraits = new JavaxInjectClassInfoFilter() {
         };
     }
 
