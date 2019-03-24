@@ -3,6 +3,7 @@ package com.doubleysoft.kun.mvc;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.event.RouterListener;
+import com.doubleysoft.kun.mvc.filter.ioc.JaxRsClassInfoFilter;
 import com.doubleysoft.kun.mvc.server.netty.NettyServer;
 import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
 
@@ -30,7 +31,9 @@ public class KunMvcBootstrap {
 
     private static void startContext(Class klass) {
         KunContext kunContext = new KunContext(klass.getPackage().getName());
-        kunContext.registerEventListener(ContextStartedEvent.class, new RouterListener());
+        kunContext.addEventListener(ContextStartedEvent.class, new RouterListener());
+        kunContext.addClassInfoFilter(new JaxRsClassInfoFilter());
         kunContext.init();
     }
+
 }

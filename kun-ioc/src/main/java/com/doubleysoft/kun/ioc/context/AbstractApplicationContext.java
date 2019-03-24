@@ -40,7 +40,7 @@ public class AbstractApplicationContext {
         applicationEventDispatch.publishEvent(event);
     }
 
-    public void registerEventListener(Class<? extends ApplicationEvent> eventType, ApplicationEventListener listener) {
+    public void addEventListener(Class<? extends ApplicationEvent> eventType, ApplicationEventListener listener) {
         applicationEventRegister.registerEvent(eventType, listener);
     }
 }

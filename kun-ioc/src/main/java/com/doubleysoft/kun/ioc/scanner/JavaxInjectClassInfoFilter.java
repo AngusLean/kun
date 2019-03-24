@@ -21,20 +21,7 @@ public class JavaxInjectClassInfoFilter implements ClassInfoFilter {
      */
     @Override
     public boolean filterResourceClassInfo(ClassInfo classInfo) {
-        return classInfo.getKlass().isAnnotationPresent(Singleton.class) ||
-                classInfo.getKlass().isAnnotationPresent(Resource.class);
+        return classInfo.isAnnotationWith(Singleton.class, Resource.class);
     }
-
-    /**
-     * check a class is injected resource
-     * usually  means is it annotated with @Resource or @Inject
-     *
-     * @param classInfo the class info
-     * @return
-     */
-   /* default boolean filterInjectedClassInfo(ClassInfo classInfo) {
-        return classInfo.getKlass().isAnnotationPresent(Resource.class) ||
-                classInfo.getKlass().isAnnotationPresent(Inject.class);
-    }*/
 
 }
