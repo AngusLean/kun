@@ -18,6 +18,6 @@ public class MvcContants {
 
     static {
         webRequestBeanFilters = new ArrayList<>();
-        webRequestBeanFilters.add(new BeanMethodAnnotationFilter(AnnotationHelper.getWebReqAnno()));
+        webRequestBeanFilters.add(new BeanMethodAnnotationFilter(AnnotationHelper.getWebReqAnno(), true));
     }
 }

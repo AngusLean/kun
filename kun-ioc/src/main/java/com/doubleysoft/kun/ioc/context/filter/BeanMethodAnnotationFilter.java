@@ -12,8 +12,14 @@ import java.util.stream.Collectors;
  * 3/31/19 15:55
  */
 public class BeanMethodAnnotationFilter extends AbstractAnnotationFilter {
-    public BeanMethodAnnotationFilter(List<Class<? extends Annotation>> annotations) {
+    /**
+     * need at last match one annotation
+     */
+    private boolean matchOne;
+
+    public BeanMethodAnnotationFilter(List<Class<? extends Annotation>> annotations, boolean matchOne) {
         super(annotations);
+        this.matchOne = matchOne;
     }
 
     @Override
@@ -23,10 +29,15 @@ public class BeanMethodAnnotationFilter extends AbstractAnnotationFilter {
             Method[] declaredMethods = klass.getDeclaredMethods();
             for (Method method : declaredMethods) {
                 for (Class<? extends Annotation> annotation : annotations) {
-                    if (!method.isAnnotationPresent(annotation)) {
+                    if (matchOne && method.isAnnotationPresent(annotation)) {
+                        return true;
+                    } else if (!matchOne && !method.isAnnotationPresent(annotation)) {
                         return false;
                     }
                 }
+            }
+            if (matchOne) {
+                return false;
             }
             return true;
         }).collect(Collectors.toList());

@@ -17,7 +17,7 @@ import java.util.List;
 public class BeanMethodAnnotationFilterTest {
     @Test
     public void filterBeans() throws ClassNotFoundException {
-        BeanMethodAnnotationFilter filter          = new BeanMethodAnnotationFilter(Arrays.asList(Inject.class));
+        BeanMethodAnnotationFilter filter          = new BeanMethodAnnotationFilter(Arrays.asList(Inject.class), true);
         List<BeanDifination>       beanDifinations = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
             BeanDifination beanDifination = new BeanDifination();

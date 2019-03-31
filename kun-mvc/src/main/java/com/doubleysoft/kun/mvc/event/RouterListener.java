@@ -1,8 +1,9 @@
 package com.doubleysoft.kun.mvc.event;
 
-import com.doubleysoft.kun.ioc.context.AbstractApplicationContext;
+import com.doubleysoft.kun.ioc.context.ApplicationContext;
 import com.doubleysoft.kun.ioc.context.ApplicationEventListener;
 import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.MvcContants;
 import com.doubleysoft.kun.mvc.server.Router;
@@ -22,8 +23,8 @@ public class RouterListener implements ApplicationEventListener<ContextStartedEv
 
     @Override
     public void onEvent(ContextStartedEvent event) {
-        AbstractApplicationContext context = event.getApplicationContext();
-        List<BeanDifination>       beans   = context.getBeans(MvcContants.getWebRequestBeanFilters());
+        ApplicationContext   context = event.getApplicationContext();
+        List<BeanDifination> beans   = context.getBeans(MvcContants.getWebRequestBeanFilters());
         for (BeanDifination beanDifination : beans) {
             Class klass = beanDifination.getKlass();
             Arrays.stream(klass.getMethods())
@@ -31,7 +32,8 @@ public class RouterListener implements ApplicationEventListener<ContextStartedEv
                     .forEach(row -> {
                         Path   annotation = row.getAnnotation(Path.class);
                         String value      = annotation.value();
-//                        router.addRoute(value, MethodInf);
+                        router.addRoute(value, MethodInfo.builder()
+                                .beanDifination(beanDifination).methodName(row.getName()).build());
                     });
         }
         System.out.println(beans);
