@@ -2,9 +2,7 @@ package com.doubleysoft.kun.mvc.filter.ioc;
 
 import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.Path;
+import com.doubleysoft.kun.mvc.helper.AnnotationHelper;
 
 /**
  * @author cupofish@gmail.com
@@ -14,6 +12,6 @@ import javax.ws.rs.Path;
 public class JaxRsClassInfoFilter implements ClassInfoFilter {
     @Override
     public boolean filterResourceClassInfo(ClassInfo classInfo) {
-        return classInfo.isAnnotationWith(Path.class, ApplicationPath.class);
+        return classInfo.isAnnotationWith(AnnotationHelper.getWebReqAnno());
     }
 }

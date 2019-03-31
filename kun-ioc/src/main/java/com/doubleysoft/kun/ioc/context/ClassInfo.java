@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+
 /**
  * Created by anguslean
  * 18-9-9 下午5:29
@@ -34,7 +37,7 @@ public class ClassInfo<T> {
         return false;
     }
 
-    public boolean isAnnotationWith(Class... annotationClass) {
+    public boolean isAnnotationWith(List<Class<? extends Annotation>> annotationClass) {
         ensureLoadClass();
         for (Class klass : annotationClass) {
             if (classCache.isAnnotationPresent(klass)) {

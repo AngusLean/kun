@@ -1,6 +1,7 @@
 package com.doubleysoft.kun.ioc.context;
 
-import java.lang.annotation.Annotation;
+import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
+
 import java.util.List;
 
 /**
@@ -28,9 +29,8 @@ public interface ApplicationContext {
     /**
      * get bean which has annotation
      *
-     * @param annotations
-     * @param <T>
+     * @param beanFilters
      * @return
      */
-    List<BeanDifination> getBeanWithAnnotations(List<Class<? extends Annotation>> annotations);
+    List<BeanDifination> getBeans(List<BeanFilter> beanFilters);
 }

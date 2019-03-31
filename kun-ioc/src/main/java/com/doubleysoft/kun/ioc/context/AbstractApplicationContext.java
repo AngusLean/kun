@@ -4,10 +4,8 @@ import com.doubleysoft.kun.ioc.Ioc;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventDispatch;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.ioc.context.event.DefaultApplicationEventManager;
-import com.doubleysoft.kun.ioc.context.filter.BeanAnnotationFilter;
+import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,8 +42,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     @Override
-    public List<BeanDifination> getBeanWithAnnotations(List<Class<? extends Annotation>> annotations) {
-        return ioc.getBean(Arrays.asList(new BeanAnnotationFilter(annotations)));
+    public List<BeanDifination> getBeans(List<BeanFilter> beanFilters) {
+        return ioc.getBean(beanFilters);
     }
 
     public void publishEvent(ApplicationEvent event) {
