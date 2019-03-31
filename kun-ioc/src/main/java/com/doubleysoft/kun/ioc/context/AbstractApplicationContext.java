@@ -4,12 +4,17 @@ import com.doubleysoft.kun.ioc.Ioc;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventDispatch;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.ioc.context.event.DefaultApplicationEventManager;
+import com.doubleysoft.kun.ioc.context.filter.BeanAnnotationFilter;
+
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by anguslean
  * 18-9-23 下午5:33
  */
-public class AbstractApplicationContext {
+public abstract class AbstractApplicationContext implements ApplicationContext {
     /**
      * ioc container
      */
@@ -28,12 +33,19 @@ public class AbstractApplicationContext {
         this.applicationEventRegister = eventManager;
     }
 
+    @Override
     public void addBean(Class<?> klass) {
         this.ioc.addBean(klass);
     }
 
+    @Override
     public <T> T getBean(Class<T> klass) {
         return this.ioc.getBean(klass);
+    }
+
+    @Override
+    public List<BeanDifination> getBeanWithAnnotations(List<Class<? extends Annotation>> annotations) {
+        return ioc.getBean(Arrays.asList(new BeanAnnotationFilter(annotations)));
     }
 
     public void publishEvent(ApplicationEvent event) {

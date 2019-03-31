@@ -12,22 +12,22 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Builder
 @Slf4j
-public class ClassInfo {
+public class ClassInfo<T> {
     private String className;
 
-    private Class classCache;
+    private Class<T> classCache;
 
-    public Class getKlass() {
+    public Class<T> getKlass() {
         if (classCache != null) {
             return classCache;
         }
         try {
-            classCache = Class.forName(className);
-            return classCache;
+            classCache = (Class<T>) Class.forName(className);
         } catch (ClassNotFoundException e) {
             log.error("fail in find class of: {}", className, e);
             throw new StateException("fail in find class");
         }
+        return classCache;
     }
 
     public boolean isLazyInit() {

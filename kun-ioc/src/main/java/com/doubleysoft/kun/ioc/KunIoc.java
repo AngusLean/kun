@@ -2,7 +2,11 @@ package com.doubleysoft.kun.ioc;
 
 
 import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,4 +44,22 @@ public class KunIoc implements Ioc {
         }
         return null;
     }
+
+    @Override
+    public List<BeanDifination> getBean(List<BeanFilter> beanFilters) {
+        List<BeanDifination> result = new ArrayList<>(container.values());
+        if (beanFilters == null || beanFilters.size() == 0) {
+            return result;
+        }
+        for (BeanFilter filter : beanFilters) {
+            result = filter.filterBeans(result);
+        }
+        return result;
+    }
+
+    public Map<String, BeanDifination<?>> getAllBeans() {
+        return Collections.unmodifiableMap(container);
+    }
+
+
 }

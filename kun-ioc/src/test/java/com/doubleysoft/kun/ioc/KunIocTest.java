@@ -1,11 +1,17 @@
 package com.doubleysoft.kun.ioc;
 
+import com.doubleysoft.kun.ioc.context.filter.BeanAnnotationFilter;
+import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 import com.doubleysoft.kun.ioc.exception.StateException;
 import lombok.Getter;
 import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.inject.Singleton;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author anguslean
@@ -55,6 +61,16 @@ public class KunIocTest {
         Assert.assertEquals(val, ioc.getBean(TestKlass.class));
     }
 
+    @Test
+    public void testFilter() {
+        ioc.addBean(TestKlass.class);
+        ioc.addBean(BeanFilterTestKlass.class);
+        Assert.assertEquals(ioc.getBean(Collections.EMPTY_LIST).size(), 2);
+        BeanFilter annotationFilter = new BeanAnnotationFilter(Arrays.asList(Singleton.class));
+        Assert.assertEquals(ioc.getBean(Arrays.asList(annotationFilter)).size(), 1);
+        Assert.assertEquals(ioc.getBean(Arrays.asList(annotationFilter)).get(0).getKlass(), BeanFilterTestKlass.class);
+    }
+
     @Getter
     @Setter
     public static class TestKlass {
@@ -67,5 +83,10 @@ public class KunIocTest {
     private static class PrivateTestKlass {
         private String name;
         private String phone;
+    }
+
+    @Singleton
+    private static class BeanFilterTestKlass {
+
     }
 }

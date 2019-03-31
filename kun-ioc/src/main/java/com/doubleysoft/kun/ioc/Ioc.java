@@ -1,5 +1,10 @@
 package com.doubleysoft.kun.ioc;
 
+import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
+
+import java.util.List;
+
 /**
  * @author anguslean
  * 18-9-6 下午10:07
@@ -25,4 +30,12 @@ public interface Ioc {
      * @return instance of type klass
      */
     <T> T getBean(Class<T> klass);
+
+    /**
+     * get bean filter with beanFilter interface
+     *
+     * @param beanFilters
+     * @return
+     */
+    List<BeanDifination> getBean(List<BeanFilter> beanFilters);
 }

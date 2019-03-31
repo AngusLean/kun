@@ -7,10 +7,15 @@ group 'com.doubleysoft'
 version '0.0.1-SNAPSHOT'
 description 'a simple ioc container'
 
-apply plugin: 'java'
-apply plugin: 'idea'
 
+configure(allprojects ){
+    apply plugin: 'java'
+    apply plugin: 'idea'
 
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+}
 jar {
     manifest {
         attributes("Implementation-Title": "Gradle")
@@ -24,10 +29,7 @@ repositories {
 
 subprojects {
     //define global setting
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }

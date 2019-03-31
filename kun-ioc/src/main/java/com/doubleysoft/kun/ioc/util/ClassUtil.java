@@ -20,11 +20,14 @@ public class ClassUtil {
         Constructor<?>   injectConstruct      = null;
         //first find any construct annotation with inject interface
         //todo performence change
-        for (Constructor<?> constructor : declaredConstructors) {
-            if (injectAnnotations.stream().anyMatch(row -> constructor.getDeclaredAnnotation(row) != null)) {
-                injectConstruct = constructor;
+        if (injectAnnotations != null) {
+            for (Constructor<?> constructor : declaredConstructors) {
+                if (injectAnnotations.stream().anyMatch(row -> constructor.getDeclaredAnnotation(row) != null)) {
+                    injectConstruct = constructor;
+                }
             }
         }
+
         if (injectConstruct != null) {
             return getInstance(klass, injectConstruct, injectAnnotations, ioc);
         }
