@@ -16,7 +16,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     /**
      * ioc container
      */
-    private Ioc ioc;
+    protected Ioc ioc;
 
     /**
      * event dispatch

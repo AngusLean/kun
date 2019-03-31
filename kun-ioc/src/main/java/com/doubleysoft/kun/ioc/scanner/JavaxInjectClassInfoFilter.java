@@ -5,6 +5,7 @@ import com.doubleysoft.kun.ioc.context.ClassInfo;
 
 import javax.annotation.Resource;
 import javax.inject.Singleton;
+import java.util.Arrays;
 
 /**
  * Created by anguslean
@@ -21,7 +22,7 @@ public class JavaxInjectClassInfoFilter implements ClassInfoFilter {
      */
     @Override
     public boolean filterResourceClassInfo(ClassInfo classInfo) {
-        return classInfo.isAnnotationWith(Singleton.class, Resource.class);
+        return classInfo.isAnnotationWith(Arrays.asList(Singleton.class, Resource.class));
     }
 
 }

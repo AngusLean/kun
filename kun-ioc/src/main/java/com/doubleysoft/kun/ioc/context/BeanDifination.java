@@ -16,16 +16,27 @@ import java.util.Set;
  */
 @Slf4j
 public class BeanDifination<T> {
-    @Setter
     @Getter
-    private Class<T> klass;
+    @Setter
+    private ClassInfo<T> classInfo;
 
     private T instance;
 
     public <T> T getInstance(Set<Class> annotations, Ioc ioc) {
         if (instance == null) {
-            instance = ClassUtil.getInstance(klass, annotations, ioc);
+            instance = ClassUtil.getInstance(getKlass(), annotations, ioc);
         }
         return (T) instance;
+    }
+
+    public Class<T> getKlass() {
+        return classInfo.getKlass();
+    }
+
+    public void setKlass(Class<T> klass) {
+        if (this.classInfo == null) {
+            classInfo = new ClassInfo<>();
+        }
+        classInfo.setKlass(klass);
     }
 }

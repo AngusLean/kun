@@ -1,8 +1,10 @@
 package com.doubleysoft.kun.ioc.context;
 
 import com.doubleysoft.kun.ioc.exception.StateException;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
@@ -15,22 +17,25 @@ import java.util.List;
 @Data
 @Builder
 @Slf4j
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClassInfo<T> {
     private String className;
 
-    private Class<T> classCache;
+    private Class<T> klass;
+
 
     public Class<T> getKlass() {
-        if (classCache != null) {
-            return classCache;
+        if (klass != null) {
+            return klass;
         }
         try {
-            classCache = (Class<T>) Class.forName(className);
+            klass = (Class<T>) Class.forName(className);
         } catch (ClassNotFoundException e) {
             log.error("fail in find class of: {}", className, e);
             throw new StateException("fail in find class");
         }
-        return classCache;
+        return klass;
     }
 
     public boolean isLazyInit() {
@@ -40,7 +45,7 @@ public class ClassInfo<T> {
     public boolean isAnnotationWith(List<Class<? extends Annotation>> annotationClass) {
         ensureLoadClass();
         for (Class klass : annotationClass) {
-            if (classCache.isAnnotationPresent(klass)) {
+            if (this.klass.isAnnotationPresent(klass)) {
                 return true;
             }
         }
@@ -49,7 +54,7 @@ public class ClassInfo<T> {
 
 
     private void ensureLoadClass() {
-        if (classCache == null) {
+        if (klass == null) {
             getKlass();
         }
     }

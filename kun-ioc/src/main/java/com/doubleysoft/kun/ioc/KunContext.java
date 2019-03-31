@@ -42,7 +42,7 @@ public class KunContext extends AbstractApplicationContext {
         Iterator<ClassInfo> iterator   = classInfos.iterator();
         while (iterator.hasNext()) {
             ClassInfo classInfo = iterator.next();
-            super.addBean(classInfo.getKlass());
+            this.ioc.addBean(classInfo);
             doCreateBean(classInfo);
         }
         this.publishEvent(new ContextStartedEvent(this));

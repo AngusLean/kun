@@ -1,6 +1,7 @@
 package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface Ioc {
      * @return instance of type klass
      */
     <T> void addBean(Class<T> klass);
+
+    void addBean(ClassInfo<?> classInfo);
 
     /**
      * get a specified type of bean instance, if current instance have not created,

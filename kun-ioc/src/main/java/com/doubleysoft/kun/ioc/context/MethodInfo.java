@@ -17,15 +17,6 @@ public class MethodInfo {
 
     private final String methodName;
 
-    /*public void invoke(Object... params)  {
-        try {
-            Method method = classInfo.getKlass().getMethod(methodName);
-            method.invoke(classInfo.getClassCache())
-        } catch (NoSuchMethodException e) {
-            log.error("error in call mathod :{} of class:{}", methodName, classInfo.getClassName(), e);
-        }
-    }*/
-
     public Method getMethod() {
         try {
             Method method = classInfo.getKlass().getMethod(methodName);

@@ -41,7 +41,7 @@ public class ClassUtil {
                 .filter(row -> row.getParameterCount() == 0)
                 .findAny();
         if (!noParamConstruct.isPresent()) {
-            log.error("error in init class :{}, find many constructor but has not  annotation with :{} find",
+            log.error("error in init class :{}, find many constructor but none annotationed with :{} find",
                     klass, injectAnnotations);
             throw new StateException("error in init bean " + klass.getName());
         }

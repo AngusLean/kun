@@ -70,5 +70,4 @@ public abstract class AbstractClassPathScannerImpl implements Scanner, ClassInfo
         return results;
     }
 
-//    abstract boolean classFilter(ClassInfo classInfo);
 }
