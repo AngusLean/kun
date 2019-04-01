@@ -4,9 +4,9 @@ import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.event.RouterListener;
 import com.doubleysoft.kun.mvc.filter.ioc.JaxRsClassInfoFilter;
+import com.doubleysoft.kun.mvc.server.DefaultRequestHandler;
 import com.doubleysoft.kun.mvc.server.Router;
 import com.doubleysoft.kun.mvc.server.netty.NettyServer;
-import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
 
 /**
  * @author cupofish@gmail.com
@@ -24,9 +24,10 @@ public class KunMvcBootstrap {
 
     private static void startServer() {
         Server         server         = new NettyServer();
-        RequestProcess requestProcess = new RequestProcess();
+        DefaultRequestHandler requestHandler = new DefaultRequestHandler();
+        server.bindProcess(requestHandler);
         server.start(8080);
-        server.bindProcess(requestProcess);
+
         server.stop();
     }
 

@@ -15,7 +15,7 @@ public class Router {
         routerCache.putIfAbsent(key, methodInfo);
     }
 
-    public MethodInfo getMethodInfo(String key) {
-        return routerCache.get(key);
+    public MethodInfo getReqHandler(String reqPath) {
+        return routerCache.get(reqPath);
     }
 }

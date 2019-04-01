@@ -2,7 +2,7 @@ package com.doubleysoft.kun.mvc.server.socket;
 
 import com.doubleysoft.kun.ioc.exception.StateException;
 import com.doubleysoft.kun.mvc.Server;
-import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
+import com.doubleysoft.kun.mvc.server.RequestHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -45,11 +45,11 @@ public class BlockServer implements Server {
     }
 
     @Override
-    public void bindProcess(RequestProcess requestProcess) {
+    public void bindProcess(RequestHandler requestHandler) {
         while (true) {
             try {
                 Socket accept = serverSocket.accept();
-                requestProcess.bindSocket(new SocketWrapper(accept));
+                requestHandler.handle(null);
             } catch (IOException e) {
                 log.error("error in read data from socket", e);
             }

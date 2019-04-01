@@ -1,9 +1,10 @@
 package com.doubleysoft.kun.mvc.server.netty;
 
 import com.doubleysoft.kun.mvc.Server;
+import com.doubleysoft.kun.mvc.server.DefaultRequestHandler;
+import com.doubleysoft.kun.mvc.server.RequestHandler;
 import com.doubleysoft.kun.mvc.server.netty.handler.KunHttpNettyHandler;
 import com.doubleysoft.kun.mvc.server.netty.handler.MergeHttpRequestHandler;
-import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -33,19 +34,22 @@ public class NettyServer implements Server {
         try {
             bossGroup = new NioEventLoopGroup(1);
             workerGroup = new NioEventLoopGroup();
-            kunHttpNettyHandler = new KunHttpNettyHandler();
+            if(kunHttpNettyHandler == null){
+                kunHttpNettyHandler = new KunHttpNettyHandler(new DefaultRequestHandler());
+            }
+
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch){
                             ch.pipeline().addLast(new HttpServerCodec());
                             ch.pipeline().addLast(new HttpServerExpectContinueHandler());
                             ch.pipeline().addLast(new MergeHttpRequestHandler());
 
-                            ch.pipeline().addLast(new KunHttpNettyHandler());
+                            ch.pipeline().addLast(kunHttpNettyHandler);
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
@@ -82,7 +86,7 @@ public class NettyServer implements Server {
     }
 
     @Override
-    public void bindProcess(RequestProcess requestProcess) {
-
+    public void bindProcess(RequestHandler requestHandler) {
+        this.kunHttpNettyHandler = new KunHttpNettyHandler(requestHandler);
     }
 }

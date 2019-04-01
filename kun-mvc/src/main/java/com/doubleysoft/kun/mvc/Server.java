@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.mvc;
 
-import com.doubleysoft.kun.mvc.server.protocal.RequestProcess;
+import com.doubleysoft.kun.mvc.server.RequestHandler;
 
 /**
  * @author cupofish@gmail.com
@@ -29,7 +29,7 @@ public interface Server {
     /**
      * bing this socket to a process,sub class must call right process method
      *
-     * @param requestProcess
+     * @param requestHandler
      */
-    void bindProcess(RequestProcess requestProcess);
+    void bindProcess(RequestHandler requestHandler);
 }

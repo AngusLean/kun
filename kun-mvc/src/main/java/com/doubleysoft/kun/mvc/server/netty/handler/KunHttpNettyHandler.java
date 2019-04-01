@@ -6,12 +6,14 @@ import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.util.CharsetUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -21,13 +23,11 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  * @author cupofish@gmail.com
  * 3/23/19 15:32
  */
+@ChannelHandler.Sharable
 @Slf4j
+@RequiredArgsConstructor
 public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequest> {
-    private RequestHandler requestHandler;
-
-    public KunHttpNettyHandler() {
-        requestHandler = new DefaultRequestHandler();
-    }
+    private final RequestHandler requestHandler;
 
     @Override
     public void channelReadComplete(ChannelHandlerContext channelHandlerContext) {
