@@ -36,7 +36,6 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, KunHttpRequest httpRequest) {
-        System.out.println(httpRequest);
         if (!writeResponse(httpRequest, ctx)) {
             // If keep-alive is off, close the connection once the content is fully written.
             ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);

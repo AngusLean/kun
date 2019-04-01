@@ -28,4 +28,5 @@ public class MethodInfo {
             throw new StateException("error in get method of class" + beanDifination.getKlass());
         }
     }
+
 }

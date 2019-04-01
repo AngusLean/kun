@@ -27,7 +27,7 @@ public class KunConfig {
      *
      * @return
      */
-    static final Set<Class> getInjectAnotations() {
+    public static final Set<Class> getInjectAnnotations() {
         return anotations;
     }
 
