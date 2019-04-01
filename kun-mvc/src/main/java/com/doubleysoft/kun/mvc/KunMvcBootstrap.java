@@ -18,25 +18,26 @@ public class KunMvcBootstrap {
     }
 
     public static void boot(Class klass) {
-        startContext(klass);
-        startServer();
+        KunContext kunContext = startContext(klass);
+        startServer(kunContext);
     }
 
-    private static void startServer() {
-        Server         server         = new NettyServer();
-        DefaultRequestHandler requestHandler = new DefaultRequestHandler();
+    private static void startServer(KunContext kunContext) {
+        Server                server         = new NettyServer();
+        DefaultRequestHandler requestHandler = new DefaultRequestHandler(kunContext);
         server.bindProcess(requestHandler);
         server.start(8080);
 
         server.stop();
     }
 
-    private static void startContext(Class klass) {
+    private static KunContext startContext(Class klass) {
         KunContext kunContext = new KunContext(klass.getPackage().getName());
         Router     router     = new Router();
         kunContext.addEventListener(ContextStartedEvent.class, new RouterListener(router));
         kunContext.addClassInfoFilter(new JaxRsClassInfoFilter());
         kunContext.init();
+        return kunContext;
     }
 
 }
