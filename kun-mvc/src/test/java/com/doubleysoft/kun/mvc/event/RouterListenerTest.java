@@ -3,7 +3,8 @@ package com.doubleysoft.kun.mvc.event;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.ApplicationEventListener;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
-import com.doubleysoft.kun.mvc.server.Router;
+import com.doubleysoft.kun.mvc.server.MvcContextHolder;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.ws.rs.Path;
@@ -15,14 +16,20 @@ import javax.ws.rs.Path;
 public class RouterListenerTest {
     @Test
     public void testWebReqEventListener() {
-        Router     router  = new Router();
         KunContext context = new KunContext();
+        MvcContextHolder.init(context);
+//        Router     router  = new Router();
+
         context.addBean(RouterListenerTestKlass1.class);
         context.addBean(RouterListenerTestKlass2.class);
         ContextStartedEvent      contextStartedEvent = new ContextStartedEvent(context);
-        ApplicationEventListener listener            = new RouterListener(router);
+        ApplicationEventListener listener            = new RouterListener();
         listener.onEvent(contextStartedEvent);
-        System.out.println(router);
+        Assert.assertNotNull(MvcContextHolder.getRouter().getReqHandler("/"));
+        Assert.assertNotNull(MvcContextHolder.getRouter().getReqHandler("/").getMethod().getName().equals("index"));
+        Assert.assertNotNull(MvcContextHolder.getRouter().getReqHandler("/name"));
+        Assert.assertNotNull(MvcContextHolder.getRouter().getReqHandler("/name").getMethod().getName().equals("name"));
+
     }
 
 

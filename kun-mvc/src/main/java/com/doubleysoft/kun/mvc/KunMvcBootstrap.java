@@ -5,7 +5,7 @@ import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.event.RouterListener;
 import com.doubleysoft.kun.mvc.filter.ioc.JaxRsClassInfoFilter;
 import com.doubleysoft.kun.mvc.server.DefaultRequestHandler;
-import com.doubleysoft.kun.mvc.server.Router;
+import com.doubleysoft.kun.mvc.server.MvcContextHolder;
 import com.doubleysoft.kun.mvc.server.netty.NettyServer;
 
 /**
@@ -33,8 +33,8 @@ public class KunMvcBootstrap {
 
     private static KunContext startContext(Class klass) {
         KunContext kunContext = new KunContext(klass.getPackage().getName());
-        Router     router     = new Router();
-        kunContext.addEventListener(ContextStartedEvent.class, new RouterListener(router));
+        MvcContextHolder.init(kunContext);
+        kunContext.addEventListener(ContextStartedEvent.class, new RouterListener());
         kunContext.addClassInfoFilter(new JaxRsClassInfoFilter());
         kunContext.init();
         return kunContext;

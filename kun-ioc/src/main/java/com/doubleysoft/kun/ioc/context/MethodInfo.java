@@ -29,4 +29,12 @@ public class MethodInfo {
         }
     }
 
+    public Object execute(Object... params) {
+        try {
+            return getMethod().invoke(beanDifination.getInstance(), params);
+        } catch (Exception e) {
+            throw new StateException("fail in call method " + methodName);
+        }
+    }
+
 }

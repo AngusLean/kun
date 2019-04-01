@@ -1,7 +1,6 @@
 package com.doubleysoft.kun.mvc.server.netty;
 
 import com.doubleysoft.kun.mvc.Server;
-import com.doubleysoft.kun.mvc.server.DefaultRequestHandler;
 import com.doubleysoft.kun.mvc.server.RequestHandler;
 import com.doubleysoft.kun.mvc.server.netty.handler.KunHttpNettyHandler;
 import com.doubleysoft.kun.mvc.server.netty.handler.MergeHttpRequestHandler;
@@ -34,10 +33,6 @@ public class NettyServer implements Server {
         try {
             bossGroup = new NioEventLoopGroup(1);
             workerGroup = new NioEventLoopGroup();
-            if(kunHttpNettyHandler == null){
-                kunHttpNettyHandler = new KunHttpNettyHandler(new DefaultRequestHandler());
-            }
-
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
