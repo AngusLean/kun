@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Set;
-
 /**
  * @author anguslean
  * 18-9-6 下午10:07
@@ -46,4 +44,6 @@ public class BeanDifination<T> {
         }
         classInfo.setKlass(klass);
     }
+
+
 }

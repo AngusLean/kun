@@ -1,6 +1,5 @@
 package com.doubleysoft.kun.mvc.server;
 
-import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.ioc.exception.StateException;
 import com.doubleysoft.kun.mvc.KunMvcContext;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class DefaultRequestHandler implements RequestHandler {
-    private final KunContext kunContext;
     private static final ThreadLocal<KunMvcContext> CONTEXT_HOLDER = new ThreadLocal<>();
 
     @Override
@@ -29,8 +27,7 @@ public class DefaultRequestHandler implements RequestHandler {
             log.error("illegle request path{}", httpRequest.getReqURI());
             throw new StateException("illeage request path");
         }
-        Object result = reqMethod.execute(httpRequest.getContent());
-        response.setContent(httpRequest.getContent());
+        handle(httpRequest, response, reqMethod);
         return response;
     }
 
@@ -40,4 +37,10 @@ public class DefaultRequestHandler implements RequestHandler {
         return kunMvcContext;
     }
 
+
+    private void handle(KunHttpRequest httpRequest, KunHttpResponse httpResponse, MethodInfo handlerMethod) {
+//        response.setContent(httpRequest.getContent());
+        Object response = handlerMethod.execute(httpRequest.getContent());
+        httpResponse.setContent(response == null ? null : response.toString());
+    }
 }

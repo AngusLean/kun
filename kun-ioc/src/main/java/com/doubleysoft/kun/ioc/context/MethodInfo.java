@@ -20,13 +20,26 @@ public class MethodInfo {
     private final String methodName;
 
     public Method getMethod() {
-        try {
+        Method[] methods = beanDifination.getKlass().getMethods();
+        for (Method method : methods) {
+            if (methodName.equals(method.getName())) {
+                return method;
+            }
+        }
+        throw new StateException("error in get method of class" + beanDifination.getKlass());
+        /*try {
+            Method[] methods = beanDifination.getKlass().getMethods();
+            for(Method method : methods){
+                if(methodName.equals(method.getName())){
+                    return method;
+                }
+            }
             Method method = beanDifination.getKlass().getMethod(methodName);
             return method;
         } catch (NoSuchMethodException e) {
             log.error("error in call mathod :{} of class:{}", methodName, beanDifination.getKlass(), e);
             throw new StateException("error in get method of class" + beanDifination.getKlass());
-        }
+        }*/
     }
 
     public Object execute(Object... params) {

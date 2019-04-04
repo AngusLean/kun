@@ -24,7 +24,7 @@ public class KunMvcBootstrap {
 
     private static void startServer(KunContext kunContext) {
         Server                server         = new NettyServer();
-        DefaultRequestHandler requestHandler = new DefaultRequestHandler(kunContext);
+        DefaultRequestHandler requestHandler = new DefaultRequestHandler();
         server.bindProcess(requestHandler);
         server.start(8080);
 
