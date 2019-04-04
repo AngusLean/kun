@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.mvc.server.model;
 
-import com.doubleysoft.kun.mvc.server.netty.DefaultKunHttpRequest;
+import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
 
 /**
  * @author cupofish@gmail.com
@@ -8,6 +8,6 @@ import com.doubleysoft.kun.mvc.server.netty.DefaultKunHttpRequest;
  */
 public class HttpRequestFactory {
     public static KunHttpRequest nettyRequest(io.netty.handler.codec.http.HttpRequest nettyHttpRequest) {
-        return new DefaultKunHttpRequest(nettyHttpRequest);
+        return new NettyKunHttpRequest(nettyHttpRequest);
     }
 }

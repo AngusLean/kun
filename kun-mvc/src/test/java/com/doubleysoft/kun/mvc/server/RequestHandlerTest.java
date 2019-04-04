@@ -7,7 +7,7 @@ import com.doubleysoft.kun.ioc.context.BeanDifination;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
-import com.doubleysoft.kun.mvc.server.netty.DefaultKunHttpRequest;
+import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
@@ -43,7 +43,7 @@ public class RequestHandlerTest {
         MethodInfo methodInfo = MethodInfo.builder().beanDifination(beanDifination).methodName("index").build();
         MvcContextHolder.getRouter().addRoute(TEST_REQ_PATH, methodInfo);
 
-        KunHttpRequest httpRequest = new DefaultKunHttpRequest(new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, TEST_REQ_PATH));
+        KunHttpRequest httpRequest = new NettyKunHttpRequest(new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, TEST_REQ_PATH));
         httpRequest.appendContent(TEST_REQ_CONTENT);
         KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
         Assert.assertEquals(TEST_RESPONSE_STR + TEST_REQ_CONTENT, httpResponse.getContent());

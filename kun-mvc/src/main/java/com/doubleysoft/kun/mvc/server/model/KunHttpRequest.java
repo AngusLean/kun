@@ -1,5 +1,7 @@
 package com.doubleysoft.kun.mvc.server.model;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 /**
  * @author cupofish@gmail.com
  * 3/23/19 16:03
@@ -35,4 +37,11 @@ public interface KunHttpRequest {
     String getReqURI();
 
     String getReqURL();
+
+    /**
+     * Get all request params, include url-param in Get request and Form param in Post Request
+     *
+     * @return
+     */
+    MultivaluedMap<String, Object> getReqParams();
 }
