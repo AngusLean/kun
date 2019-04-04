@@ -1,18 +1,26 @@
 package com.doubleysoft.kun.mvc;
 
-import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
-import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
+import com.doubleysoft.kun.ioc.KunContext;
+import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
+import com.doubleysoft.kun.mvc.event.RouterListener;
+import com.doubleysoft.kun.mvc.filter.ioc.JaxRsClassInfoFilter;
+import com.doubleysoft.kun.mvc.server.MvcContextHolder;
 
 /**
  * @author cupofish@gmail.com
  * 3/23/19 17:15
  */
-public class KunMvcContext {
-    private KunHttpRequest request;
-    private KunHttpResponse response;
+public class KunMvcContext extends KunContext {
 
-    public KunMvcContext(KunHttpRequest request, KunHttpResponse response) {
-        this.request = request;
-        this.response = response;
+    public KunMvcContext(Class klass) {
+        super(klass.getName().substring(0, klass.getName().lastIndexOf(".")));
+        initMvcContext();
     }
+
+    private void initMvcContext() {
+        this.addClassInfoFilter(new JaxRsClassInfoFilter());
+        this.addEventListener(ContextStartedEvent.class, new RouterListener());
+        MvcContextHolder.init(this);
+    }
+
 }

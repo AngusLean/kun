@@ -9,5 +9,11 @@ import java.util.List;
  * 3/31/19 14:57
  */
 public interface BeanFilter {
+    /**
+     * filter beans
+     *
+     * @param beans
+     * @return
+     */
     List<BeanDifination> filterBeans(List<BeanDifination> beans);
 }

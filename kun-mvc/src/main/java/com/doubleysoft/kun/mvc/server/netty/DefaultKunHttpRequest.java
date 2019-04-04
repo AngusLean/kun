@@ -1,6 +1,7 @@
 package com.doubleysoft.kun.mvc.server.netty;
 
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpUtil;
 
 /**
@@ -32,6 +33,11 @@ public class DefaultKunHttpRequest implements KunHttpRequest {
 
     @Override
     public String getReqURI() {
+        if (HttpMethod.GET.equals(nettyRequest.method())) {
+            String uri           = nettyRequest.uri();
+            int    queryChartPos = uri.lastIndexOf("?");
+            return uri.substring(0, queryChartPos == -1 ? uri.length() : queryChartPos);
+        }
         return nettyRequest.uri();
     }
 

@@ -1,7 +1,7 @@
-package com.doubleysoft.kun.mvc.mvc;
+package com.doubleysoft.kun.mvc.mvccontext;
 
 import com.doubleysoft.kun.mvc.KunMvcBootstrap;
-import com.doubleysoft.kun.mvc.mvc.controller.IndexController;
+import com.doubleysoft.kun.mvc.mvccontext.controller.IndexController;
 import org.junit.Ignore;
 
 /**
@@ -10,10 +10,10 @@ import org.junit.Ignore;
  */
 public class KunMvcBootstrapTest {
 
+
     @Ignore
-    public void boot() {
+    public void reqPathTest() {
         KunMvcBootstrap.boot(IndexController.class);
-        System.out.println("d123123");
     }
 
 

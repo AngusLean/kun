@@ -44,8 +44,15 @@ public class MethodInfo {
 
     public Object execute(Object... params) {
         try {
+            Method method     = getMethod();
+            int    paramCount = method.getParameterCount();
+            if (params.length != paramCount) {
+                log.warn("call method :{}, request params:{}, but required param count is {}", method.getName(), params.length, paramCount);
+                return method.invoke(beanDifination.getInstance(), new Object[paramCount]);
+            }
             return getMethod().invoke(beanDifination.getInstance(), params);
         } catch (Exception e) {
+            log.error("fail in call method " + methodName, e);
             throw new StateException("fail in call method " + methodName);
         }
     }

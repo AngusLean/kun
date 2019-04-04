@@ -6,7 +6,14 @@ package com.doubleysoft.kun.ioc.exception;
  * @since 0.0.1
  */
 public class StateException extends RuntimeException {
+    private Exception e;
+
     public StateException(String message) {
         super(message);
+    }
+
+    public StateException(String message, Exception e) {
+        super(message);
+        this.e = e;
     }
 }

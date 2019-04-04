@@ -49,7 +49,7 @@ public class KunIoc implements Ioc {
     @Override
     public <T> T getBean(Class<T> klass) {
         if (container.containsKey(klass.getName())) {
-            //maybe call Ioc.getBean recycle
+            //todo maybe call Ioc.getBean recycle
             return container.get(klass.getName()).getInstance();
         }
         return null;
