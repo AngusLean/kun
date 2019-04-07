@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MultivaluedMap;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * @author cupofish@gmail.com
@@ -37,25 +40,39 @@ public class DefaultRequestHandler implements RequestHandler {
     private void handle(KunHttpRequest httpRequest, KunHttpResponse httpResponse, MethodInfo handlerMethod) {
         Method      method     = handlerMethod.getMethod();
         Parameter[] parameters = method.getParameters();
-        Object[]    reqParam   = new Object[parameters.length];
+        Object[]    callParam  = new Object[parameters.length];
 
         if (method.getParameterCount() != 0) {
             MultivaluedMap<String, Object> reqParams = httpRequest.getReqParams();
-            int                            index     = 0;
-            if (reqParams.size() != 0) {
-                for (Parameter parameter : parameters) {
-                    if (parameter.getAnnotationsByType(PathParam.class) != null) {
 
-                    }
-                    if (reqParams.containsKey(parameter.getName())) {
-                        reqParam[index] = reqParams.get(parameter.getName());
-                    }
-                    index++;
-                }
+            if (reqParams.size() != 0) {
+                setHandlerMethodParams(callParam, parameters, reqParams);
             }
         }
 
-        Object response = handlerMethod.execute(reqParam);
+        Object response = handlerMethod.execute(callParam);
         httpResponse.setContent(response == null ? null : response.toString());
+    }
+
+    private void setHandlerMethodParams(Object[] methodParams, Parameter[] parameters, MultivaluedMap<String, Object> reqParams) {
+        int index = 0;
+        for (Parameter parameter : parameters) {
+            if (parameter.getAnnotationsByType(PathParam.class) == null) {
+                continue;
+            }
+            List<Object> objects = reqParams.get(parameter.getAnnotation(PathParam.class).value());
+            if (objects == null || objects.size() <= 0) {
+                continue;
+            }
+            String param;
+            try {
+                param = URLDecoder.decode(objects.get(0).toString(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                log.error("fail in decode string : {}", objects.get(0).toString());
+                param = objects.get(0).toString();
+            }
+            methodParams[index] = param;
+        }
+        index++;
     }
 }

@@ -1,6 +1,7 @@
 package com.doubleysoft.kun.mvc.mvccontext.controller;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 /**
  * @author dongyang.yu
@@ -14,7 +15,7 @@ public class IndexController {
     }
 
     @Path("/user")
-    public String user(String name) {
+    public String user(@PathParam("name") String name) {
         return "hello " + name;
     }
 }
