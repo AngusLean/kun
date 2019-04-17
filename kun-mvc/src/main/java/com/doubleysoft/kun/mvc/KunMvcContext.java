@@ -5,6 +5,7 @@ import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.event.RouterListener;
 import com.doubleysoft.kun.mvc.filter.ioc.JaxRsClassInfoFilter;
 import com.doubleysoft.kun.mvc.server.MvcContextHolder;
+import com.doubleysoft.kun.mvc.server.Router;
 
 /**
  * @author cupofish@gmail.com
@@ -20,7 +21,7 @@ public class KunMvcContext extends KunContext {
     private void initMvcContext() {
         this.addClassInfoFilter(new JaxRsClassInfoFilter());
         this.addEventListener(ContextStartedEvent.class, new RouterListener());
-        MvcContextHolder.init(this);
+        MvcContextHolder.init(this, new Router());
     }
 
 }

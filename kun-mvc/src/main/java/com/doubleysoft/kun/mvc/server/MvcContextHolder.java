@@ -14,8 +14,8 @@ public class MvcContextHolder {
     @Getter
     private static KunContext kunContext;
 
-    public static void init(KunContext context) {
-        router = new Router();
-        kunContext = context;
+    public static void init(KunContext context, Router router) {
+        MvcContextHolder.router = router;
+        MvcContextHolder.kunContext = context;
     }
 }

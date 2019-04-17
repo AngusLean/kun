@@ -4,6 +4,7 @@ import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.ApplicationEventListener;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.server.MvcContextHolder;
+import com.doubleysoft.kun.mvc.server.Router;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class RouterListenerTest {
     @Test
     public void testWebReqEventListener() {
         KunContext context = new KunContext();
-        MvcContextHolder.init(context);
+        MvcContextHolder.init(context, new Router());
 //        Router     router  = new Router();
 
         context.addBean(RouterListenerTestKlass1.class);

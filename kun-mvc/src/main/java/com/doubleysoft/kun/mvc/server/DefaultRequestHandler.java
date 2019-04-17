@@ -38,15 +38,15 @@ public class DefaultRequestHandler implements RequestHandler {
 
 
     private void handle(KunHttpRequest httpRequest, KunHttpResponse httpResponse, MethodInfo handlerMethod) {
-        Method      method     = handlerMethod.getMethod();
-        Parameter[] parameters = method.getParameters();
-        Object[]    callParam  = new Object[parameters.length];
+        Method      method           = handlerMethod.getMethod();
+        Parameter[] methodParameters = method.getParameters();
+        Object[]    callParam        = new Object[methodParameters.length];
 
         if (method.getParameterCount() != 0) {
             MultivaluedMap<String, Object> reqParams = httpRequest.getReqParams();
 
             if (reqParams.size() != 0) {
-                setHandlerMethodParams(callParam, parameters, reqParams);
+                setHandlerMethodParams(callParam, methodParameters, reqParams);
             }
         }
 
@@ -54,9 +54,9 @@ public class DefaultRequestHandler implements RequestHandler {
         httpResponse.setContent(response == null ? null : response.toString());
     }
 
-    private void setHandlerMethodParams(Object[] methodParams, Parameter[] parameters, MultivaluedMap<String, Object> reqParams) {
+    private void setHandlerMethodParams(Object[] methodParams, Parameter[] methodParameters, MultivaluedMap<String, Object> reqParams) {
         int index = 0;
-        for (Parameter parameter : parameters) {
+        for (Parameter parameter : methodParameters) {
             if (parameter.getAnnotationsByType(PathParam.class) == null) {
                 continue;
             }

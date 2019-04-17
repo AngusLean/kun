@@ -31,7 +31,7 @@ public class RequestHandlerTest {
     @Before
     public void init() {
         kunContext = new KunContext(RequestHandlerTest.class.getName());
-        MvcContextHolder.init(kunContext);
+        MvcContextHolder.init(kunContext, new Router());
     }
 
     @Test

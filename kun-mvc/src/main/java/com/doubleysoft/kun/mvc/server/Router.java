@@ -9,8 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * 3/24/19 17:42
  */
 public class Router {
-    private ConcurrentHashMap<String, MethodInfo> routerCache = new ConcurrentHashMap<String, MethodInfo>();
+    private ConcurrentHashMap<String, MethodInfo> routerCache;
 
+    public Router() {
+        routerCache = new ConcurrentHashMap<String, MethodInfo>();
+        ;
+    }
     public void addRoute(String key, MethodInfo methodInfo) {
         routerCache.putIfAbsent(key, methodInfo);
     }
