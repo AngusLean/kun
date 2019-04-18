@@ -2,6 +2,7 @@ package com.doubleysoft.kun.mvc.server;
 
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.ioc.exception.StateException;
+import com.doubleysoft.kun.mvc.helper.AsmUtil;
 import com.doubleysoft.kun.mvc.server.model.DefaultKunHttpResponse;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
@@ -46,6 +47,7 @@ public class DefaultRequestHandler implements RequestHandler {
             MultivaluedMap<String, Object> reqParams = httpRequest.getReqParams();
 
             if (reqParams.size() != 0) {
+                String[] methodParamNames = AsmUtil.getMethodParamNames(method);
                 setHandlerMethodParams(callParam, methodParameters, reqParams);
             }
         }
