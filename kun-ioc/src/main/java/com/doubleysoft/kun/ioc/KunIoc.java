@@ -1,13 +1,13 @@
 package com.doubleysoft.kun.ioc;
 
 
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
+import com.doubleysoft.kun.ioc.exception.StateException;
+import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,7 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 0.0.1
  */
 public class KunIoc implements Ioc {
-    private final Map<String, BeanDifination<?>> container;
+    private final Map<String, BeanDefinition<?>> container;
+    private final Map<String, Object> singletonBeans;
+
+    private Set<String> onBuildingInstance;
 
     public KunIoc() {
         this(KunConfig.getDefaultPoolSize());
@@ -24,40 +27,38 @@ public class KunIoc implements Ioc {
 
     private KunIoc(int poolSize) {
         container = new ConcurrentHashMap<>(poolSize, 1);
+        singletonBeans = new HashMap<>();
+        onBuildingInstance = new HashSet<>();
     }
 
     @Override
     public <T> void addBean(Class<T> klass) {
         String simpleName = klass.getName();
         container.computeIfAbsent(simpleName, key -> {
-            BeanDifination<T> beanDifination = new BeanDifination<>(this);
+            BeanDefinition<T> beanDefinition = new BeanDefinition<>(this);
             //fuck java generic
-            beanDifination.setClassInfo((ClassInfo<T>) ClassInfo.builder().klass((Class<Object>) klass).build());
-            return beanDifination;
+            beanDefinition.setClassInfo((ClassInfo<T>) ClassInfo.builder().klass((Class<Object>) klass).build());
+            return beanDefinition;
         });
     }
 
     @Override
     public void addBean(ClassInfo<?> classInfo) {
         this.container.computeIfAbsent(classInfo.getKlass().getName(), key -> {
-            BeanDifination beanDifination = new BeanDifination(this);
-            beanDifination.setClassInfo(classInfo);
-            return beanDifination;
+            BeanDefinition beanDefinition = new BeanDefinition(this);
+            beanDefinition.setClassInfo(classInfo);
+            return beanDefinition;
         });
     }
 
     @Override
     public <T> T getBean(Class<T> klass) {
-        if (container.containsKey(klass.getName())) {
-            //todo maybe call Ioc.getBean recycle
-            return container.get(klass.getName()).getInstance();
-        }
-        return null;
+        return getBean(klass.getName(), null);
     }
 
     @Override
-    public List<BeanDifination> getBean(List<BeanFilter> beanFilters) {
-        List<BeanDifination> result = new ArrayList<>(container.values());
+    public List<BeanDefinition> getBeanDefinition(List<BeanFilter> beanFilters) {
+        List<BeanDefinition> result = new ArrayList<>(container.values());
         if (beanFilters == null || beanFilters.size() == 0) {
             return result;
         }
@@ -67,4 +68,35 @@ public class KunIoc implements Ioc {
         return result;
     }
 
+    private <T> T getBean(String name, Object... vars) {
+        if (!container.containsKey(name)) {
+            throw new StateException("bean not exist");
+        }
+        BeanDefinition<?> beanDefinition = container.get(name);
+        if (beanDefinition.isSingleton()) {
+            if (!singletonBeans.containsKey(name)) {
+                preInstanceBean(name, beanDefinition);
+                singletonBeans.put(name, doCreateBean(beanDefinition.getKlass(), vars));
+            }
+            return (T) singletonBeans.get(name);
+        } else {
+            return (T) doCreateBean(beanDefinition.getKlass(), vars);
+        }
+    }
+
+    private void preInstanceBean(String name, BeanDefinition<?> beanDefinition) {
+        if (onBuildingInstance.contains(name)) {
+            throw new StateException("circle depends of bean name: " + name);
+        }
+        onBuildingInstance.add(name);
+        for (String depend : beanDefinition.getDepends()) {
+            getBean(depend);
+        }
+        onBuildingInstance.remove(name);
+    }
+
+
+    private <T> T doCreateBean(Class<T> klass, Object... vars) {
+        return ReflectionUtil.newInstance(klass);
+    }
 }

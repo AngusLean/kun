@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.context.filter;
 
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface BeanFilter {
      * @param beans
      * @return
      */
-    List<BeanDifination> filterBeans(List<BeanDifination> beans);
+    List<BeanDefinition> filterBeans(List<BeanDefinition> beans);
 }

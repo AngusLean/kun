@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc;
 
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 
@@ -40,5 +40,5 @@ public interface Ioc {
      * @param beanFilters
      * @return
      */
-    List<BeanDifination> getBean(List<BeanFilter> beanFilters);
+    List<BeanDefinition> getBeanDefinition(List<BeanFilter> beanFilters);
 }

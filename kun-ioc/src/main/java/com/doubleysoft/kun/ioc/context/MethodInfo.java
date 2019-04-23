@@ -15,18 +15,18 @@ import java.lang.reflect.Method;
 @Slf4j
 @Builder
 public class MethodInfo {
-    private final BeanDifination beanDifination;
+    private final BeanDefinition beanDefinition;
 
     private final String methodName;
 
     public Method getMethod() {
-        Method[] methods = beanDifination.getKlass().getMethods();
+        Method[] methods = beanDefinition.getKlass().getMethods();
         for (Method method : methods) {
             if (methodName.equals(method.getName())) {
                 return method;
             }
         }
-        throw new StateException("error in get method of class" + beanDifination.getKlass());
+        throw new StateException("error in get method of class" + beanDefinition.getKlass());
     }
 
     public Object execute(Object... params) {
@@ -35,9 +35,9 @@ public class MethodInfo {
             int    paramCount = method.getParameterCount();
             if (params.length != paramCount) {
                 log.warn("call method :{}, request params:{}, but required param count is {}", method.getName(), params.length, paramCount);
-                return method.invoke(beanDifination.getInstance(), new Object[paramCount]);
+                return method.invoke(beanDefinition.getInstance(), new Object[paramCount]);
             }
-            return method.invoke(beanDifination.getInstance(), params);
+            return method.invoke(beanDefinition.getInstance(), params);
         } catch (Exception e) {
             log.error("fail in call method " + methodName, e);
             throw new StateException("fail in call method " + methodName);

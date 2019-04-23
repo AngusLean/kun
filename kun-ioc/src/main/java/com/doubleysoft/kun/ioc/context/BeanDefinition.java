@@ -8,16 +8,19 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author anguslean
  * 18-9-6 下午10:07
  * @since 0.0.1
  */
 @Slf4j
-public class BeanDifination<T> {
+public class BeanDefinition<T> {
     private Ioc ioc;
 
-    public BeanDifination(Ioc ioc){
+    public BeanDefinition(Ioc ioc) {
         this.ioc = ioc;
     }
 
@@ -45,5 +48,16 @@ public class BeanDifination<T> {
         classInfo.setKlass(klass);
     }
 
+    /**
+     * return all depends bean name
+     *
+     * @return
+     */
+    public List<String> getDepends() {
+        return Collections.EMPTY_LIST;
+    }
 
+    public boolean isSingleton() {
+        return true;
+    }
 }

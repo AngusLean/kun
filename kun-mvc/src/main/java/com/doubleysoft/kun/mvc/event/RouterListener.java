@@ -2,7 +2,7 @@ package com.doubleysoft.kun.mvc.event;
 
 import com.doubleysoft.kun.ioc.context.ApplicationContext;
 import com.doubleysoft.kun.ioc.context.ApplicationEventListener;
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.MvcContants;
@@ -24,16 +24,16 @@ public class RouterListener implements ApplicationEventListener<ContextStartedEv
     @Override
     public void onEvent(ContextStartedEvent event) {
         ApplicationContext   context = event.getApplicationContext();
-        List<BeanDifination> beans   = context.getBeans(MvcContants.getWebRequestBeanFilters());
-        for (BeanDifination beanDifination : beans) {
-            Class klass = beanDifination.getKlass();
+        List<BeanDefinition> beans   = context.getBeans(MvcContants.getWebRequestBeanFilters());
+        for (BeanDefinition beanDefinition : beans) {
+            Class klass = beanDefinition.getKlass();
             Arrays.stream(klass.getMethods())
                     .filter(row -> row.isAnnotationPresent(Path.class))
                     .forEach(row -> {
                         Path   annotation = row.getAnnotation(Path.class);
                         String value      = annotation.value();
                         MvcContextHolder.getRouter().addRoute(value, MethodInfo.builder()
-                                .beanDifination(beanDifination).methodName(row.getName()).build());
+                                .beanDefinition(beanDefinition).methodName(row.getName()).build());
                     });
         }
         log.info("all mvc mapping beans:{}", beans);

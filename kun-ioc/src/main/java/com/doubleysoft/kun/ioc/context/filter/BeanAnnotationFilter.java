@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.context.filter;
 
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.exception.Assert;
 
 import java.lang.annotation.Annotation;
@@ -18,7 +18,7 @@ public class BeanAnnotationFilter extends AbstractAnnotationFilter {
     }
 
     @Override
-    public List<BeanDifination> filterBeans(List<BeanDifination> beans) {
+    public List<BeanDefinition> filterBeans(List<BeanDefinition> beans) {
         Assert.notNull(beans);
         return beans.stream()
                 .filter(row ->

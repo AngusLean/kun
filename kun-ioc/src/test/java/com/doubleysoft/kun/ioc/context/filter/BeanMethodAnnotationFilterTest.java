@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.context.filter;
 
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,14 +18,14 @@ public class BeanMethodAnnotationFilterTest {
     @Test
     public void filterBeans() throws ClassNotFoundException {
         BeanMethodAnnotationFilter filter          = new BeanMethodAnnotationFilter(Arrays.asList(Inject.class), true);
-        List<BeanDifination>       beanDifinations = new ArrayList<>();
+        List<BeanDefinition>       beanDefinitions = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
-            BeanDifination beanDifination = new BeanDifination(null);
-            beanDifination.setKlass(Class.forName(this.getClass().getName() + "$BeanMethodAnnotationFilterTestClass" + i));
-            beanDifinations.add(beanDifination);
+            BeanDefinition beanDefinition = new BeanDefinition(null);
+            beanDefinition.setKlass(Class.forName(this.getClass().getName() + "$BeanMethodAnnotationFilterTestClass" + i));
+            beanDefinitions.add(beanDefinition);
         }
 
-        List<BeanDifination> result = filter.filterBeans(beanDifinations);
+        List<BeanDefinition> result = filter.filterBeans(beanDefinitions);
         Assert.assertEquals(result.size(), 1);
         Assert.assertEquals(result.get(0).getKlass(), BeanMethodAnnotationFilterTest.BeanMethodAnnotationFilterTestClass1.class);
     }

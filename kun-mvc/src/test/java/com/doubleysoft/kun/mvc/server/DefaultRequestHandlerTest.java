@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.mvc.server;
 
 import com.doubleysoft.kun.ioc.KunContext;
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
@@ -30,11 +30,11 @@ public class DefaultRequestHandlerTest {
 
     @Test
     public void handle() {
-        BeanDifination beanDifination = new BeanDifination(null);
-        beanDifination.setKlass(DefaultRequestHandlerTestDemo.class);
+        BeanDefinition beanDefinition = new BeanDefinition(null);
+        beanDefinition.setKlass(DefaultRequestHandlerTestDemo.class);
 
         MethodInfo methodInfo = MethodInfo.builder()
-                .beanDifination(beanDifination)
+                .beanDefinition(beanDefinition)
                 .methodName("hello")
                 .build();
 

@@ -32,5 +32,5 @@ public interface ApplicationContext {
      * @param beanFilters
      * @return
      */
-    List<BeanDifination> getBeans(List<BeanFilter> beanFilters);
+    List<BeanDefinition> getBeans(List<BeanFilter> beanFilters);
 }

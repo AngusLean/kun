@@ -3,7 +3,7 @@ package com.doubleysoft.kun.mvc.server;
 import com.doubleysoft.kun.ioc.Ioc;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.KunIoc;
-import com.doubleysoft.kun.ioc.context.BeanDifination;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
@@ -38,9 +38,9 @@ public class RequestHandlerTest {
     public void handle() {
         RequestHandler requestHandler = new DefaultRequestHandler();
         Ioc            ioc            = new KunIoc();
-        BeanDifination beanDifination = new BeanDifination(ioc);
-        beanDifination.setKlass(RequestHandlerTestController.class);
-        MethodInfo methodInfo = MethodInfo.builder().beanDifination(beanDifination).methodName("index").build();
+        BeanDefinition beanDefinition = new BeanDefinition(ioc);
+        beanDefinition.setKlass(RequestHandlerTestController.class);
+        MethodInfo methodInfo = MethodInfo.builder().beanDefinition(beanDefinition).methodName("index").build();
         MvcContextHolder.getRouter().addRoute(TEST_REQ_PATH, methodInfo);
 
         KunHttpRequest httpRequest = new NettyKunHttpRequest(new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, TEST_REQ_PATH));
