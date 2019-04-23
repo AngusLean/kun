@@ -42,6 +42,11 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     @Override
+    public <T> T getBean(String name) {
+        return this.ioc.getBean(name);
+    }
+
+    @Override
     public List<BeanDefinition> getBeans(List<BeanFilter> beanFilters) {
         return ioc.getBeanDefinition(beanFilters);
     }

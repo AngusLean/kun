@@ -25,6 +25,8 @@ public interface ApplicationContext {
      */
     <T> T getBean(Class<T> klass);
 
+    <T> T getBean(String name);
+
 
     /**
      * get bean which has annotation

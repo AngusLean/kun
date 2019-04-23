@@ -34,6 +34,8 @@ public interface Ioc {
      */
     <T> T getBean(Class<T> klass);
 
+    <T> T getBean(String name, Object... vars);
+
     /**
      * get bean filter with beanFilter interface
      *

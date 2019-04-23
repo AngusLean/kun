@@ -3,6 +3,7 @@ package com.doubleysoft.kun.mvc.server;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
+import com.doubleysoft.kun.mvc.KunMvcContext;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +43,8 @@ public class DefaultRequestHandlerTest {
         Router router = new Router();
         Router spy    = Mockito.spy(router);
 
-        KunContext kunContext = Mockito.mock(KunContext.class);
+        KunContext kunContext = Mockito.mock(KunMvcContext.class);
+        when(kunContext.getBean(anyString())).thenReturn(new DefaultRequestHandlerTestDemo());
         MvcContextHolder.init(kunContext, spy);
 
         doReturn(methodInfo).when(spy).getReqHandler(any());
@@ -53,7 +56,7 @@ public class DefaultRequestHandlerTest {
         KunHttpResponse response     = requestHandler.handle(httpRequest);
     }
 
-    private class DefaultRequestHandlerTestDemo {
+    public class DefaultRequestHandlerTestDemo {
         public String hello(String name, int age) {
             return name;
         }

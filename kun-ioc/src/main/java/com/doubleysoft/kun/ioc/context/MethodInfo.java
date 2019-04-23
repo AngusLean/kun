@@ -29,15 +29,15 @@ public class MethodInfo {
         throw new StateException("error in get method of class" + beanDefinition.getKlass());
     }
 
-    public Object execute(Object... params) {
+    public Object execute(Object target, Object... params) {
         try {
             Method method     = getMethod();
             int    paramCount = method.getParameterCount();
             if (params.length != paramCount) {
                 log.warn("call method :{}, request params:{}, but required param count is {}", method.getName(), params.length, paramCount);
-                return method.invoke(beanDefinition.getInstance(), new Object[paramCount]);
+                return method.invoke(target, new Object[paramCount]);
             }
-            return method.invoke(beanDefinition.getInstance(), params);
+            return method.invoke(target, params);
         } catch (Exception e) {
             log.error("fail in call method " + methodName, e);
             throw new StateException("fail in call method " + methodName);
@@ -46,6 +46,10 @@ public class MethodInfo {
 
     public boolean isDecodeReqParam() {
         return true;
+    }
+
+    public String getBeanName() {
+        return beanDefinition.getClassInfo().getClassName();
     }
 
 }

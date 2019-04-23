@@ -68,7 +68,8 @@ public class KunIoc implements Ioc {
         return result;
     }
 
-    private <T> T getBean(String name, Object... vars) {
+    @Override
+    public <T> T getBean(String name, Object... vars) {
         if (!container.containsKey(name)) {
             throw new StateException("bean not exist");
         }
