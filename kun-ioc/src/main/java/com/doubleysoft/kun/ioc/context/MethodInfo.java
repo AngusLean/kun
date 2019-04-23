@@ -37,11 +37,15 @@ public class MethodInfo {
                 log.warn("call method :{}, request params:{}, but required param count is {}", method.getName(), params.length, paramCount);
                 return method.invoke(beanDifination.getInstance(), new Object[paramCount]);
             }
-            return getMethod().invoke(beanDifination.getInstance(), params);
+            return method.invoke(beanDifination.getInstance(), params);
         } catch (Exception e) {
             log.error("fail in call method " + methodName, e);
             throw new StateException("fail in call method " + methodName);
         }
+    }
+
+    public boolean isDecodeReqParam() {
+        return true;
     }
 
 }
