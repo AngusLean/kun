@@ -23,21 +23,36 @@ public class MethodUtil {
     }
 
     public static Object extractParam(Parameter parameter, Object value) {
-        if (parameter.getType() == Boolean.TYPE) {
+        Class<?> type = parameter.getType();
+        if ("".equals(value)) {
+            if (type.equals(String.class)) {
+                return value;
+            }
+            if (type.equals(int.class) || type.equals(double.class) ||
+                    type.equals(short.class) || type.equals(long.class) ||
+                    type.equals(byte.class) || type.equals(float.class)) {
+                return 0;
+            }
+            if (type.equals(boolean.class)) {
+                return false;
+            }
+            return null;
+        }
+        if (type == Boolean.TYPE) {
             return Boolean.valueOf(value.toString());
-        } else if (parameter.getType() == Integer.TYPE) {
+        } else if (type == Integer.TYPE) {
             return Integer.valueOf(value.toString());
-        } else if (parameter.getType() == Float.TYPE) {
+        } else if (type == Float.TYPE) {
             return Float.valueOf(value.toString());
-        } else if (parameter.getType() == Double.TYPE) {
+        } else if (type == Double.TYPE) {
             return Double.valueOf(value.toString());
-        } else if (parameter.getType() == Byte.TYPE) {
+        } else if (type == Byte.TYPE) {
             return Byte.valueOf(value.toString());
-        } else if (parameter.getType() == Short.TYPE) {
+        } else if (type == Short.TYPE) {
             return Short.valueOf(value.toString());
-        } else if (parameter.getType() == Long.TYPE) {
+        } else if (type == Long.TYPE) {
             return Long.valueOf(value.toString());
-        } else if (parameter.getType() == String.class) {
+        } else if (type == String.class) {
             return value.toString();
         }
         return value;
