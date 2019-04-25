@@ -35,7 +35,7 @@ public class KunIoc implements Ioc {
     public <T> void addBean(Class<T> klass) {
         String simpleName = klass.getName();
         container.computeIfAbsent(simpleName, key -> {
-            BeanDefinition<T> beanDefinition = new BeanDefinition<>(this);
+            BeanDefinition<T> beanDefinition = new BeanDefinition<>();
             //fuck java generic
             beanDefinition.setClassInfo((ClassInfo<T>) ClassInfo.builder().klass((Class<Object>) klass).build());
             return beanDefinition;
@@ -45,7 +45,7 @@ public class KunIoc implements Ioc {
     @Override
     public void addBean(ClassInfo<?> classInfo) {
         this.container.computeIfAbsent(classInfo.getKlass().getName(), key -> {
-            BeanDefinition beanDefinition = new BeanDefinition(this);
+            BeanDefinition beanDefinition = new BeanDefinition();
             beanDefinition.setClassInfo(classInfo);
             return beanDefinition;
         });

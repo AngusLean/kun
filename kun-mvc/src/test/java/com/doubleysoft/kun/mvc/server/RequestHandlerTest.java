@@ -38,7 +38,7 @@ public class RequestHandlerTest {
     public void handle() {
         RequestHandler requestHandler = new DefaultRequestHandler();
         Ioc            ioc            = new KunIoc();
-        BeanDefinition beanDefinition = new BeanDefinition(ioc);
+        BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setKlass(RequestHandlerTestController.class);
         MethodInfo methodInfo = MethodInfo.builder().beanDefinition(beanDefinition).methodName("index").build();
         MvcContextHolder.getRouter().addRoute(TEST_REQ_PATH, methodInfo);

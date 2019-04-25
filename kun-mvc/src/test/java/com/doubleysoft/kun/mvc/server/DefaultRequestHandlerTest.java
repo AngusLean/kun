@@ -32,7 +32,7 @@ public class DefaultRequestHandlerTest {
 
     @Test
     public void handle() {
-        BeanDefinition beanDefinition = new BeanDefinition(null);
+        BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setKlass(DefaultRequestHandlerTestDemo.class);
 
         MethodInfo methodInfo = MethodInfo.builder()

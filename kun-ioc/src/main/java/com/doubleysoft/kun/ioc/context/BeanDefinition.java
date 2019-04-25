@@ -1,7 +1,6 @@
 package com.doubleysoft.kun.ioc.context;
 
 
-import com.doubleysoft.kun.ioc.Ioc;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,24 +15,10 @@ import java.util.List;
  */
 @Slf4j
 public class BeanDefinition<T> {
-    private Ioc ioc;
-
-    public BeanDefinition(Ioc ioc) {
-        this.ioc = ioc;
-    }
 
     @Getter
     @Setter
     private ClassInfo<T> classInfo;
-
-    private T instance;
-
-/*    public <T> T getInstance() {
-        if (instance == null) {
-            instance = ClassUtil.getInstance(getKlass(), KunConfig.getInjectAnnotations(), ioc);
-        }
-        return (T) instance;
-    }*/
 
     public Class<T> getKlass() {
         return classInfo.getKlass();
