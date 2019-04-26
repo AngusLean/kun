@@ -82,7 +82,9 @@ public class KunIoc implements Ioc {
         if (beanDefinition.isSingleton()) {
             if (!singletonBeans.containsKey(name)) {
                 preInstantiationBean(name, beanDefinition);
-                singletonBeans.put(name, doCreateBean(beanDefinition.getKlass(), vars));
+                Object bean = doCreateBean(beanDefinition.getKlass(), vars);
+                singletonBeans.put(name, bean);
+                afterInstantiationBean(name, bean, beanDefinition);
             }
             return (T) singletonBeans.get(name);
         } else {
@@ -92,7 +94,7 @@ public class KunIoc implements Ioc {
 
     private void preInstantiationBean(String name, BeanDefinition<?> beanDefinition) {
         if (onBuildingInstance.contains(name)) {
-            throw new StateException("circle depends of bean name: " + name);
+            throw new StateException("cycle depends of bean name: " + name);
         }
         onBuildingInstance.add(name);
         for (String depend : beanDefinition.getDepends()) {
