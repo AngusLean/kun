@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author anguslean
@@ -20,6 +20,12 @@ public class BeanDefinition<T> {
     @Setter
     private ClassInfo<T> classInfo;
 
+    private Set<String> dependsBeanName;
+
+    public BeanDefinition() {
+        dependsBeanName = new HashSet<>();
+    }
+
     public Class<T> getKlass() {
         return classInfo.getKlass();
     }
@@ -31,13 +37,18 @@ public class BeanDefinition<T> {
         classInfo.setKlass(klass);
     }
 
+
     /**
      * return all depends bean name
      *
      * @return
      */
-    public List<String> getDepends() {
-        return Collections.EMPTY_LIST;
+    public Set<String> getDepends() {
+        return dependsBeanName;
+    }
+
+    public void addDepend(String beanName) {
+        this.dependsBeanName.add(beanName);
     }
 
     public boolean isSingleton() {

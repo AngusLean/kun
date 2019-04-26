@@ -28,7 +28,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext, 
     private ApplicationEventRegister applicationEventRegister;
 
     public AbstractApplicationContext() {
-        this.ioc = new KunIoc();
+        this.ioc = new KunIoc(null);
         DefaultApplicationEventManager eventManager = new DefaultApplicationEventManager();
         this.applicationEventDispatch = eventManager;
         this.applicationEventRegister = eventManager;

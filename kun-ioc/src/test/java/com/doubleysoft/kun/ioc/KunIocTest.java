@@ -23,7 +23,7 @@ public class KunIocTest {
 
     @Before
     public void setUp() {
-        ioc = new KunIoc();
+        ioc = new KunIoc(null);
     }
 
     @Test
@@ -71,6 +71,11 @@ public class KunIocTest {
         Assert.assertEquals(ioc.getBeanDefinition(Arrays.asList(annotationFilter)).get(0).getKlass(), BeanFilterTestKlass.class);
     }
 
+    @Test
+    public void testCycleDepends() {
+//        ioc.addBean();
+    }
+
     @Getter
     @Setter
     public static class TestKlass {
@@ -87,6 +92,16 @@ public class KunIocTest {
 
     @Singleton
     private static class BeanFilterTestKlass {
+
+    }
+
+    @Singleton
+    private static class CiycleKlass1 {
+
+    }
+
+    @Singleton
+    private static class CiycleKlass2 {
 
     }
 }

@@ -20,7 +20,7 @@ public class BeanMethodAnnotationFilterTest {
         BeanMethodAnnotationFilter filter          = new BeanMethodAnnotationFilter(Arrays.asList(Inject.class), true);
         List<BeanDefinition>       beanDefinitions = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
-            BeanDefinition beanDefinition = new BeanDefinition(null);
+            BeanDefinition beanDefinition = new BeanDefinition();
             beanDefinition.setKlass(Class.forName(this.getClass().getName() + "$BeanMethodAnnotationFilterTestClass" + i));
             beanDefinitions.add(beanDefinition);
         }

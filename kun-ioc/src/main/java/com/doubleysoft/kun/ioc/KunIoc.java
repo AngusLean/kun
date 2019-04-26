@@ -100,7 +100,7 @@ public class KunIoc implements Ioc {
         for (String depend : beanDefinition.getDepends()) {
             getBean(depend);
         }
-        if (beanDefinition != null) {
+        if (beanRegistry != null) {
             this.beanRegistry.beforeBeanCreate(name, beanDefinition);
         }
     }
@@ -108,7 +108,7 @@ public class KunIoc implements Ioc {
     private void afterInstantiationBean(String name, Object bean, BeanDefinition<?> beanDefinition) {
         onBuildingInstance.remove(name);
 
-        if (beanDefinition != null) {
+        if (beanRegistry != null) {
             this.beanRegistry.afterBeanCreate(name, bean, beanDefinition);
         }
 
