@@ -2,8 +2,6 @@ package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.AbstractApplicationContext;
 import com.doubleysoft.kun.ioc.context.ClassInfo;
-import com.doubleysoft.kun.ioc.context.event.bean.BeanAfterConstructEvent;
-import com.doubleysoft.kun.ioc.context.event.bean.BeanBeforeConstructEvent;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
 import com.doubleysoft.kun.ioc.scanner.DefaultClassPathScannerImpl;
@@ -32,7 +30,6 @@ public class KunContext extends AbstractApplicationContext {
     }
 
     public KunContext(String packages) {
-        super(new KunIoc());
         this.scanner = new DefaultClassPathScannerImpl();
         this.packages = packages;
     }
@@ -43,21 +40,12 @@ public class KunContext extends AbstractApplicationContext {
         while (iterator.hasNext()) {
             ClassInfo classInfo = iterator.next();
             this.ioc.addBean(classInfo);
-            doCreateBean(classInfo);
         }
         this.publishEvent(new ContextStartedEvent(this));
     }
 
     public void addClassInfoFilter(ClassInfoFilter classInfoFilter) {
         this.scanner.addClassInfoFilter(classInfoFilter);
-    }
-
-    private void doCreateBean(ClassInfo classInfo) {
-        if (KunConfig.isCreateBeanOnInit() && !classInfo.isLazyInit()) {
-            this.publishEvent(new BeanBeforeConstructEvent(classInfo.getKlass().getSimpleName(), this));
-            this.getBean(classInfo.getKlass());
-            this.publishEvent(new BeanAfterConstructEvent(classInfo.getKlass().getSimpleName(), this));
-        }
     }
 
 

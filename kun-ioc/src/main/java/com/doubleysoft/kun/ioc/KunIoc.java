@@ -2,6 +2,7 @@ package com.doubleysoft.kun.ioc;
 
 
 import com.doubleysoft.kun.ioc.context.BeanDefinition;
+import com.doubleysoft.kun.ioc.context.BeanRegistry;
 import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 import com.doubleysoft.kun.ioc.exception.StateException;
@@ -21,14 +22,18 @@ public class KunIoc implements Ioc {
 
     private Set<String> onBuildingInstance;
 
-    public KunIoc() {
-        this(KunConfig.getDefaultPoolSize());
+    private BeanRegistry beanRegistry;
+
+    public KunIoc(BeanRegistry beanRegistry) {
+        this(KunConfig.getDefaultPoolSize(), beanRegistry);
+
     }
 
-    private KunIoc(int poolSize) {
+    private KunIoc(int poolSize, BeanRegistry beanRegistry) {
         container = new ConcurrentHashMap<>(poolSize, 1);
         singletonBeans = new HashMap<>();
         onBuildingInstance = new HashSet<>();
+        this.beanRegistry = beanRegistry;
     }
 
     @Override
@@ -76,7 +81,7 @@ public class KunIoc implements Ioc {
         BeanDefinition<?> beanDefinition = container.get(name);
         if (beanDefinition.isSingleton()) {
             if (!singletonBeans.containsKey(name)) {
-                preInstanceBean(name, beanDefinition);
+                preInstantiationBean(name, beanDefinition);
                 singletonBeans.put(name, doCreateBean(beanDefinition.getKlass(), vars));
             }
             return (T) singletonBeans.get(name);
@@ -85,7 +90,7 @@ public class KunIoc implements Ioc {
         }
     }
 
-    private void preInstanceBean(String name, BeanDefinition<?> beanDefinition) {
+    private void preInstantiationBean(String name, BeanDefinition<?> beanDefinition) {
         if (onBuildingInstance.contains(name)) {
             throw new StateException("circle depends of bean name: " + name);
         }
@@ -93,7 +98,18 @@ public class KunIoc implements Ioc {
         for (String depend : beanDefinition.getDepends()) {
             getBean(depend);
         }
+        if (beanDefinition != null) {
+            this.beanRegistry.beforeBeanCreate(name, beanDefinition);
+        }
+    }
+
+    private void afterInstantiationBean(String name, Object bean, BeanDefinition<?> beanDefinition) {
         onBuildingInstance.remove(name);
+
+        if (beanDefinition != null) {
+            this.beanRegistry.afterBeanCreate(name, bean, beanDefinition);
+        }
+
     }
 
 

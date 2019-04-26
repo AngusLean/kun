@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by anguslean
  * 18-9-9 下午5:29
+ * Used in scan class from class path, and in Ioc interface generate a BeanDefinition instance
  */
 @Data
 @Builder
@@ -36,10 +37,6 @@ public class ClassInfo<T> {
             throw new StateException("fail in find class");
         }
         return klass;
-    }
-
-    public boolean isLazyInit() {
-        return false;
     }
 
     public boolean isAnnotationWith(List<Class<? extends Annotation>> annotationClass) {

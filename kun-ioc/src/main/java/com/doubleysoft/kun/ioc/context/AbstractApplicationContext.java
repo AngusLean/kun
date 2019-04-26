@@ -1,9 +1,12 @@
 package com.doubleysoft.kun.ioc.context;
 
 import com.doubleysoft.kun.ioc.Ioc;
+import com.doubleysoft.kun.ioc.KunIoc;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventDispatch;
 import com.doubleysoft.kun.ioc.context.event.ApplicationEventRegister;
 import com.doubleysoft.kun.ioc.context.event.DefaultApplicationEventManager;
+import com.doubleysoft.kun.ioc.context.event.bean.BeanAfterCreateEvent;
+import com.doubleysoft.kun.ioc.context.event.bean.BeanBeforeCreateEvent;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.List;
  * Created by anguslean
  * 18-9-23 下午5:33
  */
-public abstract class AbstractApplicationContext implements ApplicationContext {
+public abstract class AbstractApplicationContext implements ApplicationContext, BeanRegistry {
     /**
      * ioc container
      */
@@ -24,8 +27,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     private ApplicationEventDispatch applicationEventDispatch;
     private ApplicationEventRegister applicationEventRegister;
 
-    public AbstractApplicationContext(Ioc ioc) {
-        this.ioc = ioc;
+    public AbstractApplicationContext() {
+        this.ioc = new KunIoc();
         DefaultApplicationEventManager eventManager = new DefaultApplicationEventManager();
         this.applicationEventDispatch = eventManager;
         this.applicationEventRegister = eventManager;
@@ -49,6 +52,21 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     @Override
     public List<BeanDefinition> getBeans(List<BeanFilter> beanFilters) {
         return ioc.getBeanDefinition(beanFilters);
+    }
+
+    @Override
+    public void registerBean(String beanName, Object bean) {
+
+    }
+
+    @Override
+    public void beforeBeanCreate(String beanName, BeanDefinition<?> beanDefinition) {
+        this.publishEvent(new BeanBeforeCreateEvent(beanName, this));
+    }
+
+    @Override
+    public void afterBeanCreate(String beanName, Object bean, BeanDefinition<?> beanDefinition) {
+        this.publishEvent(new BeanAfterCreateEvent(beanName, this));
     }
 
     public void publishEvent(ApplicationEvent event) {

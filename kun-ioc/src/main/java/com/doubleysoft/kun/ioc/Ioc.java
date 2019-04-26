@@ -22,6 +22,11 @@ public interface Ioc {
      */
     <T> void addBean(Class<T> klass);
 
+    /**
+     * add a Bean By ClassInfo
+     *
+     * @param classInfo
+     */
     void addBean(ClassInfo<?> classInfo);
 
     /**
