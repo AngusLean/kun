@@ -19,9 +19,9 @@ public class AfterCreateBeanDefinitionProcessorTest {
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setKlass(AfterCreateBeanDefinitionProcessorTest1.class);
         Set<Class<? extends Annotation>> injectAnnotations = new HashSet<>();
-//        injectAnnotations.add(Inject.class);
-//        AfterCreateBeanDefinitionProcessor processor = new AfterCreateBeanDefinitionProcessor();
-//        processor.proccess(beanDefinition);
+        injectAnnotations.add(Inject.class);
+        AfterCreateBeanDefinitionProcessor processor = new AfterCreateBeanDefinitionProcessor(injectAnnotations);
+        processor.proccess(beanDefinition);
     }
 
     public class AfterCreateBeanDefinitionProcessorTest1 {

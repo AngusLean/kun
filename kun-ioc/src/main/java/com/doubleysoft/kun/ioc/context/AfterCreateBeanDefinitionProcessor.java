@@ -10,20 +10,20 @@ import java.util.Set;
  * @email dongyang.yu@anxincloud.com
  */
 public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcessor {
-    private Set<Annotation> injectFieldAnnotations;
+    private Set<Class<? extends Annotation>> injectAnnotations;
 
-    public AfterCreateBeanDefinitionProcessor(Set<Annotation> annotations) {
-        injectFieldAnnotations = annotations;
+    public AfterCreateBeanDefinitionProcessor(Set<Class<? extends Annotation>> annotations) {
+        injectAnnotations = annotations;
     }
 
     @Override
     public void proccess(BeanDefinition<?> beanDefinition) {
         Class<?> klass       = beanDefinition.getKlass();
-        Field[]  klassFields = klass.getFields();
+        Field[]  klassFields = klass.getDeclaredFields();
         for (Field field : klassFields) {
             if (field.getAnnotations().length != 0) {
-                injectFieldAnnotations.stream()
-                        .filter(row -> field.getAnnotation(row.annotationType()) != null)
+                injectAnnotations.stream()
+                        .filter(row -> field.getAnnotation(row) != null)
                         .findAny()
                         .ifPresent(row -> beanDefinition.addDepend(field.getName()));
             }
@@ -32,7 +32,13 @@ public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcess
         Method[] klassMethods = klass.getMethods();
         for (Method method : klassMethods) {
             if (method.getAnnotations().length != 0) {
-
+                injectAnnotations.stream()
+                        .filter(row -> method.getAnnotation(row) != null)
+                        .findAny()
+                        .ifPresent(row -> {
+                            method.getParameters();
+                            beanDefinition.addDepend(method.getName());
+                        });
             }
         }
 
