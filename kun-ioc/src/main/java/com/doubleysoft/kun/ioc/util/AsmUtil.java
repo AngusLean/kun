@@ -3,6 +3,8 @@ package com.doubleysoft.kun.ioc.util;
 import org.objectweb.asm.*;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -17,7 +19,8 @@ public class AsmUtil {
     /**
      * Cached method names
      */
-    private static final Map<Method, String[]> METHOD_NAMES_POOL = new ConcurrentHashMap<>(64);
+    private static final Map<Method, String[]>      METHOD_NAMES_POOL          = new ConcurrentHashMap<>(64);
+    private static final Map<Constructor, String[]> CONSTRUCTOR_MAP_NAMES_POOL = new ConcurrentHashMap<>(64);
 
     public static String[] getMethodParamNames(final Method m) {
         if (METHOD_NAMES_POOL.containsKey(m)) {
@@ -41,6 +44,39 @@ public class AsmUtil {
         } catch (IOException e) {
             return null;
         }
+        asmGetParamNames(m, paramNames, cr);
+        METHOD_NAMES_POOL.put(m, paramNames);
+        return paramNames;
+    }
+
+    public static String[] getMethodParamNames(final Constructor m) {
+        if (CONSTRUCTOR_MAP_NAMES_POOL.containsKey(m)) {
+            return CONSTRUCTOR_MAP_NAMES_POOL.get(m);
+        }
+        int            paramLength = m.getParameterTypes().length;
+        final String[] paramNames  = new String[paramLength];
+
+        if (paramLength > 0 && m.getParameters()[0].isNamePresent()) {
+            for (int i = 0; i < paramLength; i++) {
+                paramNames[i] = m.getParameters()[i].getName();
+            }
+            CONSTRUCTOR_MAP_NAMES_POOL.put(m, paramNames);
+            return paramNames;
+        }
+
+        final String n = m.getDeclaringClass().getName();
+        ClassReader  cr;
+        try {
+            cr = new ClassReader(n);
+        } catch (IOException e) {
+            return null;
+        }
+        asmGetParamNames(m, paramNames, cr);
+        CONSTRUCTOR_MAP_NAMES_POOL.put(m, paramNames);
+        return paramNames;
+    }
+
+    private static void asmGetParamNames(Executable m, String[] paramNames, ClassReader cr) {
         cr.accept(new ClassVisitor(Opcodes.ASM5) {
             @Override
             public MethodVisitor visitMethod(final int access, final String name, final String desc, final String signature, final String[] exceptions) {
@@ -67,9 +103,8 @@ public class AsmUtil {
                 };
             }
         }, 0);
-        METHOD_NAMES_POOL.put(m, paramNames);
-        return paramNames;
     }
+
 
     private static boolean sameType(Type[] types, Class<?>[] classes) {
         if (types.length != classes.length) {

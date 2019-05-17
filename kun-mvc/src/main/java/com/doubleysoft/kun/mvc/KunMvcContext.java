@@ -13,8 +13,8 @@ import com.doubleysoft.kun.mvc.server.Router;
  */
 public class KunMvcContext extends KunContext {
 
-    public KunMvcContext(Class klass) {
-        super(klass.getName().substring(0, klass.getName().lastIndexOf(".")));
+    public KunMvcContext(Class clazz) {
+        super(clazz.getName().substring(0, clazz.getName().lastIndexOf(".")));
         initMvcContext();
     }
 

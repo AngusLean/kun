@@ -26,8 +26,8 @@ public class RouterListener implements ApplicationEventListener<ContextStartedEv
         ApplicationContext   context = event.getApplicationContext();
         List<BeanDefinition> beans   = context.getBeans(MvcContants.getWebRequestBeanFilters());
         for (BeanDefinition beanDefinition : beans) {
-            Class klass = beanDefinition.getKlass();
-            Arrays.stream(klass.getMethods())
+            Class clazz = beanDefinition.getKlass();
+            Arrays.stream(clazz.getMethods())
                     .filter(row -> row.isAnnotationPresent(Path.class))
                     .forEach(row -> {
                         Path   annotation = row.getAnnotation(Path.class);

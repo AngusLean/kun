@@ -35,13 +35,13 @@ public abstract class AbstractApplicationContext implements ApplicationContext, 
     }
 
     @Override
-    public void addBean(Class<?> klass) {
-        this.ioc.addBean(klass);
+    public void addBean(Class<?> clazz) {
+        this.ioc.addBean(clazz);
     }
 
     @Override
-    public <T> T getBean(Class<T> klass) {
-        return this.ioc.getBean(klass);
+    public <T> T getBean(Class<T> clazz) {
+        return this.ioc.getBean(clazz);
     }
 
     @Override

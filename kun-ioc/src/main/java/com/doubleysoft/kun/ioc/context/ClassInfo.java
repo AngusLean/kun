@@ -23,26 +23,26 @@ import java.util.List;
 public class ClassInfo<T> {
     private String className;
 
-    private Class<T> klass;
+    private Class<T> clazz;
 
 
-    public Class<T> getKlass() {
-        if (klass != null) {
-            return klass;
+    public Class<T> getKlazz() {
+        if (clazz != null) {
+            return clazz;
         }
         try {
-            klass = (Class<T>) Class.forName(className);
+            clazz = (Class<T>) Class.forName(className);
         } catch (ClassNotFoundException e) {
             log.error("fail in find class of: {}", className, e);
             throw new StateException("fail in find class");
         }
-        return klass;
+        return clazz;
     }
 
     public boolean isAnnotationWith(List<Class<? extends Annotation>> annotationClass) {
         ensureLoadClass();
-        for (Class klass : annotationClass) {
-            if (this.klass.isAnnotationPresent(klass)) {
+        for (Class clazz : annotationClass) {
+            if (this.clazz.isAnnotationPresent(clazz)) {
                 return true;
             }
         }
@@ -51,8 +51,8 @@ public class ClassInfo<T> {
 
 
     private void ensureLoadClass() {
-        if (klass == null) {
-            getKlass();
+        if (clazz == null) {
+            getKlazz();
         }
     }
 }

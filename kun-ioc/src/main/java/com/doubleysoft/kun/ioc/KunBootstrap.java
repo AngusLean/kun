@@ -8,12 +8,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class KunBootstrap {
-    public static void start(Class klass) {
+    public static void start(Class clazz) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                KunContext kunContext = new KunContext(klass.getPackage().getName());
+                KunContext kunContext = new KunContext(clazz.getPackage().getName());
                 kunContext.init();
             }
         });

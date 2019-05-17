@@ -43,8 +43,8 @@ public class AbstractClassPathScannerImplTest {
         Assert.assertTrue(results.iterator().hasNext());
         String className = results.iterator().next().getClassName();
         Assert.assertEquals("com.doubleysoft.kun.ioc.scanner.test1.Demo3", className);
-        Class klass = Class.forName(className);
-        Assert.assertEquals(klass, Demo3.class);
+        Class clazz = Class.forName(className);
+        Assert.assertEquals(clazz, Demo3.class);
     }
 
 

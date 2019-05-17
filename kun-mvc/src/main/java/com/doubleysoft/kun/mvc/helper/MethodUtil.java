@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class MethodUtil {
 
-    public static List<Method> getMethodByName(Class<?> klass, String methodName) {
+    public static List<Method> getMethodByName(Class<?> clazz, String methodName) {
         List<Method> result  = new ArrayList<>();
-        Method[]     methods = klass.getMethods();
+        Method[]     methods = clazz.getMethods();
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 result.add(method);

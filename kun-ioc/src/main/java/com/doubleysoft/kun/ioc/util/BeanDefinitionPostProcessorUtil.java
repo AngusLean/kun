@@ -1,5 +1,8 @@
 package com.doubleysoft.kun.ioc.util;
 
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
+import com.doubleysoft.kun.ioc.context.BeanDefinitionProcessor;
+
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
@@ -15,5 +18,11 @@ public class BeanDefinitionPostProcessorUtil {
     static {
         DEFAULT_INJECT_CLASS = new HashSet<>();
         DEFAULT_INJECT_CLASS.add(Inject.class);
+    }
+
+    public static void processBeanDefinition(BeanDefinition<?> beanDefinition, Set<BeanDefinitionProcessor> beanDefinitionProcessors) {
+        for (BeanDefinitionProcessor processor : beanDefinitionProcessors) {
+            processor.proccess(beanDefinition);
+        }
     }
 }

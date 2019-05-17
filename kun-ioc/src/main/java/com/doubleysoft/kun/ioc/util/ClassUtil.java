@@ -15,8 +15,8 @@ import java.util.*;
  */
 @Slf4j
 public class ClassUtil {
-    public static <T> T getInstance(Class<T> klass, Set<Class> injectAnnotations, Ioc ioc) {
-        Constructor<?>[] declaredConstructors = klass.getDeclaredConstructors();
+    public static <T> T getInstance(Class<T> clazz, Set<Class> injectAnnotations, Ioc ioc) {
+        Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         Constructor<?>   injectConstruct      = null;
         //first find any construct annotation with inject interface
         //todo performence change
@@ -29,12 +29,12 @@ public class ClassUtil {
         }
 
         if (injectConstruct != null) {
-            return getInstance(klass, injectConstruct, injectAnnotations, ioc);
+            return getInstance(clazz, injectConstruct, injectAnnotations, ioc);
         }
 
         //second find is it has only one constructor
         if (declaredConstructors.length == 1) {
-            return getInstance(klass, declaredConstructors[0], injectAnnotations, ioc);
+            return getInstance(clazz, declaredConstructors[0], injectAnnotations, ioc);
         }
 
         Optional<Constructor<?>> noParamConstruct = Arrays.stream(declaredConstructors)
@@ -42,19 +42,19 @@ public class ClassUtil {
                 .findAny();
         if (!noParamConstruct.isPresent()) {
             log.error("error in init class :{}, find many constructor but none annotationed with :{} find",
-                    klass, injectAnnotations);
-            throw new StateException("error in init bean " + klass.getName());
+                    clazz, injectAnnotations);
+            throw new StateException("error in init bean " + clazz.getName());
         }
         //last call newInstance method directly
-        return ReflectionUtil.newInstance(klass);
+        return ReflectionUtil.newInstance(clazz);
     }
 
-    private static <T> T getInstance(Class<T> klass, Constructor<?> constructor, Set<Class> injectAnnotations, Ioc ioc) {
+    private static <T> T getInstance(Class<T> clazz, Constructor<?> constructor, Set<Class> injectAnnotations, Ioc ioc) {
         int constructParamCount = constructor.getParameterCount();
         if (constructParamCount == 0) {
             T instance = ReflectionUtil.newInstanceByConstruct(constructor);
             //for default constructor, support mark field as a inject resource
-            for (Field field : klass.getDeclaredFields()) {
+            for (Field field : clazz.getDeclaredFields()) {
                 List<Annotation> declaredAnnotations = Arrays.asList(field.getDeclaredAnnotations());
                 if (declaredAnnotations.stream()
                         .map(annotation -> annotation.annotationType())
@@ -73,7 +73,7 @@ public class ClassUtil {
             Object param = ioc.getBean(paramType);
             if (param == null) {
                 log.error("can not get instance of class :{}, construct : {} , param type: {} " +
-                        "does not exist", klass, constructor, paramType);
+                        "does not exist", clazz, constructor, paramType);
                 throw new StateException("fail in get instance");
             }
             paramObjects.add(param);

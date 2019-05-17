@@ -21,18 +21,18 @@ public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcess
 
     @Override
     public void proccess(BeanDefinition<?> beanDefinition) {
-        Class<?> klass       = beanDefinition.getKlass();
-        Field[]  klassFields = klass.getDeclaredFields();
+        Class<?> clazz       = beanDefinition.getKlass();
+        Field[]  klassFields = clazz.getDeclaredFields();
         for (Field field : klassFields) {
             if (field.getAnnotations().length != 0) {
                 injectAnnotations.stream()
                         .filter(row -> field.getAnnotation(row) != null)
                         .findAny()
-                        .ifPresent(row -> beanDefinition.addDepend(field.getName()));
+                        .ifPresent(row -> beanDefinition.addDepend(getBeanName(field.getClass())));
             }
         }
 
-        Method[] klassMethods = klass.getMethods();
+        Method[] klassMethods = clazz.getMethods();
         for (Method method : klassMethods) {
             if (method.getAnnotations().length != 0) {
                 injectAnnotations.stream()
@@ -43,10 +43,14 @@ public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcess
                             if (methodParamNames.length == 0) {
                                 throw new StateException("wrong inject method param count" + method.getName());
                             }
-                            beanDefinition.addDepend(methodParamNames[0]);
+                            beanDefinition.addDepend(getBeanName(method.getParameterTypes()[0]));
                         });
             }
         }
+    }
+
+    private String getBeanName(Class<?> clazz) {
+        return clazz.getName();
     }
 
 }

@@ -28,6 +28,6 @@ public class DefaultAbstractClassPathScannerImplTest {
         Set<ClassInfo> classInfoSet = defaultClassPathScanner.scan("com.doubleysoft.kun.ioc.scanner.defaultcps");
         Assert.assertEquals(classInfoSet.size(), 1);
         ClassInfo classInfo = classInfoSet.iterator().next();
-        Assert.assertEquals(DefaultCps2.class, classInfo.getKlass());
+        Assert.assertEquals(DefaultCps2.class, classInfo.getKlazz());
     }
 }

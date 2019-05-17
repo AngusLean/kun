@@ -3,10 +3,13 @@ package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.*;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
+import com.doubleysoft.kun.ioc.exception.BeanInstantiationException;
 import com.doubleysoft.kun.ioc.exception.StateException;
+import com.doubleysoft.kun.ioc.util.AsmUtil;
 import com.doubleysoft.kun.ioc.util.BeanDefinitionPostProcessorUtil;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,23 +43,23 @@ public class KunIoc implements Ioc {
     }
 
     @Override
-    public <T> void addBean(Class<T> klass) {
-        addBean(ClassInfo.builder().klass((Class<Object>) klass).build());
+    public <T> void addBean(Class<T> clazz) {
+        addBean(ClassInfo.builder().clazz((Class<Object>) clazz).build());
     }
 
     @Override
     public void addBean(ClassInfo<?> classInfo) {
-        this.container.computeIfAbsent(classInfo.getKlass().getName(), key -> {
+        this.container.computeIfAbsent(classInfo.getKlazz().getName(), key -> {
             BeanDefinition beanDefinition = new BeanDefinition();
             beanDefinition.setClassInfo(classInfo);
-
+            BeanDefinitionPostProcessorUtil.processBeanDefinition(beanDefinition, beanDefinitionProcessors);
             return beanDefinition;
         });
     }
 
     @Override
-    public <T> T getBean(Class<T> klass) {
-        return getBean(klass.getName(), null);
+    public <T> T getBean(Class<T> clazz) {
+        return getBean(clazz.getName(), null);
     }
 
     @Override
@@ -74,7 +77,7 @@ public class KunIoc implements Ioc {
     @Override
     public <T> T getBean(String name, Object... vars) {
         if (!container.containsKey(name)) {
-            throw new StateException("bean not exist");
+            throw new StateException("bean:【" + name + "】 not exist");
         }
         BeanDefinition<?> beanDefinition = container.get(name);
         if (beanDefinition.isSingleton()) {
@@ -108,11 +111,27 @@ public class KunIoc implements Ioc {
         if (beanRegistry != null) {
             this.beanRegistry.afterBeanCreate(name, bean, beanDefinition);
         }
-
     }
 
-
-    private <T> T doCreateBean(Class<T> klass, Object... vars) {
-        return ReflectionUtil.newInstance(klass);
+    private <T> T doCreateBean(Class<T> clazz, Object... vars) {
+        Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+        if (declaredConstructors.length == 1) {
+            Constructor<?> constructor      = declaredConstructors[0];
+            String[]       methodParamNames = AsmUtil.getMethodParamNames(constructor);
+            Object[]       depends          = new Object[methodParamNames.length];
+            int            index            = 0;
+            for (String depenName : methodParamNames) {
+                if (depenName == null) {
+                    continue;
+                }
+                Object bean = getBean(depenName);
+                if (bean == null) {
+                    throw new BeanInstantiationException(clazz, "class have only one constructor, param object" + depenName + " is not exist");
+                }
+                depends[index++] = bean;
+            }
+            return ReflectionUtil.newInstanceByConstruct(constructor, depends);
+        }
+        return ReflectionUtil.newInstance(clazz);
     }
 }

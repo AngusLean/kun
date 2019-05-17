@@ -27,14 +27,14 @@ public class BeanDefinition<T> {
     }
 
     public Class<T> getKlass() {
-        return classInfo.getKlass();
+        return classInfo.getKlazz();
     }
 
-    public void setKlass(Class<T> klass) {
+    public void setKlass(Class<T> clazz) {
         if (this.classInfo == null) {
             classInfo = new ClassInfo<>();
         }
-        classInfo.setKlass(klass);
+        classInfo.setClazz(clazz);
     }
 
 

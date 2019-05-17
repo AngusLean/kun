@@ -9,7 +9,6 @@ import com.doubleysoft.kun.ioc.contexttest.filter.model.ContextFilterTestDO;
 import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -25,7 +24,7 @@ public class KunContextTest {
 
     }
 
-    @Ignore
+    @Test
     public void init() {
         kunContext.init();
         UserDao userDao = kunContext.getBean(UserDao.class);
@@ -50,7 +49,7 @@ public class KunContextTest {
 
     @Test
     public void testClassInfoFilter() {
-        ClassInfoFilter classInfoFilter = classInfo -> classInfo.getKlass().isAnnotationPresent(TestAnnotation.class);
+        ClassInfoFilter classInfoFilter = classInfo -> classInfo.getKlazz().isAnnotationPresent(TestAnnotation.class);
         kunContext.addClassInfoFilter(classInfoFilter);
         kunContext.init();
         ContextFilterTestDO bean = kunContext.getBean(ContextFilterTestDO.class);

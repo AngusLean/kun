@@ -16,11 +16,11 @@ public interface Ioc {
     /**
      * create a specified class type bean
      *
-     * @param klass the class
+     * @param clazz the class
      * @param <T>   type
-     * @return instance of type klass
+     * @return instance of type clazz
      */
-    <T> void addBean(Class<T> klass);
+    <T> void addBean(Class<T> clazz);
 
     /**
      * add a Bean By ClassInfo
@@ -33,11 +33,11 @@ public interface Ioc {
      * get a specified type of bean instance, if current instance have not created,
      * this method will create a new instance。
      *
-     * @param klass the class
+     * @param clazz the class
      * @param <T>   type
-     * @return instance of type klass
+     * @return instance of type clazz
      */
-    <T> T getBean(Class<T> klass);
+    <T> T getBean(Class<T> clazz);
 
     <T> T getBean(String name, Object... vars);
 

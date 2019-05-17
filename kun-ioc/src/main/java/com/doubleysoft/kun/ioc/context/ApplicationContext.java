@@ -12,18 +12,18 @@ public interface ApplicationContext {
     /**
      * add a bean to current context
      *
-     * @param klass
+     * @param clazz
      */
-    void addBean(Class<?> klass);
+    void addBean(Class<?> clazz);
 
     /**
      * get bean with specified class
      *
-     * @param klass
+     * @param clazz
      * @param <T>
      * @return
      */
-    <T> T getBean(Class<T> klass);
+    <T> T getBean(Class<T> clazz);
 
     <T> T getBean(String name);
 

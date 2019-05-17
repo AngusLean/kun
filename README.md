@@ -49,5 +49,5 @@ public class InjectUserController {
 ### Usage
 before you application start, call this method:
 ```$xslt
-KunBootstrap.start(Class klass)  //klass is the root package you wish to be scanned
+KunBootstrap.start(Class clazz)  //clazz is the root package you wish to be scanned
 ```

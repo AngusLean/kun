@@ -17,8 +17,8 @@ public class KunMvcBootstrap {
         boot(KunMvcBootstrap.class);
     }
 
-    public static void boot(Class klass) {
-        startContext(klass);
+    public static void boot(Class clazz) {
+        startContext(clazz);
         startServer();
         log.info("start server");
     }
@@ -37,8 +37,8 @@ public class KunMvcBootstrap {
         server.start(8080);
     }
 
-    private static KunContext startContext(Class klass) {
-        KunMvcContext kunContext = new KunMvcContext(klass);
+    private static KunContext startContext(Class clazz) {
+        KunMvcContext kunContext = new KunMvcContext(clazz);
         kunContext.init();
         return kunContext;
     }
