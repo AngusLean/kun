@@ -1,7 +1,6 @@
 package com.doubleysoft.kun.ioc.contexttest;
 
-import lombok.AllArgsConstructor;
-
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
@@ -10,9 +9,13 @@ import javax.inject.Singleton;
  * @since 0.0.1
  */
 @Singleton
-@AllArgsConstructor
 public class ConstructUserController {
     private UserDao userDao;
+
+    @Inject
+    public ConstructUserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public UserDO getUserInfo() {
         return userDao.getUserDo();

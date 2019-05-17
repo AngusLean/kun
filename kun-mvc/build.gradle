@@ -12,7 +12,7 @@ dependencies {
     compile project(":kun-ioc")
     testCompile 'org.mockito:mockito-core'
 
-    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm'
     compile 'org.slf4j:slf4j-simple'
     compile 'io.netty:netty-all'
 

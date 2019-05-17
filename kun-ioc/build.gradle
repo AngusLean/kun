@@ -8,6 +8,8 @@ dependencies{
     compile  'org.slf4j:slf4j-api'
     compile 'javax.inject:javax.inject'
     compile 'org.projectlombok:lombok'
+    implementation 'org.ow2.asm:asm'
+
 
     testCompile 'org.slf4j:slf4j-simple'
     testCompile 'junit:junit'

@@ -1,4 +1,4 @@
-package com.doubleysoft.kun.mvc.helper;
+package com.doubleysoft.kun.ioc.util;
 
 import org.objectweb.asm.*;
 

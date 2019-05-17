@@ -1,11 +1,10 @@
 package com.doubleysoft.kun.ioc;
 
 
-import com.doubleysoft.kun.ioc.context.BeanDefinition;
-import com.doubleysoft.kun.ioc.context.BeanRegistry;
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.*;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 import com.doubleysoft.kun.ioc.exception.StateException;
+import com.doubleysoft.kun.ioc.util.BeanDefinitionPostProcessorUtil;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
 import java.util.*;
@@ -18,7 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class KunIoc implements Ioc {
     private final Map<String, BeanDefinition<?>> container;
-    private final Map<String, Object> singletonBeans;
+    private final Map<String, Object>            singletonBeans;
+    private       Set<BeanDefinitionProcessor>   beanDefinitionProcessors;
 
     private Set<String> onBuildingInstance;
 
@@ -26,25 +26,22 @@ public class KunIoc implements Ioc {
 
     public KunIoc(BeanRegistry beanRegistry) {
         this(KunConfig.getDefaultPoolSize(), beanRegistry);
-
     }
 
     private KunIoc(int poolSize, BeanRegistry beanRegistry) {
+        this.beanRegistry = beanRegistry;
+
         container = new ConcurrentHashMap<>(poolSize, 1);
         singletonBeans = new HashMap<>();
         onBuildingInstance = new HashSet<>();
-        this.beanRegistry = beanRegistry;
+        beanDefinitionProcessors = new HashSet<>();
+
+        beanDefinitionProcessors.add(new AfterCreateBeanDefinitionProcessor(BeanDefinitionPostProcessorUtil.DEFAULT_INJECT_CLASS));
     }
 
     @Override
     public <T> void addBean(Class<T> klass) {
-        String simpleName = klass.getName();
-        container.computeIfAbsent(simpleName, key -> {
-            BeanDefinition<T> beanDefinition = new BeanDefinition<>();
-            //fuck java generic
-            beanDefinition.setClassInfo((ClassInfo<T>) ClassInfo.builder().klass((Class<Object>) klass).build());
-            return beanDefinition;
-        });
+        addBean(ClassInfo.builder().klass((Class<Object>) klass).build());
     }
 
     @Override
@@ -52,6 +49,7 @@ public class KunIoc implements Ioc {
         this.container.computeIfAbsent(classInfo.getKlass().getName(), key -> {
             BeanDefinition beanDefinition = new BeanDefinition();
             beanDefinition.setClassInfo(classInfo);
+
             return beanDefinition;
         });
     }
@@ -107,7 +105,6 @@ public class KunIoc implements Ioc {
 
     private void afterInstantiationBean(String name, Object bean, BeanDefinition<?> beanDefinition) {
         onBuildingInstance.remove(name);
-
         if (beanRegistry != null) {
             this.beanRegistry.afterBeanCreate(name, bean, beanDefinition);
         }

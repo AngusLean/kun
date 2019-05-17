@@ -1,5 +1,8 @@
 package com.doubleysoft.kun.ioc.context;
 
+import com.doubleysoft.kun.ioc.exception.StateException;
+import com.doubleysoft.kun.ioc.util.AsmUtil;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -36,11 +39,14 @@ public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcess
                         .filter(row -> method.getAnnotation(row) != null)
                         .findAny()
                         .ifPresent(row -> {
-                            method.getParameters();
-                            beanDefinition.addDepend(method.getName());
+                            String[] methodParamNames = AsmUtil.getMethodParamNames(method);
+                            if (methodParamNames.length == 0) {
+                                throw new StateException("wrong inject method param count" + method.getName());
+                            }
+                            beanDefinition.addDepend(methodParamNames[0]);
                         });
             }
         }
-
     }
+
 }

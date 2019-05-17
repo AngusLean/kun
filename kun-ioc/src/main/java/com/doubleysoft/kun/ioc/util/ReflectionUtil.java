@@ -1,9 +1,11 @@
 package com.doubleysoft.kun.ioc.util;
 
+import com.doubleysoft.kun.ioc.exception.BeanInstantiationException;
 import com.doubleysoft.kun.ioc.exception.ReflectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * @author anguslean
@@ -12,11 +14,16 @@ import java.lang.reflect.Field;
  */
 public class ReflectionUtil {
 
-    public static <T> T newInstance(Class<?> klass) {
+    public static <T> T newInstance(Class<?> clazz) {
+        if (clazz.isInterface()) {
+            throw new BeanInstantiationException(clazz, "Specified class is an interface");
+        }
+
         try {
-            return (T) klass.newInstance();
+            makeAccessible(clazz.getDeclaredConstructor());
+            return (T) clazz.newInstance();
         } catch (Exception e) {
-            throw new ReflectionException(e, "error in init bean " + klass.getName() + ", illegal access");
+            throw new ReflectionException(e, "error in init bean " + clazz.getName() + ", illegal access");
         }
     }
 
@@ -36,6 +43,13 @@ public class ReflectionUtil {
             field.set(object, value);
         } catch (IllegalAccessException e) {
             throw new ReflectionException(e, "fail in set field" + field + " of object: " + object + " value: " + value);
+        }
+    }
+
+    public static void makeAccessible(Constructor<?> ctor) {
+        if ((!Modifier.isPublic(ctor.getModifiers()) ||
+                !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {
+            ctor.setAccessible(true);
         }
     }
 }

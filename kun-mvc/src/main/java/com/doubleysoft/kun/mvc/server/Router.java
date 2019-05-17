@@ -13,7 +13,7 @@ public class Router {
 
     public Router() {
         routerCache = new ConcurrentHashMap<String, MethodInfo>();
-        ;
+
     }
     public void addRoute(String key, MethodInfo methodInfo) {
         routerCache.putIfAbsent(key, methodInfo);
