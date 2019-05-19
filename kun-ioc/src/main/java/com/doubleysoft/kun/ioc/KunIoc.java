@@ -76,7 +76,7 @@ public class KunIoc implements Ioc {
 
     @Override
     public <T> T getBean(String name, Object... vars) {
-        if (!container.containsKey(name)) {
+        if (name == null || !container.containsKey(name)) {
             throw new StateException("bean:【" + name + "】 not exist");
         }
         BeanDefinition<?> beanDefinition = container.get(name);

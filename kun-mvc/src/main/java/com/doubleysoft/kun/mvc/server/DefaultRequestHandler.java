@@ -53,27 +53,29 @@ public class DefaultRequestHandler implements RequestHandler {
     }
 
     private Object[] getMethodParams(MethodInfo methodInfo, MultivaluedMap<String, Object> reqParams) {
+        if (reqParams.size() <= 0) {
+            return new Object[0];
+        }
         Method   method       = methodInfo.getMethod();
         Object[] methodParams = new Object[method.getParameterCount()];
-        if (reqParams.size() > 0) {
-            String[]    methodParamNames = AsmUtil.getMethodParamNames(method);
-            Parameter[] parameters       = method.getParameters();
-            for (int i = 0; i < methodParamNames.length; i++) {
-                if (reqParams.containsKey(methodParamNames[i])) {
-                    List<Object> reqParamValues = reqParams.get(methodParamNames[i]);
-                    if (reqParamValues.size() == 0) {
-                        continue;
+
+        String[]    methodParamNames = AsmUtil.getMethodParamNames(method);
+        Parameter[] parameters       = method.getParameters();
+        for (int i = 0; i < methodParamNames.length; i++) {
+            if (reqParams.containsKey(methodParamNames[i])) {
+                List<Object> reqParamValues = reqParams.get(methodParamNames[i]);
+                if (reqParamValues.size() == 0) {
+                    continue;
+                }
+                if (parameters[i].isVarArgs()) {
+                    methodParams[i] = reqParamValues.toArray();
+                } else {
+                    Object value = reqParamValues.get(0);
+                    value = MethodUtil.extractParam(parameters[i], value);
+                    if (value instanceof String) {
+                        value = methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
                     }
-                    if (parameters[i].isVarArgs()) {
-                        methodParams[i] = reqParamValues.toArray();
-                    } else {
-                        Object value = reqParamValues.get(0);
-                        value = MethodUtil.extractParam(parameters[i], value);
-                        if (value instanceof String) {
-                            value = methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
-                        }
-                        methodParams[i] = value;
-                    }
+                    methodParams[i] = value;
                 }
             }
         }

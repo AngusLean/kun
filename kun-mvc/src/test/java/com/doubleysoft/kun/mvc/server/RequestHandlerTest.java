@@ -32,6 +32,7 @@ public class RequestHandlerTest {
     public void init() {
         kunContext = new KunContext(RequestHandlerTest.class.getName());
         MvcContextHolder.init(kunContext, new Router());
+        kunContext.addBean(RequestHandlerTestController.class);
     }
 
     @Ignore
@@ -45,6 +46,7 @@ public class RequestHandlerTest {
 
         KunHttpRequest httpRequest = new NettyKunHttpRequest(new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, TEST_REQ_PATH));
         httpRequest.appendContent(TEST_REQ_CONTENT);
+
         KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
         Assert.assertEquals(TEST_RESPONSE_STR + TEST_REQ_CONTENT, httpResponse.getContent());
     }

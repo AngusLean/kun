@@ -39,6 +39,13 @@ public class ClassInfo<T> {
         return clazz;
     }
 
+    public String getClassName() {
+        if (className == null && clazz != null) {
+            className = clazz.getName();
+        }
+        return className;
+    }
+
     public boolean isAnnotationWith(List<Class<? extends Annotation>> annotationClass) {
         ensureLoadClass();
         for (Class clazz : annotationClass) {
