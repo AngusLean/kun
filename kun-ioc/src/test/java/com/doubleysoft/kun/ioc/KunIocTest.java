@@ -68,7 +68,7 @@ public class KunIocTest {
         Assert.assertEquals(ioc.getBeanDefinition(Collections.EMPTY_LIST).size(), 2);
         BeanFilter annotationFilter = new BeanAnnotationFilter(Arrays.asList(Singleton.class));
         Assert.assertEquals(ioc.getBeanDefinition(Arrays.asList(annotationFilter)).size(), 1);
-        Assert.assertEquals(ioc.getBeanDefinition(Arrays.asList(annotationFilter)).get(0).getKlass(), BeanFilterTestKlass.class);
+        Assert.assertEquals(ioc.getBeanDefinition(Arrays.asList(annotationFilter)).get(0).getClazz(), BeanFilterTestKlass.class);
     }
 
     @Test

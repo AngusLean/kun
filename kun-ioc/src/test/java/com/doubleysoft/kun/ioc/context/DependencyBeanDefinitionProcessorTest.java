@@ -1,5 +1,6 @@
 package com.doubleysoft.kun.ioc.context;
 
+import com.doubleysoft.kun.ioc.context.processor.DependencyBeanDefinitionProcessor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,15 +14,15 @@ import java.util.Set;
  * @author dongyang.yu
  * @email dongyang.yu@anxincloud.com
  */
-public class AfterCreateBeanDefinitionProcessorTest {
+public class DependencyBeanDefinitionProcessorTest {
 
     @Test
     public void testFiledInject() {
         BeanDefinition beanDefinition = new BeanDefinition();
-        beanDefinition.setKlass(AfterCreateBeanDefinitionProcessorTest1.class);
+        beanDefinition.setClazz(AfterCreateBeanDefinitionProcessorTest1.class);
         Set<Class<? extends Annotation>> injectAnnotations = new HashSet<>();
         injectAnnotations.add(Inject.class);
-        AfterCreateBeanDefinitionProcessor processor = new AfterCreateBeanDefinitionProcessor(injectAnnotations);
+        DependencyBeanDefinitionProcessor processor = new DependencyBeanDefinitionProcessor(injectAnnotations);
         processor.proccess(beanDefinition);
 
         Assert.assertEquals(beanDefinition.getDepends().size(), 1);
@@ -30,10 +31,10 @@ public class AfterCreateBeanDefinitionProcessorTest {
     @Test
     public void testMethodInject() {
         BeanDefinition beanDefinition = new BeanDefinition();
-        beanDefinition.setKlass(AfterCreateBeanDefinitionProcessorTest3.class);
+        beanDefinition.setClazz(AfterCreateBeanDefinitionProcessorTest3.class);
         Set<Class<? extends Annotation>> injectAnnotations = new HashSet<>();
         injectAnnotations.add(Inject.class);
-        AfterCreateBeanDefinitionProcessor processor = new AfterCreateBeanDefinitionProcessor(injectAnnotations);
+        DependencyBeanDefinitionProcessor processor = new DependencyBeanDefinitionProcessor(injectAnnotations);
         processor.proccess(beanDefinition);
 
         Assert.assertEquals(beanDefinition.getDepends().size(), 1);

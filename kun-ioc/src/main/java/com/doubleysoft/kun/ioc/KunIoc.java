@@ -1,11 +1,14 @@
 package com.doubleysoft.kun.ioc;
 
 
-import com.doubleysoft.kun.ioc.context.*;
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
+import com.doubleysoft.kun.ioc.context.BeanDefinitionProcessor;
+import com.doubleysoft.kun.ioc.context.BeanRegistry;
+import com.doubleysoft.kun.ioc.context.ClassInfo;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
+import com.doubleysoft.kun.ioc.context.processor.DependencyBeanDefinitionProcessor;
 import com.doubleysoft.kun.ioc.exception.BeanInstantiationException;
 import com.doubleysoft.kun.ioc.exception.StateException;
-import com.doubleysoft.kun.ioc.util.AsmUtil;
 import com.doubleysoft.kun.ioc.util.BeanDefinitionPostProcessorUtil;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
@@ -39,7 +42,7 @@ public class KunIoc implements Ioc {
         onBuildingInstance = new HashSet<>();
         beanDefinitionProcessors = new HashSet<>();
 
-        beanDefinitionProcessors.add(new AfterCreateBeanDefinitionProcessor(BeanDefinitionPostProcessorUtil.DEFAULT_INJECT_CLASS));
+        beanDefinitionProcessors.add(new DependencyBeanDefinitionProcessor(BeanDefinitionPostProcessorUtil.DEFAULT_INJECT_CLASS));
     }
 
     @Override
@@ -83,13 +86,13 @@ public class KunIoc implements Ioc {
         if (beanDefinition.isSingleton()) {
             if (!singletonBeans.containsKey(name)) {
                 preInstantiationBean(name, beanDefinition);
-                Object bean = doCreateBean(beanDefinition.getKlass(), vars);
+                Object bean = doCreateBean(beanDefinition.getClazz(), vars);
                 singletonBeans.put(name, bean);
                 afterInstantiationBean(name, bean, beanDefinition);
             }
             return (T) singletonBeans.get(name);
         } else {
-            return (T) doCreateBean(beanDefinition.getKlass(), vars);
+            return (T) doCreateBean(beanDefinition.getClazz(), vars);
         }
     }
 
@@ -116,11 +119,10 @@ public class KunIoc implements Ioc {
     private <T> T doCreateBean(Class<T> clazz, Object... vars) {
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         if (declaredConstructors.length == 1) {
-            Constructor<?> constructor      = declaredConstructors[0];
-            String[]       methodParamNames = AsmUtil.getMethodParamNames(constructor);
-            Object[]       depends          = new Object[methodParamNames.length];
-            int            index            = 0;
-            Class<?>[]     parameterTypes   = constructor.getParameterTypes();
+            Constructor<?> constructor    = declaredConstructors[0];
+            Object[]       depends        = new Object[constructor.getParameterCount()];
+            int            index          = 0;
+            Class<?>[]     parameterTypes = constructor.getParameterTypes();
             for (Class<?> dependClass : parameterTypes) {
                 Object bean = getBean(dependClass);
                 if (bean == null) {
@@ -128,18 +130,6 @@ public class KunIoc implements Ioc {
                 }
                 depends[index++] = bean;
             }
-/*
-            for (String depenName : methodParamNames) {
-                if (depenName == null) {
-                    continue;
-                }
-                Object bean = getBean(constructor.getParameterTypes()[index++]);
-                if (bean == null) {
-                    throw new BeanInstantiationException(clazz, "class have only one constructor, param object" + depenName + " is not exist");
-                }
-                depends[index] = bean;
-            }
-*/
             return ReflectionUtil.newInstanceByConstruct(constructor, depends);
         }
         return ReflectionUtil.newInstance(clazz);

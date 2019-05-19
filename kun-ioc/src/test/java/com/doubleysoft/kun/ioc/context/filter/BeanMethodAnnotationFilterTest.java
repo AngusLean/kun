@@ -21,13 +21,13 @@ public class BeanMethodAnnotationFilterTest {
         List<BeanDefinition>       beanDefinitions = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
             BeanDefinition beanDefinition = new BeanDefinition();
-            beanDefinition.setKlass(Class.forName(this.getClass().getName() + "$BeanMethodAnnotationFilterTestClass" + i));
+            beanDefinition.setClazz(Class.forName(this.getClass().getName() + "$BeanMethodAnnotationFilterTestClass" + i));
             beanDefinitions.add(beanDefinition);
         }
 
         List<BeanDefinition> result = filter.filterBeans(beanDefinitions);
         Assert.assertEquals(result.size(), 1);
-        Assert.assertEquals(result.get(0).getKlass(), BeanMethodAnnotationFilterTest.BeanMethodAnnotationFilterTestClass1.class);
+        Assert.assertEquals(result.get(0).getClazz(), BeanMethodAnnotationFilterTest.BeanMethodAnnotationFilterTestClass1.class);
     }
 
     private static class BeanMethodAnnotationFilterTestClass1 {

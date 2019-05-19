@@ -1,5 +1,7 @@
-package com.doubleysoft.kun.ioc.context;
+package com.doubleysoft.kun.ioc.context.processor;
 
+import com.doubleysoft.kun.ioc.context.BeanDefinition;
+import com.doubleysoft.kun.ioc.context.BeanDefinitionProcessor;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
 import java.lang.annotation.Annotation;
@@ -12,16 +14,16 @@ import java.util.Set;
  * @author dongyang.yu
  * @email dongyang.yu@anxincloud.com
  */
-public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcessor {
+public class DependencyBeanDefinitionProcessor implements BeanDefinitionProcessor {
     private Set<Class<? extends Annotation>> injectAnnotations;
 
-    public AfterCreateBeanDefinitionProcessor(Set<Class<? extends Annotation>> annotations) {
+    public DependencyBeanDefinitionProcessor(Set<Class<? extends Annotation>> annotations) {
         injectAnnotations = annotations;
     }
 
     @Override
     public void proccess(BeanDefinition<?> beanDefinition) {
-        Class<?> clazz       = beanDefinition.getKlass();
+        Class<?> clazz       = beanDefinition.getClazz();
         Field[]  klassFields = clazz.getDeclaredFields();
         for (Field field : klassFields) {
             if (field.getAnnotations().length != 0) {

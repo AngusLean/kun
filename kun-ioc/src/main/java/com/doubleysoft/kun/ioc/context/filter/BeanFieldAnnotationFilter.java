@@ -20,7 +20,7 @@ public class BeanFieldAnnotationFilter extends AbstractAnnotationFilter {
     @Override
     public List<BeanDefinition> filterBeans(List<BeanDefinition> beans) {
         return beans.stream().filter(row -> {
-            Class   clazz          = row.getKlass();
+            Class   clazz          = row.getClazz();
             Field[] declaredFields = clazz.getDeclaredFields();
             for (Field field : declaredFields) {
                 for (Class<? extends Annotation> annotation : annotations) {

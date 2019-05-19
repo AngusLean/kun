@@ -25,7 +25,7 @@ public class BeanMethodAnnotationFilter extends AbstractAnnotationFilter {
     @Override
     public List<BeanDefinition> filterBeans(List<BeanDefinition> beans) {
         return beans.stream().filter(row -> {
-            Class    clazz           = row.getKlass();
+            Class    clazz           = row.getClazz();
             Method[] declaredMethods = clazz.getDeclaredMethods();
             for (Method method : declaredMethods) {
                 for (Class<? extends Annotation> annotation : annotations) {

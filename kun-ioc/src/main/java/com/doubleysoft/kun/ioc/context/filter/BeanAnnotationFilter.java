@@ -23,7 +23,7 @@ public class BeanAnnotationFilter extends AbstractAnnotationFilter {
         return beans.stream()
                 .filter(row ->
                         !annotations.stream().anyMatch(annotation ->
-                                !row.getKlass().isAnnotationPresent(annotation)))
+                                !row.getClazz().isAnnotationPresent(annotation)))
                 .collect(Collectors.toList());
     }
 }
