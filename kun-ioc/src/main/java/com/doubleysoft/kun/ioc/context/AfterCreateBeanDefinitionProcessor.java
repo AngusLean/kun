@@ -28,7 +28,7 @@ public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcess
                 injectAnnotations.stream()
                         .filter(row -> field.getAnnotation(row) != null)
                         .findAny()
-                        .ifPresent(row -> beanDefinition.addDepend(getBeanName(field.getClass())));
+                        .ifPresent(row -> beanDefinition.addDepend(getBeanName(field.getType())));
             }
         }
 
