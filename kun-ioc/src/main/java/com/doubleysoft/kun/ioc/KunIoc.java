@@ -120,16 +120,26 @@ public class KunIoc implements Ioc {
             String[]       methodParamNames = AsmUtil.getMethodParamNames(constructor);
             Object[]       depends          = new Object[methodParamNames.length];
             int            index            = 0;
+            Class<?>[]     parameterTypes   = constructor.getParameterTypes();
+            for (Class<?> dependClass : parameterTypes) {
+                Object bean = getBean(dependClass);
+                if (bean == null) {
+                    throw new BeanInstantiationException(clazz, "class have only one constructor, param object" + dependClass + " is not exist");
+                }
+                depends[index++] = bean;
+            }
+/*
             for (String depenName : methodParamNames) {
                 if (depenName == null) {
                     continue;
                 }
-                Object bean = getBean(depenName);
+                Object bean = getBean(constructor.getParameterTypes()[index++]);
                 if (bean == null) {
                     throw new BeanInstantiationException(clazz, "class have only one constructor, param object" + depenName + " is not exist");
                 }
-                depends[index++] = bean;
+                depends[index] = bean;
             }
+*/
             return ReflectionUtil.newInstanceByConstruct(constructor, depends);
         }
         return ReflectionUtil.newInstance(clazz);

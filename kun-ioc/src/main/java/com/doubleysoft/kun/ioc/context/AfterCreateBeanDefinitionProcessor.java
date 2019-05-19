@@ -1,9 +1,9 @@
 package com.doubleysoft.kun.ioc.context;
 
-import com.doubleysoft.kun.ioc.exception.StateException;
-import com.doubleysoft.kun.ioc.util.AsmUtil;
+import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -34,16 +34,28 @@ public class AfterCreateBeanDefinitionProcessor implements BeanDefinitionProcess
 
         Method[] klassMethods = clazz.getMethods();
         for (Method method : klassMethods) {
-            if (method.getAnnotations().length != 0) {
+            if (!ReflectionUtil.isObjectMethod(method) && method.getAnnotations().length != 0) {
+                int index = 0;
                 injectAnnotations.stream()
                         .filter(row -> method.getAnnotation(row) != null)
                         .findAny()
                         .ifPresent(row -> {
-                            String[] methodParamNames = AsmUtil.getMethodParamNames(method);
-                            if (methodParamNames.length == 0) {
-                                throw new StateException("wrong inject method param count" + method.getName());
-                            }
                             beanDefinition.addDepend(getBeanName(method.getParameterTypes()[0]));
+                        });
+            }
+        }
+
+        Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+        for (Constructor<?> constructor : declaredConstructors) {
+            if (constructor.getAnnotations().length != 0) {
+                injectAnnotations.stream()
+                        .filter(row -> constructor.getAnnotation(row) != null)
+                        .findAny()
+                        .ifPresent(row -> {
+                            Class<?>[] parameterTypes = constructor.getParameterTypes();
+                            for (Class<?> cz : parameterTypes) {
+                                beanDefinition.addDepend(getBeanName(cz));
+                            }
                         });
             }
         }

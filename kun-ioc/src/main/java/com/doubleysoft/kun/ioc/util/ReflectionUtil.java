@@ -5,6 +5,7 @@ import com.doubleysoft.kun.ioc.exception.ReflectionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
@@ -13,7 +14,6 @@ import java.lang.reflect.Modifier;
  * @since 0.0.1
  */
 public class ReflectionUtil {
-
     public static <T> T newInstance(Class<?> clazz) {
         if (clazz.isInterface()) {
             throw new BeanInstantiationException(clazz, "Specified class is an interface");
@@ -51,6 +51,10 @@ public class ReflectionUtil {
                 !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {
             ctor.setAccessible(true);
         }
+    }
+
+    public static boolean isObjectMethod(Method method) {
+        return method.getDeclaringClass() == Object.class;
     }
 
 }
