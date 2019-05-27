@@ -2,12 +2,12 @@
 
 
 ## kun
-A Simple Inject Library, Which currently only support [JSR330](https://www.jcp.org/en/jsr/detail?id=330) Annotation
+A Simple IOC/MVC library, Which currently only support [JSR330](https://www.jcp.org/en/jsr/detail?id=330) Annotation
 
 
 ### Features
-- simple implementation:=
-- full support of JSR330
+- Simple implementation :=
+- Full support of JSR330
 ```aidl
     Inject
     Named
@@ -16,6 +16,8 @@ A Simple Inject Library, Which currently only support [JSR330](https://www.jcp.o
     Scope
     Singleton
 ```
+- SpringMVC like usage
+
 
 ### Example
 ```$xslt
@@ -46,8 +48,27 @@ public class InjectUserController {
 
 ```
 
+MVC:
+
+```$xslt
+
+@Path("/")
+public class IndexController {
+    @Path("/index")
+    public String index() {
+        return "hello world";
+    }
+
+    @Path("/user")
+    public String user(@PathParam("name") String name) {
+        return "hello " + name;
+    }
+}
+```
+
 ### Usage
 before you application start, call this method:
 ```$xslt
 KunBootstrap.start(Class clazz)  //clazz is the root package you wish to be scanned
 ```
+
