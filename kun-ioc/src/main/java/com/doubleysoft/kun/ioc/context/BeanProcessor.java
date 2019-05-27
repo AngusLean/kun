@@ -5,5 +5,5 @@ package com.doubleysoft.kun.ioc.context;
  * 5/19/19 15:17
  */
 public interface BeanProcessor {
-    <T> T proccessBean(BeanDefinition<T> beanDefinition, T object);
+    <T> T proccessBean(BeanDefinition<T> beanDefinition, T bean);
 }

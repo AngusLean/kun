@@ -3,16 +3,15 @@ package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.*;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
+import com.doubleysoft.kun.ioc.context.processor.AfterCreateBeanProcessor;
 import com.doubleysoft.kun.ioc.context.processor.DependencyBeanDefinitionProcessor;
 import com.doubleysoft.kun.ioc.exception.BeanInstantiationException;
 import com.doubleysoft.kun.ioc.exception.StateException;
-import com.doubleysoft.kun.ioc.util.BeanDefinitionPostProcessorUtil;
-import com.doubleysoft.kun.ioc.util.BeanUtil;
+import com.doubleysoft.kun.ioc.util.PostProcessorUtil;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,7 +25,7 @@ public class KunIoc implements Ioc {
     private final Map<String, BeanDefinition<?>> container;
     private final Map<String, Object>            singletonBeans;
     private       Set<BeanDefinitionProcessor>   beanDefinitionProcessors;
-
+    private Set<BeanProcessor> beanProcessors;
     private Set<String> onBuildingInstance;
 
     private BeanRegistry beanRegistry;
@@ -37,13 +36,17 @@ public class KunIoc implements Ioc {
 
     private KunIoc(int poolSize, BeanRegistry beanRegistry) {
         this.beanRegistry = beanRegistry;
-
         container = new ConcurrentHashMap<>(poolSize, 1);
         singletonBeans = new HashMap<>();
         onBuildingInstance = new HashSet<>();
-        beanDefinitionProcessors = new HashSet<>();
+        setDefaultProcessor();
+    }
 
-        beanDefinitionProcessors.add(new DependencyBeanDefinitionProcessor(BeanDefinitionPostProcessorUtil.DEFAULT_INJECT_CLASS));
+    private void setDefaultProcessor() {
+        beanDefinitionProcessors = new HashSet<>();
+        beanDefinitionProcessors.add(new DependencyBeanDefinitionProcessor(PostProcessorUtil.DEFAULT_INJECT_CLASS));
+        beanProcessors = new HashSet<>();
+        beanProcessors.add(new AfterCreateBeanProcessor(this));
     }
 
     @Override
@@ -56,7 +59,7 @@ public class KunIoc implements Ioc {
         this.container.computeIfAbsent(classInfo.getKlazz().getName(), key -> {
             BeanDefinition beanDefinition = new BeanDefinition();
             beanDefinition.setClassInfo(classInfo);
-            BeanDefinitionPostProcessorUtil.processBeanDefinition(beanDefinition, beanDefinitionProcessors);
+            PostProcessorUtil.processBeanDefinition(beanDefinition, beanDefinitionProcessors);
             return beanDefinition;
         });
     }
@@ -87,13 +90,13 @@ public class KunIoc implements Ioc {
         if (beanDefinition.isSingleton()) {
             if (!singletonBeans.containsKey(name)) {
                 preInstantiationBean(name, beanDefinition);
-                Object bean = doCreateBean(beanDefinition.getClazz(), vars);
+                Object bean = doCreateBean(beanDefinition.getClazz());
                 singletonBeans.put(name, bean);
                 afterInstantiationBean(name, bean, beanDefinition);
             }
             return (T) singletonBeans.get(name);
         } else {
-            return (T) doCreateBean(beanDefinition.getClazz(), vars);
+            return (T) doCreateBean(beanDefinition.getClazz());
         }
     }
 
@@ -112,21 +115,13 @@ public class KunIoc implements Ioc {
 
     private void afterInstantiationBean(String name, Object bean, BeanDefinition<?> beanDefinition) {
         onBuildingInstance.remove(name);
-        Class<?> beanClazz = beanDefinition.getClazz();
-        for (Depend depend : beanDefinition.getDepends()) {
-            Field setterField = BeanUtil.getField(beanClazz, depend);
-            if (setterField == null) {
-                log.warn("Can not resolve depends name:{} of Object: {}", depend, bean);
-            } else {
-                ReflectionUtil.setFiledValue(setterField, bean, getBean(depend.getName()));
-            }
-        }
+        PostProcessorUtil.processBean(beanDefinition, beanProcessors, bean);
         if (beanRegistry != null) {
             this.beanRegistry.afterBeanCreate(name, bean, beanDefinition);
         }
     }
 
-    private <T> T doCreateBean(Class<T> clazz, Object... vars) {
+    private <T> T doCreateBean(Class<T> clazz) {
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         if (declaredConstructors.length == 1) {
             Constructor<?> constructor    = declaredConstructors[0];
