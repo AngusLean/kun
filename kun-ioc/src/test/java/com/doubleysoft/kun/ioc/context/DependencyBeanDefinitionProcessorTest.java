@@ -38,7 +38,9 @@ public class DependencyBeanDefinitionProcessorTest {
         processor.proccess(beanDefinition);
 
         Assert.assertEquals(beanDefinition.getDepends().size(), 1);
-        Assert.assertEquals(beanDefinition.getDepends().iterator().next(), "test2");
+        Depend depend = (Depend) beanDefinition.getDepends().iterator().next();
+        Assert.assertEquals("com.doubleysoft.kun.ioc.context.DependencyBeanDefinitionProcessorTest$AfterCreateBeanDefinitionProcessorTest2",
+                depend.getName());
 
     }
 

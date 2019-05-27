@@ -2,6 +2,7 @@ package com.doubleysoft.kun.ioc.context.processor;
 
 import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.BeanDefinitionProcessor;
+import com.doubleysoft.kun.ioc.context.Depend;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
 
 import java.lang.annotation.Annotation;
@@ -30,19 +31,26 @@ public class DependencyBeanDefinitionProcessor implements BeanDefinitionProcesso
                 injectAnnotations.stream()
                         .filter(row -> field.getAnnotation(row) != null)
                         .findAny()
-                        .ifPresent(row -> beanDefinition.addDepend(getBeanName(field.getType())));
+                        .ifPresent(row -> {
+                            beanDefinition.addDepend(Depend.builder()
+                                    .name(getBeanName(field.getType()))
+                                    .simpleName(field.getName())
+                                    .build());
+                        });
             }
         }
 
         Method[] klassMethods = clazz.getMethods();
         for (Method method : klassMethods) {
             if (!ReflectionUtil.isObjectMethod(method) && method.getAnnotations().length != 0) {
-                int index = 0;
                 injectAnnotations.stream()
                         .filter(row -> method.getAnnotation(row) != null)
                         .findAny()
                         .ifPresent(row -> {
-                            beanDefinition.addDepend(getBeanName(method.getParameterTypes()[0]));
+                            beanDefinition.addDepend(Depend.builder()
+                                    .name(getBeanName(method.getParameterTypes()[0]))
+                                    .simpleName(method.getParameters()[0].getName())
+                                    .build());
                         });
             }
         }
@@ -56,7 +64,11 @@ public class DependencyBeanDefinitionProcessor implements BeanDefinitionProcesso
                         .ifPresent(row -> {
                             Class<?>[] parameterTypes = constructor.getParameterTypes();
                             for (Class<?> cz : parameterTypes) {
-                                beanDefinition.addDepend(getBeanName(cz));
+                                beanDefinition.addDepend(Depend.builder()
+                                        .name(getBeanName(cz))
+                                        .simpleName(cz.getSimpleName())
+                                        .isField(false)
+                                        .build());
                             }
                         });
             }

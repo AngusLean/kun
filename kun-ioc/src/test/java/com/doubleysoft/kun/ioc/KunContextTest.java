@@ -6,6 +6,7 @@ import com.doubleysoft.kun.ioc.contexttest.NormalUserController;
 import com.doubleysoft.kun.ioc.contexttest.UserDao;
 import com.doubleysoft.kun.ioc.contexttest.filter.TestAnnotation;
 import com.doubleysoft.kun.ioc.contexttest.filter.model.ContextFilterTestDO;
+import com.doubleysoft.kun.ioc.exception.StateException;
 import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,9 +43,11 @@ public class KunContextTest {
         Assert.assertEquals(injectUserController.getUserDao(), userDao);
         Assert.assertEquals(constructUserController.getUserDao(), userDao);
         Assert.assertEquals(injectUserController.getUserDao(), constructUserController.getUserDao());
+    }
 
+    @Test(expected = StateException.class)
+    public void testNotExistBean() {
         NormalUserController normalUserController = kunContext.getBean(NormalUserController.class);
-        Assert.assertNull(normalUserController);
     }
 
     @Test

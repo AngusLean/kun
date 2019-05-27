@@ -1,18 +1,18 @@
 package com.doubleysoft.kun.ioc;
 
 
-import com.doubleysoft.kun.ioc.context.BeanDefinition;
-import com.doubleysoft.kun.ioc.context.BeanDefinitionProcessor;
-import com.doubleysoft.kun.ioc.context.BeanRegistry;
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.*;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 import com.doubleysoft.kun.ioc.context.processor.DependencyBeanDefinitionProcessor;
 import com.doubleysoft.kun.ioc.exception.BeanInstantiationException;
 import com.doubleysoft.kun.ioc.exception.StateException;
 import com.doubleysoft.kun.ioc.util.BeanDefinitionPostProcessorUtil;
+import com.doubleysoft.kun.ioc.util.BeanUtil;
 import com.doubleysoft.kun.ioc.util.ReflectionUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 18-9-6 下午10:07
  * @since 0.0.1
  */
+@Slf4j
 public class KunIoc implements Ioc {
     private final Map<String, BeanDefinition<?>> container;
     private final Map<String, Object>            singletonBeans;
@@ -101,7 +102,7 @@ public class KunIoc implements Ioc {
             throw new StateException("cycle depends of bean name: " + name);
         }
         onBuildingInstance.add(name);
-        for (String depend : beanDefinition.getDepends()) {
+        for (String depend : beanDefinition.getDependsName()) {
             getBean(depend);
         }
         if (beanRegistry != null) {
@@ -111,6 +112,15 @@ public class KunIoc implements Ioc {
 
     private void afterInstantiationBean(String name, Object bean, BeanDefinition<?> beanDefinition) {
         onBuildingInstance.remove(name);
+        Class<?> beanClazz = beanDefinition.getClazz();
+        for (Depend depend : beanDefinition.getDepends()) {
+            Field setterField = BeanUtil.getField(beanClazz, depend);
+            if (setterField == null) {
+                log.warn("Can not resolve depends name:{} of Object: {}", depend, bean);
+            } else {
+                ReflectionUtil.setFiledValue(setterField, bean, getBean(depend.getName()));
+            }
+        }
         if (beanRegistry != null) {
             this.beanRegistry.afterBeanCreate(name, bean, beanDefinition);
         }

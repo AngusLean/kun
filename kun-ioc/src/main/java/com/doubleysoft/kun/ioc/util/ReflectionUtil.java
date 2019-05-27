@@ -57,4 +57,17 @@ public class ReflectionUtil {
         return method.getDeclaringClass() == Object.class;
     }
 
+    public static Field getField(Class<?> clazz, String fieldName) {
+        try {
+            return clazz.getField(fieldName);
+        } catch (NoSuchFieldException ignore) {
+        }
+        Field[] fields = clazz.getFields();
+        for (Field field : fields) {
+            if (fieldName.equals(field.getType().getName())) {
+                return field;
+            }
+        }
+        return null;
+    }
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 public class AfterCreateBeanProcessor implements BeanProcessor {
     @Override
     public <T> T proccessBean(BeanDefinition<T> beanDefinition, T object) {
-        Set<String> fieldDepends = beanDefinition.getFieldDepends();
+        Set<String> fieldDepends = beanDefinition.getDependsName();
         Class<T>    clazz        = beanDefinition.getClazz();
         try {
             fieldDepends.forEach(fieldName -> {

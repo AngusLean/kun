@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author anguslean
@@ -21,14 +21,10 @@ public class BeanDefinition<T> {
     @Setter
     private ClassInfo<T> classInfo;
 
-    //field depend
-    private Set<String> dependsBeanName;
-    // construct depend
-    private Set<String> csdependsBeanName;
+    private Set<Depend> depends;
 
     public BeanDefinition() {
-        dependsBeanName = new HashSet<>();
-        csdependsBeanName = new HashSet<>();
+        depends = new HashSet<>();
     }
 
     public Class<T> getClazz() {
@@ -43,29 +39,18 @@ public class BeanDefinition<T> {
     }
 
 
-    /**
-     * return all depends bean name
-     *
-     * @return
-     */
-    public Set<String> getDepends() {
-        HashSet tmp = new HashSet();
-        tmp.addAll(dependsBeanName);
-        tmp.addAll(csdependsBeanName);
-        return tmp;
+    public Set<String> getDependsName() {
+        return depends.stream()
+                .map(row -> row.getName())
+                .collect(Collectors.toSet());
     }
 
-    public Set<String> getFieldDepends() {
-        return Collections.unmodifiableSet(dependsBeanName);
+    public Set<Depend> getDepends() {
+        return depends;
     }
 
-    public void addDepend(String beanName, boolean isField) {
-        if (isField) {
-            this.dependsBeanName.add(beanName);
-        } else {
-            this.csdependsBeanName.add(beanName);
-        }
-
+    public void addDepend(Depend depend) {
+        depends.add(depend);
     }
 
     public boolean isSingleton() {
