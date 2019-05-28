@@ -12,9 +12,9 @@ public class Router {
     private ConcurrentHashMap<String, MethodInfo> routerCache;
 
     public Router() {
-        routerCache = new ConcurrentHashMap<String, MethodInfo>();
-
+        routerCache = new ConcurrentHashMap<>();
     }
+
     public void addRoute(String key, MethodInfo methodInfo) {
         routerCache.putIfAbsent(key, methodInfo);
     }
