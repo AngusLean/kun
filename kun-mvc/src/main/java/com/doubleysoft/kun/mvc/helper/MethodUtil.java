@@ -57,4 +57,18 @@ public class MethodUtil {
         }
         return value;
     }
+
+    public static boolean isBasicType(Class<?> type) {
+        if (type == Boolean.TYPE ||
+                type == Integer.TYPE ||
+                type == Float.TYPE ||
+                type == Double.TYPE ||
+                type == Byte.TYPE ||
+                type == Short.TYPE ||
+                type == Long.TYPE ||
+                type == String.class) {
+            return true;
+        }
+        return false;
+    }
 }

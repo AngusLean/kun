@@ -42,7 +42,6 @@ public class DefaultRequestHandler implements RequestHandler {
         KunContext kunContext = MvcContextHolder.getKunContext();
 //        return new KunMvcContext()
         return null;
-
     }
 
     private void handle(KunHttpRequest httpRequest, KunHttpResponse httpResponse, KunContext kunContext,
@@ -52,34 +51,52 @@ public class DefaultRequestHandler implements RequestHandler {
         httpResponse.setContent(response == null ? null : response.toString());
     }
 
+    /**
+     * default simple-type params using name mapping
+     *
+     * @param methodInfo
+     * @param reqParams
+     * @return
+     */
     private Object[] getMethodParams(MethodInfo methodInfo, MultivaluedMap<String, Object> reqParams) {
         if (reqParams.size() <= 0) {
             return new Object[0];
         }
         Method   method       = methodInfo.getMethod();
         Object[] methodParams = new Object[method.getParameterCount()];
-
         String[]    methodParamNames = AsmUtil.getMethodParamNames(method);
         Parameter[] parameters       = method.getParameters();
         for (int i = 0; i < methodParamNames.length; i++) {
-            if (reqParams.containsKey(methodParamNames[i])) {
-                List<Object> reqParamValues = reqParams.get(methodParamNames[i]);
+            methodParams[i] = getParameterValue(methodInfo, parameters[i], methodParamNames[i], reqParams);
+        }
+        return methodParams;
+    }
+
+    private Object getParameterValue(MethodInfo methodInfo, Parameter parameter, String parameterName, MultivaluedMap<String, Object> reqParams) {
+        //for basic type, we mapping param value with name
+        if (MethodUtil.isBasicType(parameter.getType())) {
+            if (reqParams.containsKey(parameterName)) {
+                List<Object> reqParamValues = reqParams.get(parameterName);
                 if (reqParamValues.size() == 0) {
-                    continue;
+                    return null;
                 }
-                if (parameters[i].isVarArgs()) {
-                    methodParams[i] = reqParamValues.toArray();
+                if (parameter.isVarArgs()) {
+                    return reqParamValues.toArray();
                 } else {
                     Object value = reqParamValues.get(0);
-                    value = MethodUtil.extractParam(parameters[i], value);
+                    value = MethodUtil.extractParam(parameter, value);
                     if (value instanceof String) {
-                        value = methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
+                        return methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
                     }
-                    methodParams[i] = value;
+                    return value;
                 }
             }
         }
-        return methodParams;
+        return unserializeObj();
+    }
+
+    private Object unserializeObj() {
+        return null;
     }
 
 }
