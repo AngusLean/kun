@@ -1,10 +1,10 @@
 
 dependencies{
-    implementation  'org.slf4j:slf4j-api'
-    implementation 'javax.inject:javax.inject'
+    compile  'org.slf4j:slf4j-api'
+    compile 'javax.inject:javax.inject'
+
     implementation 'org.projectlombok:lombok'
     implementation 'org.ow2.asm:asm'
-
 
     testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'junit:junit'

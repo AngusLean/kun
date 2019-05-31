@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +44,7 @@ public class DefaultRequestHandlerTest {
         Router spy    = Mockito.spy(router);
 
         KunContext kunContext = Mockito.mock(KunMvcContext.class);
-        when(kunContext.getBean(anyString())).thenReturn(new DefaultRequestHandlerTestDemo());
+        when(kunContext.getBean("com.doubleysoft.kun.mvc.server.DefaultRequestHandlerTest$DefaultRequestHandlerTestDemo")).thenReturn(new DefaultRequestHandlerTestDemo());
         MvcContextHolder.init(kunContext, spy);
 
         doReturn(methodInfo).when(spy).getReqHandler(any());
@@ -63,4 +62,6 @@ public class DefaultRequestHandlerTest {
             return name;
         }
     }
+
+
 }
