@@ -1,5 +1,7 @@
 package com.doubleysoft.kun.demo.controller;
 
+import com.doubleysoft.kun.mvc.annotation.JsonPath;
+
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 
@@ -7,16 +9,16 @@ import javax.ws.rs.Path;
  * @author dongyang.yu
  * @email dongyang.yu@anxincloud.com
  */
-@Path("/")
+@JsonPath("/")
 public class UserController {
 
     @Path("index")
     public String index() {
-        return "Hellow world";
+        return "Hello world";
     }
 
     @Path("user")
     public String addUser(String name, Inject age) {
-        return "Hellow " + name + ", age is " + age;
+        return "Hello " + name + ", age is " + age;
     }
 }

@@ -16,6 +16,17 @@ A Simple IOC/MVC library, Which currently only support [JSR330](https://www.jcp.
     Scope
     Singleton
 ```
+- Simple MVC annotation:
+
+```$xslt
+JsonPath //Mark a JSON-TEXT response controller
+
+MultipartParam //Mark a Multipart Param
+```
+By default, we mapping request parameter to handler method parameters
+names in direct. For Basic Type, Just write right param names and anything 
+is ok．
+
 - SpringMVC like usage
 
 
@@ -64,11 +75,23 @@ public class IndexController {
         return "hello " + name;
     }
 }
+@JsonPath
+public class UserController {
+    @Path("/add")
+    public String index() {
+        return "hello world";
+    }
+
+    @Delete("/del")
+    public String delUser(@PathParam("name") String name) {
+        return "hello " + name;
+    }
+}
 ```
 
 ### Usage
 before you application start, call this method:
 ```$xslt
-KunBootstrap.start(Class clazz)  //clazz is the root package you wish to be scanned
+KunMvcApplication.start(Your-Class)  //clazz is the root package you wish to be scanned
 ```
 
