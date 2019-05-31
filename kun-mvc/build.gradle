@@ -1,22 +1,12 @@
-plugins {
-    id 'java'
-}
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
-    compile project(":kun-ioc")
-    testCompile 'org.mockito:mockito-core'
+    implementation project(":kun-ioc")
+
 
     implementation 'org.ow2.asm:asm'
-    compile 'org.slf4j:slf4j-simple'
-    compile 'io.netty:netty-all'
+    implementation 'org.slf4j:slf4j-simple'
+    implementation 'io.netty:netty-all'
+    implementation 'javax.ws.rs:javax.ws.rs-api:2.0'
 
-    // https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
-    compile 'javax.ws.rs:javax.ws.rs-api:2.0'
-
+    testImplementation 'org.mockito:mockito-core'
 }
