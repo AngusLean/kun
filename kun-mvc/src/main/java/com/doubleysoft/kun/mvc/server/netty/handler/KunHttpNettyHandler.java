@@ -53,10 +53,14 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
         KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
 
         boolean isKeepAlive = false;
+        FullHttpResponse fullHttpResponse = setNettyResponse(httpResponse);
+        ctx.write(fullHttpResponse);
+        return isKeepAlive;
+    }
+
+    private FullHttpResponse setNettyResponse(KunHttpResponse httpResponse){
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK,
                 Unpooled.copiedBuffer(httpResponse.getContent(), CharsetUtil.UTF_8));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        ctx.write(response);
-        return isKeepAlive;
     }
 }
