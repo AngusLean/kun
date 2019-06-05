@@ -2,7 +2,7 @@ package com.doubleysoft.kun.mvc;
 
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 import com.doubleysoft.kun.ioc.context.filter.BeanMethodAnnotationFilter;
-import com.doubleysoft.kun.mvc.helper.AnnotationHelper;
+import com.doubleysoft.kun.mvc.helper.MvcAnnotationHelper;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -18,6 +18,6 @@ public class MvcContants {
 
     static {
         webRequestBeanFilters = new ArrayList<>();
-        webRequestBeanFilters.add(new BeanMethodAnnotationFilter(AnnotationHelper.getWebReqAnno(), true));
+        webRequestBeanFilters.add(new BeanMethodAnnotationFilter(MvcAnnotationHelper.getWebReqAnno(), true));
     }
 }

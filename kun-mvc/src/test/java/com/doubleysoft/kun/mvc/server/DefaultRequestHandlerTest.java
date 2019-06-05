@@ -9,12 +9,12 @@ import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +30,7 @@ public class DefaultRequestHandlerTest {
         requestHandler = new DefaultRequestHandler();
     }
 
-    @Ignore
+    @Test
     public void handle() {
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setClazz(DefaultRequestHandlerTestDemo.class);
@@ -44,16 +44,17 @@ public class DefaultRequestHandlerTest {
         Router spy    = Mockito.spy(router);
 
         KunContext kunContext = Mockito.mock(KunMvcContext.class);
-        when(kunContext.getBean(anyString())).thenReturn(new DefaultRequestHandlerTestDemo());
+        when(kunContext.getBean("com.doubleysoft.kun.mvc.server.DefaultRequestHandlerTest$DefaultRequestHandlerTestDemo")).thenReturn(new DefaultRequestHandlerTestDemo());
         MvcContextHolder.init(kunContext, spy);
 
         doReturn(methodInfo).when(spy).getReqHandler(any());
 
         HttpRequest     nettyRequest = Mockito.mock(HttpRequest.class);
         when(nettyRequest.method()).thenReturn(HttpMethod.GET);
-        when(nettyRequest.uri()).thenReturn("test.com?name=zhagnsan&age=14");
+        when(nettyRequest.uri()).thenReturn("test.com?name=teststring&age=14");
         KunHttpRequest  httpRequest  = new NettyKunHttpRequest(nettyRequest);
         KunHttpResponse response     = requestHandler.handle(httpRequest);
+        Assert.assertEquals("teststring", response.getContent());
     }
 
     public class DefaultRequestHandlerTestDemo {
@@ -61,4 +62,6 @@ public class DefaultRequestHandlerTest {
             return name;
         }
     }
+
+
 }

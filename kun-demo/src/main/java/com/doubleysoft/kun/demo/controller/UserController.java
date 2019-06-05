@@ -1,0 +1,24 @@
+package com.doubleysoft.kun.demo.controller;
+
+import com.doubleysoft.kun.mvc.annotation.JsonPath;
+
+import javax.inject.Inject;
+import javax.ws.rs.Path;
+
+/**
+ * @author dongyang.yu
+ * @email dongyang.yu@anxincloud.com
+ */
+@JsonPath("/")
+public class UserController {
+
+    @Path("index")
+    public String index() {
+        return "Hello world";
+    }
+
+    @Path("user")
+    public String addUser(String name, Inject age) {
+        return "Hello " + name + ", age is " + age;
+    }
+}

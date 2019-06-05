@@ -1,17 +1,12 @@
 
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
 dependencies{
     compile  'org.slf4j:slf4j-api'
     compile 'javax.inject:javax.inject'
-    compile 'org.projectlombok:lombok'
+
+    implementation 'org.projectlombok:lombok'
     implementation 'org.ow2.asm:asm'
 
-
-    testCompile 'org.slf4j:slf4j-simple'
-    testCompile 'junit:junit'
-    testCompile 'org.mockito:mockito-core'
+    testImplementation 'org.slf4j:slf4j-simple'
+    testImplementation 'junit:junit'
+    testImplementation 'org.mockito:mockito-core'
 }

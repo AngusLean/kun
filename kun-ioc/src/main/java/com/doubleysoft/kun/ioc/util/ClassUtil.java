@@ -15,6 +15,7 @@ import java.util.*;
  */
 @Slf4j
 public class ClassUtil {
+
     public static <T> T getInstance(Class<T> clazz, Set<Class> injectAnnotations, Ioc ioc) {
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         Constructor<?>   injectConstruct      = null;

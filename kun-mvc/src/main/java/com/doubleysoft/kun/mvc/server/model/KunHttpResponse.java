@@ -8,6 +8,8 @@ import java.util.Map;
  * 3/23/19 17:11
  */
 public interface KunHttpResponse {
+
+
     /**
      * get the whole request content
      *

@@ -3,4 +3,5 @@ rootProject.name = 'kun'
 
 include "kun-ioc"
 include 'kun-mvc'
+include 'kun-demo'
 

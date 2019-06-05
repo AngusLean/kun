@@ -1,0 +1,9 @@
+
+group 'com.doubleysoft'
+version '0.0.1-SNAPSHOT'
+
+dependencies {
+    implementation project(":kun-mvc")
+
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
