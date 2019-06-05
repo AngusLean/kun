@@ -1,6 +1,5 @@
 package com.doubleysoft.kun.mvc.server.netty.handler;
 
-import com.doubleysoft.kun.mvc.server.DefaultRequestHandler;
 import com.doubleysoft.kun.mvc.server.RequestHandler;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
@@ -62,5 +61,6 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK,
                 Unpooled.copiedBuffer(httpResponse.getContent(), CharsetUtil.UTF_8));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
+        return response;
     }
 }
