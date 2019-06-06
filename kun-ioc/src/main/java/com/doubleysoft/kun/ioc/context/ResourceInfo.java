@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassInfo<T> {
+public class ResourceInfo<T> {
     private String className;
 
     private Class<T> clazz;

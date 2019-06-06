@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.ioc.scanner;
 
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 
 import javax.annotation.Resource;
 import javax.inject.Singleton;
@@ -17,12 +17,12 @@ public class JavaxInjectClassInfoFilter implements ClassInfoFilter {
      * check a class is resource for ioc container,
      * usually  means is it annotated with @Singleton
      *
-     * @param classInfo the class info
+     * @param resourceInfo the class info
      * @return
      */
     @Override
-    public boolean filterResourceClassInfo(ClassInfo classInfo) {
-        return classInfo.isAnnotationWith(Arrays.asList(Singleton.class, Resource.class));
+    public boolean filterResourceClassInfo(ResourceInfo resourceInfo) {
+        return resourceInfo.isAnnotationWith(Arrays.asList(Singleton.class, Resource.class));
     }
 
 }

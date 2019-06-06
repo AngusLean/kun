@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.BeanDefinition;
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 import com.doubleysoft.kun.ioc.context.filter.BeanFilter;
 
 import java.util.List;
@@ -23,11 +23,11 @@ public interface Ioc {
     <T> void addBean(Class<T> clazz);
 
     /**
-     * add a Bean By ClassInfo
+     * add a Bean By ResourceInfo
      *
-     * @param classInfo
+     * @param resourceInfo
      */
-    void addBean(ClassInfo<?> classInfo);
+    void addBean(ResourceInfo<?> resourceInfo);
 
     /**
      * get a specified type of bean instance, if current instance have not created,

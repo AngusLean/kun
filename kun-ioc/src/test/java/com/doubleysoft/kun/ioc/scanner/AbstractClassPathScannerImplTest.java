@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.scanner;
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 import com.doubleysoft.kun.ioc.scanner.test1.Demo3;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +24,7 @@ public class AbstractClassPathScannerImplTest {
             }
 
             @Override
-            public boolean filterResourceClassInfo(ClassInfo classInfo) {
+            public boolean filterResourceClassInfo(ResourceInfo resourceInfo) {
                 return true;
             }
 
@@ -33,13 +33,13 @@ public class AbstractClassPathScannerImplTest {
 
     @Test
     public void testScan() {
-        Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.ioc.scanner.test");
+        Set<ResourceInfo> results = scanner.scan("com.doubleysoft.kun.ioc.scanner.test");
         Assert.assertEquals(results.size(), 2);
     }
 
     @Test
     public void testScanCs() throws ClassNotFoundException {
-        Set<ClassInfo> results = scanner.scan("com.doubleysoft.kun.ioc.scanner.test1");
+        Set<ResourceInfo> results = scanner.scan("com.doubleysoft.kun.ioc.scanner.test1");
         Assert.assertTrue(results.iterator().hasNext());
         String className = results.iterator().next().getClassName();
         Assert.assertEquals("com.doubleysoft.kun.ioc.scanner.test1.Demo3", className);

@@ -29,7 +29,7 @@ public class DefaultRequestHandler implements RequestHandler {
         KunHttpResponse response = new DefaultKunHttpResponse();
         MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.getReqURI());
         if (reqMethod == null) {
-            log.error("Illegal request path{}", httpRequest.getReqURI());
+            log.error("Not found request path [{}] mapping", httpRequest.getReqURI());
             response.setStatus(404);
             return response;
         }
@@ -43,6 +43,7 @@ public class DefaultRequestHandler implements RequestHandler {
         //response content
         Object response = handlerMethod.execute(kunContext.getBean(handlerMethod.getBeanName()), callParam);
         httpResponse.setContent(response == null ? null : response.toString());
+        httpResponse.setStatus(200);
         //response headers
         setResponseHeaders(httpRequest, httpResponse, handlerMethod);
     }

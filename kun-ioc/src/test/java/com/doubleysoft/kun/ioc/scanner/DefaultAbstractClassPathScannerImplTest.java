@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.scanner;
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 import com.doubleysoft.kun.ioc.scanner.defaultcps.DefaultCps2;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,9 +25,9 @@ public class DefaultAbstractClassPathScannerImplTest {
      */
     @Test
     public void testScanWithFilter() {
-        Set<ClassInfo> classInfoSet = defaultClassPathScanner.scan("com.doubleysoft.kun.ioc.scanner.defaultcps");
-        Assert.assertEquals(classInfoSet.size(), 1);
-        ClassInfo classInfo = classInfoSet.iterator().next();
-        Assert.assertEquals(DefaultCps2.class, classInfo.getKlazz());
+        Set<ResourceInfo> resourceInfoSet = defaultClassPathScanner.scan("com.doubleysoft.kun.ioc.scanner.defaultcps");
+        Assert.assertEquals(resourceInfoSet.size(), 1);
+        ResourceInfo resourceInfo = resourceInfoSet.iterator().next();
+        Assert.assertEquals(DefaultCps2.class, resourceInfo.getKlazz());
     }
 }

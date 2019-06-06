@@ -49,7 +49,7 @@ public class MethodInfo {
     }
 
     public String getBeanName() {
-        return beanDefinition.getClassInfo().getClassName();
+        return beanDefinition.getResourceInfo().getClassName();
     }
 
 }
