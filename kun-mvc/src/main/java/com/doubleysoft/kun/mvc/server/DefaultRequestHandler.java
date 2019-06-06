@@ -40,15 +40,17 @@ public class DefaultRequestHandler implements RequestHandler {
     private void handle(KunHttpRequest httpRequest, KunHttpResponse httpResponse, KunContext kunContext,
                         MethodInfo handlerMethod) {
         Object[] callParam = getMethodParams(handlerMethod, httpRequest.getReqParams());
+
         //response content
         Object response = handlerMethod.execute(kunContext.getBean(handlerMethod.getBeanName()), callParam);
         httpResponse.setContent(response == null ? null : response.toString());
-        httpResponse.setStatus(200);
+
         //response headers
         setResponseHeaders(httpRequest, httpResponse, handlerMethod);
     }
 
     private void setResponseHeaders(KunHttpRequest httpRequest, KunHttpResponse httpResponse, MethodInfo handlerMethod) {
+        httpResponse.setStatus(200);
     }
 
 

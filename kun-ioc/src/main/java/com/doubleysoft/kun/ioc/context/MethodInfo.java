@@ -34,7 +34,7 @@ public class MethodInfo {
             Method method     = getMethod();
             int    paramCount = method.getParameterCount();
             if (params.length != paramCount) {
-                log.warn("call method :{}, request params:{}, but required param count is {}", method.getName(), params.length, paramCount);
+                log.warn("call method :{}, request params count :{}, but required param count is {}", method.getName(), params.length, paramCount);
                 return method.invoke(target, new Object[paramCount]);
             }
             return method.invoke(target, params);
