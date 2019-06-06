@@ -1,6 +1,5 @@
 package com.doubleysoft.kun.mvc.server.model;
 
-import javax.activation.MimeType;
 import java.util.Map;
 
 /**
@@ -8,7 +7,6 @@ import java.util.Map;
  * 3/23/19 17:11
  */
 public interface KunHttpResponse {
-
 
     /**
      * get the whole request content

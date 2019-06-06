@@ -2,7 +2,6 @@ package com.doubleysoft.kun.mvc.server;
 
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
-import com.doubleysoft.kun.ioc.exception.StateException;
 import com.doubleysoft.kun.ioc.util.AsmUtil;
 import com.doubleysoft.kun.mvc.helper.MethodUtil;
 import com.doubleysoft.kun.mvc.helper.WebUtil;
@@ -31,7 +30,8 @@ public class DefaultRequestHandler implements RequestHandler {
         MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.getReqURI());
         if (reqMethod == null) {
             log.error("Illegal request path{}", httpRequest.getReqURI());
-            throw new StateException("Illegal request path");
+            response.setStatus(404);
+            return response;
         }
         handle(httpRequest, response, MvcContextHolder.getKunContext(), reqMethod);
         return response;
