@@ -1,4 +1,4 @@
-package com.doubleysoft.kun.mvc.util;
+package com.doubleysoft.kun.mvc.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

@@ -15,8 +15,6 @@ public class DefaultKunHttpResponse implements KunHttpResponse {
 
     public DefaultKunHttpResponse(){
         headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json;charset=utf-8");
     }
 
 
