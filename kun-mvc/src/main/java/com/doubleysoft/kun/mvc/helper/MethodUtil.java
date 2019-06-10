@@ -59,14 +59,21 @@ public class MethodUtil {
     }
 
     public static boolean isBasicType(Class<?> type) {
-        if (type == Boolean.TYPE ||
-                type == Integer.TYPE ||
-                type == Float.TYPE ||
-                type == Double.TYPE ||
-                type == Byte.TYPE ||
-                type == Short.TYPE ||
-                type == Long.TYPE ||
-                type == String.class) {
+        if (type.equals(Boolean.class) ||
+                type.equals(Integer.class) ||
+                type.equals(Float.class) ||
+                type.equals(Double.class) ||
+                type.equals(Byte.class) ||
+                type.equals(Short.class) ||
+                type.equals(Long.class) ||
+                type.equals(String.class) ||
+                type.equals(boolean.class) ||
+                type.equals(int.class) ||
+                type.equals(float.class) ||
+                type.equals(byte.class) ||
+                type.equals(short.class) ||
+                type.equals(long.class) ||
+                type.equals(char.class)) {
             return true;
         }
         return false;

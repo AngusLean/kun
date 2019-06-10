@@ -4,6 +4,8 @@ dependencies {
 
     compile 'javax.ws.rs:javax.ws.rs-api'
 
+    compile 'com.alibaba:fastjson:1.2.58'
+
     implementation 'org.ow2.asm:asm'
     implementation 'org.slf4j:slf4j-simple'
     implementation 'io.netty:netty-all'
