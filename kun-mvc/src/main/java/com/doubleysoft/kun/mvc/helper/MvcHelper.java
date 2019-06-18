@@ -25,7 +25,6 @@ public class MvcHelper {
 
     static {
         defaultReqAnnotations = Arrays.asList(Path.class, ApplicationPath.class, JsonPath.class);
-        ;
     }
 
     public static List<Class<? extends Annotation>> getWebReqAnno() {
@@ -83,8 +82,15 @@ public class MvcHelper {
                 return methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
             }
             return value;
+        }
+        if (isSpecialParam(parameter)) {
+            return null;
         } else {
             return JsonUtil.map2Obj(contentMap, parameter.getType());
         }
+    }
+
+    private static boolean isSpecialParam(Parameter parameter) {
+        return true;
     }
 }
