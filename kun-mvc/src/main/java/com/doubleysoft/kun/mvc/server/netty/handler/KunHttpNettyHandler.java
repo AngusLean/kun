@@ -48,9 +48,7 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
     }
 
     private boolean writeResponse(KunHttpRequest httpRequest, ChannelHandlerContext ctx) {
-//        boolean isKeepAlive = httpRequest.isKeepAlive();
         KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
-
         boolean isKeepAlive = false;
         FullHttpResponse fullHttpResponse = setNettyResponse(httpResponse);
         ctx.write(fullHttpResponse);
