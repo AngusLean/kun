@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.Ignore;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +30,7 @@ public class DefaultRequestHandlerTest {
         requestHandler = new DefaultRequestHandler();
     }
 
-    @Test
+    @Ignore
     public void handle() {
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setClazz(DefaultRequestHandlerTestDemo.class);

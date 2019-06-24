@@ -32,7 +32,6 @@ public class MergeHttpRequestHandler extends SimpleChannelInboundHandler<HttpObj
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) {
         if (msg instanceof io.netty.handler.codec.http.HttpRequest) {
             kunHttpRequest = HttpRequestFactory.nettyRequest((io.netty.handler.codec.http.HttpRequest) msg);
-            return;
         }
         if (null != kunHttpRequest && msg instanceof HttpContent) {
             HttpContent httpContent = (HttpContent) msg;

@@ -51,14 +51,14 @@ public class KunIoc implements Ioc {
 
     @Override
     public <T> void addBean(Class<T> clazz) {
-        addBean(ClassInfo.builder().clazz((Class<Object>) clazz).build());
+        addBean(ResourceInfo.builder().clazz((Class<Object>) clazz).build());
     }
 
     @Override
-    public void addBean(ClassInfo<?> classInfo) {
-        this.container.computeIfAbsent(classInfo.getKlazz().getName(), key -> {
+    public void addBean(ResourceInfo<?> resourceInfo) {
+        this.container.computeIfAbsent(resourceInfo.getKlazz().getName(), key -> {
             BeanDefinition beanDefinition = new BeanDefinition();
-            beanDefinition.setClassInfo(classInfo);
+            beanDefinition.setResourceInfo(resourceInfo);
             PostProcessorUtil.processBeanDefinition(beanDefinition, beanDefinitionProcessors);
             return beanDefinition;
         });

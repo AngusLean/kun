@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.ioc;
 
 import com.doubleysoft.kun.ioc.context.AbstractApplicationContext;
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;
 import com.doubleysoft.kun.ioc.scanner.DefaultClassPathScannerImpl;
@@ -35,11 +35,11 @@ public class KunContext extends AbstractApplicationContext {
     }
 
     public void init() {
-        Set<ClassInfo>      classInfos = scanner.scan(packages);
-        Iterator<ClassInfo> iterator   = classInfos.iterator();
+        Set<ResourceInfo> resourceInfos = scanner.scan(packages);
+        Iterator<ResourceInfo> iterator = resourceInfos.iterator();
         while (iterator.hasNext()) {
-            ClassInfo classInfo = iterator.next();
-            this.ioc.addBean(classInfo);
+            ResourceInfo resourceInfo = iterator.next();
+            this.ioc.addBean(resourceInfo);
         }
         this.publishEvent(new ContextStartedEvent(this));
     }

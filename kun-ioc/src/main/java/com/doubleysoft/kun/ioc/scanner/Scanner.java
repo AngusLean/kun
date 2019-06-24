@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.scanner;
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 
 import java.util.Set;
 
@@ -15,7 +15,7 @@ public interface Scanner {
      * @param packages
      * @return
      */
-    Set<ClassInfo> scan(String packages);
+    Set<ResourceInfo> scan(String packages);
 
     /**
      * load class
@@ -23,7 +23,7 @@ public interface Scanner {
      * @param classPackage complete class path
      * @return
      */
-    ClassInfo loadClass(String classPackage);
+    ResourceInfo loadClass(String classPackage);
 
 
     /**

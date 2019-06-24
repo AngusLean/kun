@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.scanner;
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 
 /**
  * @author cupofish@gmail.com
@@ -10,8 +10,8 @@ public interface ClassInfoFilter {
     /**
      * filter classes thich should be managed by ioc container
      *
-     * @param classInfo
+     * @param resourceInfo
      * @return
      */
-    boolean filterResourceClassInfo(ClassInfo classInfo);
+    boolean filterResourceClassInfo(ResourceInfo resourceInfo);
 }

@@ -12,8 +12,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.HttpServerExpectContinueHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +41,8 @@ public class NettyServer implements Server {
                         @Override
                         public void initChannel(SocketChannel ch){
                             ch.pipeline().addLast(new HttpServerCodec());
-                            ch.pipeline().addLast(new HttpServerExpectContinueHandler());
+                            ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
                             ch.pipeline().addLast(new MergeHttpRequestHandler());
-
                             ch.pipeline().addLast(kunHttpNettyHandler);
                         }
                     })

@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.ioc.scanner;
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 import com.doubleysoft.kun.ioc.exception.StateException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractClassPathScannerImpl implements Scanner, ClassInfoFilter {
 
     @Override
-    public Set<ClassInfo> scan(String packages) {
-        Set<ClassInfo> lists        = new HashSet<>();
+    public Set<ResourceInfo> scan(String packages) {
+        Set<ResourceInfo> lists = new HashSet<>();
         String         packagesPath = packages.replace(".", "/");
         try {
             Enumeration<URL> urls = AbstractClassPathScannerImpl.class.getClassLoader().getResources(packagesPath);
@@ -39,18 +39,18 @@ public abstract class AbstractClassPathScannerImpl implements Scanner, ClassInfo
     }
 
     @Override
-    public ClassInfo loadClass(String classPackage) {
+    public ResourceInfo loadClass(String classPackage) {
         try {
             Class clazz = this.getClass().getClassLoader().loadClass(classPackage);
-            return ClassInfo.builder().className(clazz.getName()).build();
+            return ResourceInfo.builder().className(clazz.getName()).build();
         } catch (ClassNotFoundException e) {
             log.error("error in load class :{}", classPackage);
             throw new StateException("error in load class");
         }
     }
 
-    private Set<ClassInfo> listFiles(String path, String packageName) {
-        Set<ClassInfo> results = new HashSet<>();
+    private Set<ResourceInfo> listFiles(String path, String packageName) {
+        Set<ResourceInfo> results = new HashSet<>();
         try {
             Files.list(Paths.get(path)).forEach(ph -> {
                 if (ph.toFile().isDirectory()) {
@@ -59,7 +59,7 @@ public abstract class AbstractClassPathScannerImpl implements Scanner, ClassInfo
                 } else {
                     String fileName = ph.toFile().getName();
                     fileName = fileName.substring(0, fileName.length() - 6);
-                    results.add(ClassInfo.builder()
+                    results.add(ResourceInfo.builder()
                             .className(packageName + "." + fileName)
                             .build());
                 }

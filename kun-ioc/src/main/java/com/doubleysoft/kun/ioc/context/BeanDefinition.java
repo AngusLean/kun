@@ -19,7 +19,7 @@ public class BeanDefinition<T> {
 
     @Getter
     @Setter
-    private ClassInfo<T> classInfo;
+    private ResourceInfo<T> resourceInfo;
 
     private Set<Depend> depends;
 
@@ -28,14 +28,14 @@ public class BeanDefinition<T> {
     }
 
     public Class<T> getClazz() {
-        return classInfo.getKlazz();
+        return resourceInfo.getKlazz();
     }
 
     public void setClazz(Class<T> clazz) {
-        if (this.classInfo == null) {
-            classInfo = new ClassInfo<>();
+        if (this.resourceInfo == null) {
+            resourceInfo = new ResourceInfo<>();
         }
-        classInfo.setClazz(clazz);
+        resourceInfo.setClazz(clazz);
     }
 
 

@@ -83,11 +83,26 @@ public class UserController {
     }
 
     @Delete("/del")
-    public String delUser(@PathParam("name") String name) {
+    public String delUser(String name) {
         return "hello " + name;
     }
 }
 ```
+
+**Note**
+>>>
+Controller method parameter name is automatic mapped by name．and use follow strategy:
+1. use URI params, for example:
+```apple js
+http://www.baidu.com?name=zhangsna&age=22
+```
+will generate "name" and "age" parameters．if parameter is't match,then:
+
+2. deserialize POST body as a key-value map, and find params.
+```apple js
+bash:  curl -X '{age:33}' http://www.baidu.com
+```
+will generate 'age' parameter.
 
 ### Usage
 before you application start, call this method:

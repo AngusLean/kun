@@ -1,7 +1,7 @@
 package com.doubleysoft.kun.ioc.scanner;
 
 
-import com.doubleysoft.kun.ioc.context.ClassInfo;
+import com.doubleysoft.kun.ioc.context.ResourceInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ public class DefaultClassPathScannerImpl extends AbstractClassPathScannerImpl {
     }
 
     @Override
-    public boolean filterResourceClassInfo(ClassInfo classInfo) {
-        return classInfoFilters.stream().anyMatch(row -> row.filterResourceClassInfo(classInfo));
+    public boolean filterResourceClassInfo(ResourceInfo resourceInfo) {
+        return classInfoFilters.stream().anyMatch(row -> row.filterResourceClassInfo(resourceInfo));
     }
 
     @Override

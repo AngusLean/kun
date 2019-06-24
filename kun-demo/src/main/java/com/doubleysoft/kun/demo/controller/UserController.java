@@ -2,7 +2,6 @@ package com.doubleysoft.kun.demo.controller;
 
 import com.doubleysoft.kun.mvc.annotation.JsonPath;
 
-import javax.inject.Inject;
 import javax.ws.rs.Path;
 
 /**
@@ -18,7 +17,7 @@ public class UserController {
     }
 
     @Path("user")
-    public String addUser(String name, Inject age) {
+    public String addUser(String name, Integer age) {
         return "Hello " + name + ", age is " + age;
     }
 }

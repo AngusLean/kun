@@ -8,9 +8,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,29 +34,54 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, KunHttpRequest httpRequest) {
         if (!writeResponse(httpRequest, ctx)) {
-            // If keep-alive is off, close the connection once the content is fully written.
             ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        } else {
+            ctx.flush();
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("error in handle http request", cause);
-        ctx.close();
+        setCommonResponse(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        ctx.flush();
     }
 
     private boolean writeResponse(KunHttpRequest httpRequest, ChannelHandlerContext ctx) {
-        KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
-        boolean isKeepAlive = false;
-        FullHttpResponse fullHttpResponse = setNettyResponse(httpResponse);
-        ctx.write(fullHttpResponse);
-        return isKeepAlive;
+        boolean keepAlive = httpRequest.isKeepAlive();
+        try {
+            KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
+            FullHttpResponse fullHttpResponse = setNettyResponse(httpResponse);
+            //netty4 require set content-length, or else it will not send response,
+            fullHttpResponse.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, fullHttpResponse.content().readableBytes());
+            //set keep-alive header
+            if (keepAlive) {
+                fullHttpResponse.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+            }
+            ctx.write(fullHttpResponse);
+        } catch (Exception e) {
+            log.error("error in handle response in Netty", e);
+            setCommonResponse(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        }
+        return keepAlive;
     }
 
     private FullHttpResponse setNettyResponse(KunHttpResponse httpResponse){
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK,
-                Unpooled.copiedBuffer(httpResponse.getContent(), CharsetUtil.UTF_8));
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
+        FullHttpResponse response;
+        if (httpResponse.getStatus() == OK.code()) {
+            response = new DefaultFullHttpResponse(HTTP_1_1, OK,
+                    Unpooled.copiedBuffer(httpResponse.getContent(), CharsetUtil.UTF_8));
+        } else {
+            response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.valueOf(httpResponse.getStatus()));
+        }
+        httpResponse.getHeaders().keySet().forEach(row -> response.headers().set(row, httpResponse.getHeaders().get(row)));
         return response;
     }
+
+
+    private void setCommonResponse(ChannelHandlerContext ctx, HttpResponseStatus status) {
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status);
+        ctx.write(response);
+    }
+
 }
