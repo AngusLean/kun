@@ -38,19 +38,19 @@ public class MethodUtil {
             }
             return null;
         }
-        if (type == Boolean.class) {
+        if (type == Boolean.class || type.equals(boolean.class)) {
             return Boolean.valueOf(value.toString());
-        } else if (type == Integer.class) {
+        } else if (type == Integer.class || type.equals(int.class)) {
             return Integer.valueOf(value.toString());
-        } else if (type == Float.class) {
+        } else if (type == Float.class || type.equals(float.class)) {
             return Float.valueOf(value.toString());
-        } else if (type == Double.class) {
+        } else if (type == Double.class || type.equals(double.class)) {
             return Double.valueOf(value.toString());
-        } else if (type == Byte.class) {
+        } else if (type == Byte.class || type.equals(byte.class)) {
             return Byte.valueOf(value.toString());
-        } else if (type == Short.class) {
+        } else if (type == Short.class || type.equals(short.class)) {
             return Short.valueOf(value.toString());
-        } else if (type == Long.class) {
+        } else if (type == Long.class || type.equals(long.class)) {
             return Long.valueOf(value.toString());
         } else if (type == String.class || type == Object.class) {
             return value.toString();
