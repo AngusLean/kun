@@ -3,16 +3,11 @@ package com.doubleysoft.kun.mvc.helper;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.ioc.util.AsmUtil;
 import com.doubleysoft.kun.ioc.util.StrUtil;
-import com.doubleysoft.kun.mvc.annotation.JsonPath;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MultivaluedMap;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,16 +16,6 @@ import java.util.Map;
  * 3/31/19 16:10
  */
 public class MvcHelper {
-    private static List<Class<? extends Annotation>> defaultReqAnnotations;
-
-    static {
-        defaultReqAnnotations = Arrays.asList(Path.class, ApplicationPath.class, JsonPath.class);
-    }
-
-    public static List<Class<? extends Annotation>> getWebReqAnno() {
-        return defaultReqAnnotations;
-    }
-
     public static Object[] getMethodCallParams(KunHttpRequest request, MethodInfo handlerMethod) {
         return getMethodParams(handlerMethod, request.getReqParams(), request.getContent());
     }
