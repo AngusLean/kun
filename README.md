@@ -86,6 +86,10 @@ public class UserController {
     public String delUser(String name) {
         return "hello " + name;
     }
+    @Get("/content")
+    public void content(Float age, @CookieParam(value = "token") String token) {
+    
+    }
 }
 ```
 
