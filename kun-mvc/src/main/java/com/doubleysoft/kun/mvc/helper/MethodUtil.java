@@ -38,21 +38,21 @@ public class MethodUtil {
             }
             return null;
         }
-        if (type == Boolean.TYPE) {
+        if (type == Boolean.class) {
             return Boolean.valueOf(value.toString());
-        } else if (type == Integer.TYPE) {
+        } else if (type == Integer.class) {
             return Integer.valueOf(value.toString());
-        } else if (type == Float.TYPE) {
+        } else if (type == Float.class) {
             return Float.valueOf(value.toString());
-        } else if (type == Double.TYPE) {
+        } else if (type == Double.class) {
             return Double.valueOf(value.toString());
-        } else if (type == Byte.TYPE) {
+        } else if (type == Byte.class) {
             return Byte.valueOf(value.toString());
-        } else if (type == Short.TYPE) {
+        } else if (type == Short.class) {
             return Short.valueOf(value.toString());
-        } else if (type == Long.TYPE) {
+        } else if (type == Long.class) {
             return Long.valueOf(value.toString());
-        } else if (type == String.class) {
+        } else if (type == String.class || type == Object.class) {
             return value.toString();
         }
         return value;

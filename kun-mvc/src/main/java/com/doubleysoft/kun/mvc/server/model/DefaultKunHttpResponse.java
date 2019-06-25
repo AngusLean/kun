@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.doubleysoft.kun.mvc.server.Const.CONTENT_TYPE;
+import static com.doubleysoft.kun.mvc.server.Const.KEY_CONTENT_TYPE;
 
 /**
  * @author cupofish@gmail.com
@@ -32,12 +32,12 @@ public class DefaultKunHttpResponse implements KunHttpResponse {
 
     @Override
     public String getContentType() {
-        return this.headers.get(CONTENT_TYPE);
+        return this.headers.get(KEY_CONTENT_TYPE);
     }
 
     @Override
     public void setContentType(String contentType) {
-        this.headers.put(CONTENT_TYPE, contentType);
+        this.headers.put(KEY_CONTENT_TYPE, contentType);
     }
 
     @Override

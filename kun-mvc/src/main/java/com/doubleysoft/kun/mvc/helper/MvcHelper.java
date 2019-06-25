@@ -5,6 +5,8 @@ import com.doubleysoft.kun.ioc.util.AsmUtil;
 import com.doubleysoft.kun.ioc.util.StrUtil;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 
+import javax.ws.rs.CookieParam;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -17,17 +19,19 @@ import java.util.Map;
  */
 public class MvcHelper {
     public static Object[] getMethodCallParams(KunHttpRequest request, MethodInfo handlerMethod) {
-        return getMethodParams(handlerMethod, request.getReqParams(), request.getContent());
+        return getMethodParams(handlerMethod, request);
     }
 
     /**
      * default simple-type params using name mapping
      *
      * @param methodInfo
-     * @param reqParams
+     * @param request
      * @return
      */
-    private static Object[] getMethodParams(MethodInfo methodInfo, MultivaluedMap<String, Object> reqParams, String content) {
+    private static Object[] getMethodParams(MethodInfo methodInfo, KunHttpRequest request) {
+        MultivaluedMap<String, Object> reqParams = request.getReqParams();
+        String content = request.getContent();
         if (reqParams.size() <= 0 && StrUtil.isNullOrEmpty(content)) {
             return new Object[0];
         }
@@ -38,7 +42,28 @@ public class MvcHelper {
 
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < methodParamNames.length; i++) {
-            methodParams[i] = getParameterValue(methodInfo, parameters[i], methodParamNames[i], reqParams, contentMap);
+            Parameter parameter = parameters[i];
+
+            //cookie
+            CookieParam cookieParams = parameter.getAnnotation(CookieParam.class);
+            if (cookieParams != null) {
+                Cookie cookie = request.getCookie(cookieParams.value() == null ? methodParamNames[i] : cookieParams.value());
+                if (cookie != null) {
+                    methodParams[i] = parseCookie2Para(parameter, cookie);
+                } else {
+                    methodParams[i] = null;
+                }
+                continue;
+            }
+
+            //basic type
+            if (MethodUtil.isBasicType(parameter.getType())) {
+                methodParams[i] = getParameterValue(methodInfo, parameter, methodParamNames[i], reqParams, contentMap);
+                continue;
+            }
+
+
+            methodParams[i] = JsonUtil.map2Obj(contentMap, parameters[i].getType());
         }
         return methodParams;
     }
@@ -46,36 +71,32 @@ public class MvcHelper {
     private static Object getParameterValue(MethodInfo methodInfo, Parameter parameter, String parameterName,
                                             MultivaluedMap<String, Object> reqParams, Map<String, Object> contentMap) {
         //for basic type, we mapping param value with name
-        if (MethodUtil.isBasicType(parameter.getType())) {
-            List<Object> reqParamValues = reqParams.get(parameterName);
-            Object value;
-            if (reqParamValues == null) {
-                if (!contentMap.containsKey(parameterName)) {
-                    return null;
-                }
-                //parameter from http request content
-                value = contentMap.get(parameterName);
-            } else if (parameter.isVarArgs()) {
-                return reqParamValues.toArray();
-            } else {
-                //parameter from http request uri
-                value = reqParamValues.get(0);
+        List<Object> reqParamValues = reqParams.get(parameterName);
+        Object value;
+        if (reqParamValues == null) {
+            if (!contentMap.containsKey(parameterName)) {
+                return null;
             }
-
-            value = MethodUtil.extractParam(parameter, value);
-            if (value instanceof String) {
-                return methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
-            }
-            return value;
-        }
-        if (isSpecialParam(parameter)) {
-            return null;
+            //parameter from http request content
+            value = contentMap.get(parameterName);
+        } else if (parameter.isVarArgs()) {
+            return reqParamValues.toArray();
         } else {
-            return JsonUtil.map2Obj(contentMap, parameter.getType());
+            //parameter from http request uri
+            value = reqParamValues.get(0);
         }
+
+        value = MethodUtil.extractParam(parameter, value);
+        if (value instanceof String) {
+            return methodInfo.isDecodeReqParam() ? WebUtil.decodeURIComponent(value) : value;
+        }
+        return value;
     }
 
-    private static boolean isSpecialParam(Parameter parameter) {
-        return true;
+    /**
+     * some special parameter , such as cookie, request, response ...etc.
+     */
+    private static Object parseCookie2Para(Parameter parameter, Cookie cookie) {
+        return MethodUtil.extractParam(parameter, cookie.getValue());
     }
 }

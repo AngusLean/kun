@@ -12,4 +12,5 @@ dependencies {
 
 
     testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
 }

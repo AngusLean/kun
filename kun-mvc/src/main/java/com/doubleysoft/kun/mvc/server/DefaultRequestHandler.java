@@ -10,7 +10,7 @@ import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.doubleysoft.kun.mvc.server.Const.CONTENT_TYPE;
+import static com.doubleysoft.kun.mvc.server.Const.KEY_CONTENT_TYPE;
 
 /**
  * @author cupofish@gmail.com
@@ -49,7 +49,7 @@ public class DefaultRequestHandler implements RequestHandler {
         httpResponse.setStatus(200);
         httpResponse.getHeaders().put("Date", DateUtil.gmtDate());
         httpResponse.getHeaders().put("Last-Modified", DateUtil.gmtDate());
-        httpResponse.getHeaders().put(CONTENT_TYPE, "application/json;charset=utf-8");
+        httpResponse.getHeaders().put(KEY_CONTENT_TYPE, "application/json;charset=utf-8");
         if (httpRequest.isKeepAlive()) {
             httpResponse.getHeaders().put("Connection", "keep-alive");
         }

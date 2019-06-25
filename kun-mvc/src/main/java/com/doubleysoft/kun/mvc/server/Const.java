@@ -5,5 +5,7 @@ package com.doubleysoft.kun.mvc.server;
  * @email dongyang.yu@anxincloud.com
  */
 public interface Const {
-    String CONTENT_TYPE = "Content-Type";
+    String KEY_CONTENT_TYPE = "Content-Type";
+
+    String KEY_COOKIE = "Cookie";
 }

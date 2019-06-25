@@ -1,5 +1,6 @@
 package com.doubleysoft.kun.mvc.server.model;
 
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
 /**
@@ -44,4 +45,6 @@ public interface KunHttpRequest {
      * @return
      */
     MultivaluedMap<String, Object> getReqParams();
+
+    Cookie getCookie(String key);
 }
