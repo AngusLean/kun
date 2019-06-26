@@ -26,16 +26,16 @@ public class RouterListener implements ApplicationEventListener<ContextStartedEv
     public void onEvent(ContextStartedEvent event) {
         ApplicationContext context = event.getApplicationContext();
         List<BeanDefinition> beans = context.getBeans(MvcContants.getWebRequestBeanFilters());
-        for (BeanDefinition beanDefinition : beans) {
+
+        beans.parallelStream().forEach(beanDefinition -> {
             Class clazz = beanDefinition.getClazz();
             String basePath = "";
             JsonPath jsonPath = (JsonPath) clazz.getAnnotation(JsonPath.class);
             if (jsonPath != null) {
                 basePath = jsonPath.value();
             }
-            //???
             final String tempBasePath = basePath;
-            Arrays.stream(clazz.getMethods())
+            Arrays.stream(clazz.getMethods()).parallel()
                     .filter(row -> row.isAnnotationPresent(Path.class))
                     .forEach(row -> {
                         Path annotation = row.getAnnotation(Path.class);
@@ -45,8 +45,8 @@ public class RouterListener implements ApplicationEventListener<ContextStartedEv
                         MvcContextHolder.getRouter().addRoute(reqPath, MethodInfo.builder()
                                 .beanDefinition(beanDefinition).methodName(row.getName()).build());
                     });
-        }
-
-        log.info("All mvc mapping beans: {}", beans);
+        });
     }
+
+
 }
