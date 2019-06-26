@@ -16,11 +16,6 @@ public interface KunHttpResponse {
     String getContent();
 
     /**
-     * set response content
-     */
-    void setContent(String content);
-
-    /**
      * Get current response headers
      *
      * @return return response headers

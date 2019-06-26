@@ -22,7 +22,7 @@ public class DefaultRequestHandler implements RequestHandler {
 
     @Override
     public KunHttpResponse handle(KunHttpRequest httpRequest) {
-        KunHttpResponse response = new DefaultKunHttpResponse();
+        DefaultKunHttpResponse response = new DefaultKunHttpResponse();
         MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.getReqURI());
         if (reqMethod == null) {
             log.error("Not found request path [{}] mapping", httpRequest.getReqURI());
@@ -33,7 +33,7 @@ public class DefaultRequestHandler implements RequestHandler {
         return response;
     }
 
-    private void handle(KunHttpRequest httpRequest, KunHttpResponse httpResponse, KunContext kunContext,
+    private void handle(KunHttpRequest httpRequest, DefaultKunHttpResponse httpResponse, KunContext kunContext,
                         MethodInfo handlerMethod) {
         Object[] callParam = MvcHelper.getMethodCallParams(httpRequest, handlerMethod);
 

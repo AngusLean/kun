@@ -19,6 +19,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 /**
  * @author cupofish@gmail.com
  * 3/23/19 15:32
+ * Wrap KunHttpResponse to netty httpresponse way
  */
 @ChannelHandler.Sharable
 @Slf4j
