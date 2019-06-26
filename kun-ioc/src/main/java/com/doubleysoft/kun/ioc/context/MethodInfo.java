@@ -19,10 +19,17 @@ public class MethodInfo {
 
     private final String methodName;
 
+    private Method methodCache;
+
     public Method getMethod() {
+        if (methodCache != null) {
+            return methodCache;
+        }
+
         Method[] methods = beanDefinition.getClazz().getMethods();
         for (Method method : methods) {
             if (methodName.equals(method.getName())) {
+                methodCache = method;
                 return method;
             }
         }

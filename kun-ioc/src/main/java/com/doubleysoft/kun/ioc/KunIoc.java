@@ -23,8 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class KunIoc implements Ioc {
     private final Map<String, BeanDefinition<?>> container;
-    private final Map<String, Object>            singletonBeans;
-    private       Set<BeanDefinitionProcessor>   beanDefinitionProcessors;
+    private final Map<String, Object> singletonBeans;
+    private Set<BeanDefinitionProcessor> beanDefinitionProcessors;
     private Set<BeanProcessor> beanProcessors;
     private Set<String> onBuildingInstance;
 
@@ -87,17 +87,19 @@ public class KunIoc implements Ioc {
             throw new StateException("bean:【" + name + "】 not exist");
         }
         BeanDefinition<?> beanDefinition = container.get(name);
-        if (beanDefinition.isSingleton()) {
-            if (!singletonBeans.containsKey(name)) {
-                preInstantiationBean(name, beanDefinition);
-                Object bean = doCreateBean(beanDefinition.getClazz());
-                singletonBeans.put(name, bean);
-                afterInstantiationBean(name, bean, beanDefinition);
-            }
-            return (T) singletonBeans.get(name);
-        } else {
+
+        if (!beanDefinition.isSingleton()) {
             return (T) doCreateBean(beanDefinition.getClazz());
         }
+
+        if (!singletonBeans.containsKey(name)) {
+            preInstantiationBean(name, beanDefinition);
+            Object bean = doCreateBean(beanDefinition.getClazz());
+            singletonBeans.put(name, bean);
+            afterInstantiationBean(name, bean, beanDefinition);
+        }
+
+        return (T) singletonBeans.get(name);
     }
 
     private void preInstantiationBean(String name, BeanDefinition<?> beanDefinition) {
@@ -123,20 +125,21 @@ public class KunIoc implements Ioc {
 
     private <T> T doCreateBean(Class<T> clazz) {
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
-        if (declaredConstructors.length == 1) {
-            Constructor<?> constructor    = declaredConstructors[0];
-            Object[]       depends        = new Object[constructor.getParameterCount()];
-            int            index          = 0;
-            Class<?>[]     parameterTypes = constructor.getParameterTypes();
-            for (Class<?> dependClass : parameterTypes) {
-                Object bean = getBean(dependClass);
-                if (bean == null) {
-                    throw new BeanInstantiationException(clazz, "class have only one constructor, param object" + dependClass + " is not exist");
-                }
-                depends[index++] = bean;
-            }
-            return ReflectionUtil.newInstanceByConstruct(constructor, depends);
+        if (declaredConstructors.length != 1) {
+            return ReflectionUtil.newInstance(clazz);
         }
-        return ReflectionUtil.newInstance(clazz);
+
+        Constructor<?> constructor = declaredConstructors[0];
+        Object[] depends = new Object[constructor.getParameterCount()];
+        int index = 0;
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
+        for (Class<?> dependClass : parameterTypes) {
+            Object bean = getBean(dependClass);
+            if (bean == null) {
+                throw new BeanInstantiationException(clazz, "class have only one constructor, param object" + dependClass + " is not exist");
+            }
+            depends[index++] = bean;
+        }
+        return ReflectionUtil.newInstanceByConstruct(constructor, depends);
     }
 }

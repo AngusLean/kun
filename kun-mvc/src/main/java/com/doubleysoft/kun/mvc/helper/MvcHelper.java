@@ -62,7 +62,6 @@ public class MvcHelper {
                 continue;
             }
 
-
             methodParams[i] = JsonUtil.map2Obj(contentMap, parameters[i].getType());
         }
         return methodParams;
