@@ -1,6 +1,5 @@
 package com.doubleysoft.kun.mvc.server.model;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class DefaultKunHttpResponse implements KunHttpResponse {
 
     @Override
     public Map<String, String> getHeaders() {
-        return Collections.unmodifiableMap(headers);
+        return headers;
     }
 
     @Override

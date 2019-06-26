@@ -2,7 +2,6 @@ package com.doubleysoft.kun.ioc.context;
 
 import com.doubleysoft.kun.ioc.exception.StateException;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
@@ -11,15 +10,19 @@ import java.lang.reflect.Method;
  * @author cupofish@gmail.com
  * 3/27/19 22:36
  */
-@RequiredArgsConstructor
 @Slf4j
-@Builder
 public class MethodInfo {
     private final BeanDefinition beanDefinition;
 
     private final String methodName;
 
     private Method methodCache;
+
+    @Builder
+    public MethodInfo(BeanDefinition beanDefinition, String methodName) {
+        this.beanDefinition = beanDefinition;
+        this.methodName = methodName;
+    }
 
     public Method getMethod() {
         if (methodCache != null) {
