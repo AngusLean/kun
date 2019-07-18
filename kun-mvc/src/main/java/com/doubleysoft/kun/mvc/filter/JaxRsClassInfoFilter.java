@@ -1,4 +1,4 @@
-package com.doubleysoft.kun.mvc.filter.ioc;
+package com.doubleysoft.kun.mvc.filter;
 
 import com.doubleysoft.kun.ioc.context.ResourceInfo;
 import com.doubleysoft.kun.ioc.scanner.ClassInfoFilter;

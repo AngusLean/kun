@@ -72,7 +72,7 @@ public class MvcHelperTest {
         MultivaluedMap multivaluedMap = new MultivaluedHashMap();
         multivaluedMap.add("age", "5");
         multivaluedMap.add("user", "TEST_USER_NAME");
-        multivaluedMap.add("user", "zhagnsan");
+        multivaluedMap.add("user", "testuser");
 
         Mockito.when(methodInfo.isDecodeReqParam()).thenReturn(true);
         Mockito.when(methodInfo.getMethod()).thenReturn(userMethod);

@@ -2,6 +2,7 @@ package com.doubleysoft.kun.mvc.server;
 
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
+import com.doubleysoft.kun.mvc.filter.HttpRequestFilter;
 import com.doubleysoft.kun.mvc.helper.DateUtil;
 import com.doubleysoft.kun.mvc.helper.MvcHelper;
 import com.doubleysoft.kun.mvc.server.model.DefaultKunHttpResponse;
@@ -19,10 +20,14 @@ import static com.doubleysoft.kun.mvc.server.Const.*;
 @RequiredArgsConstructor
 @Slf4j
 public class DefaultRequestHandler implements RequestHandler {
+    private final HttpRequestFilter httpRequestFilter;
 
     @Override
     public KunHttpResponse handle(KunHttpRequest httpRequest) {
         DefaultKunHttpResponse response = new DefaultKunHttpResponse();
+
+        httpRequestFilter.filter(httpRequest, response);
+
         MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.getReqURI());
         if (reqMethod == null) {
             log.error("Not found request path [{}] mapping", httpRequest.getReqURI());

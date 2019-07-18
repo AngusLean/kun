@@ -1,6 +1,7 @@
 package com.doubleysoft.kun.mvc.filter.ioc;
 
 import com.doubleysoft.kun.ioc.context.ResourceInfo;
+import com.doubleysoft.kun.mvc.filter.JaxRsClassInfoFilter;
 import org.junit.Assert;
 import org.junit.Test;
 

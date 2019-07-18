@@ -3,7 +3,7 @@ package com.doubleysoft.kun.mvc;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.event.bean.ContextStartedEvent;
 import com.doubleysoft.kun.mvc.event.RouterListener;
-import com.doubleysoft.kun.mvc.filter.ioc.JaxRsClassInfoFilter;
+import com.doubleysoft.kun.mvc.filter.JaxRsClassInfoFilter;
 import com.doubleysoft.kun.mvc.server.MvcContextHolder;
 import com.doubleysoft.kun.mvc.server.Router;
 
