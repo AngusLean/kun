@@ -16,7 +16,6 @@ public class JsonUtil {
             return Collections.EMPTY_MAP;
         }
         return JSON.parseObject(content, Map.class);
-//        return null;
     }
 
     public static <T> T parseObject(String content, Class<T> clazz) {

@@ -6,6 +6,8 @@ import com.doubleysoft.kun.ioc.util.StrUtil;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 
 import javax.ws.rs.CookieParam;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 import java.lang.reflect.Method;
@@ -56,6 +58,27 @@ public class MvcHelper {
                 continue;
             }
 
+            HeaderParam headerParam = parameter.getAnnotation(HeaderParam.class);
+            if (headerParam != null) {
+                String headParams = request.getHeader(headerParam.value());
+                if (headParams == null) {
+                    methodParams[i] = null;
+                } else {
+                    methodParams[i] = parseObj(parameter, headParams);
+                }
+                continue;
+            }
+
+            QueryParam queryParam = parameter.getAnnotation(QueryParam.class);
+            if (queryParam != null) {
+                List<Object> queryParams = request.getReqParams().get(queryParam.value());
+                if (queryParams == null || queryParams.size() == 0) {
+                    methodParams[i] = null;
+                } else {
+                    methodParams[i] = parseObj(parameter, queryParams);
+                }
+            }
+
             //basic type
             if (MethodUtil.isBasicType(parameter.getType())) {
                 methodParams[i] = getParameterValue(methodInfo, parameter, methodParamNames[i], reqParams, contentMap);
@@ -96,6 +119,17 @@ public class MvcHelper {
      * some special parameter , such as cookie, request, response ...etc.
      */
     private static Object parseCookie2Para(Parameter parameter, Cookie cookie) {
-        return MethodUtil.extractParam(parameter, cookie.getValue());
+        return parseObj(parameter, cookie.getValue());
+    }
+
+    /**
+     * some special parameter , such as cookie, request, response ...etc.
+     */
+    private static Object parseHeader2Para(Parameter parameter, List<Object> headParams) {
+        return parseObj(parameter, headParams.get(0));
+    }
+
+    private static Object parseObj(Parameter parameter, Object value) {
+        return MethodUtil.extractParam(parameter, value);
     }
 }

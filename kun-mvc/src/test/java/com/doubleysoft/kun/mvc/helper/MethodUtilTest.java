@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author dongyang.yu
@@ -42,6 +44,17 @@ public class MethodUtilTest {
         Assert.assertEquals(target, TEST_VALUE);
     }
 
+    @Test
+    public void extractParamList() throws NoSuchMethodException {
+        final String TEST_VALUE = "['name1']";
+        List<String> TARGET = Arrays.asList("name1");
+        Method testMethod4 = getClass().getMethod("testMethod4", List.class);
+        Parameter[] parameters = testMethod4.getParameters();
+        Assert.assertEquals(1, parameters.length);
+        Object target = MethodUtil.extractParam(parameters[0], TEST_VALUE);
+        Assert.assertEquals(target, TARGET);
+    }
+
 
     public void testMethod1(Object name) {
 
@@ -52,6 +65,10 @@ public class MethodUtilTest {
     }
 
     public void testMethod3(Float age) {
+
+    }
+
+    public void testMethod4(List<String> names) {
 
     }
 }

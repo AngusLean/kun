@@ -3,6 +3,7 @@ package com.doubleysoft.kun.mvc.helper;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -54,6 +55,8 @@ public class MethodUtil {
             return Long.valueOf(value.toString());
         } else if (type == String.class || type == Object.class) {
             return value.toString();
+        } else if (Collection.class.isAssignableFrom(type)) {
+            return JsonUtil.parseObject(value.toString(), Collection.class);
         }
         return value;
     }

@@ -80,6 +80,12 @@ public class NettyKunHttpRequest implements KunHttpRequest {
     }
 
     @Override
+    public String getHeader(String key) {
+        HttpHeaders headers = nettyRequest.headers();
+        return headers.get(key);
+    }
+
+    @Override
     public String toString() {
         return "NettyKunHttpRequest [content:" + strContent + "]";
     }

@@ -47,4 +47,12 @@ public interface KunHttpRequest {
     MultivaluedMap<String, Object> getReqParams();
 
     Cookie getCookie(String key);
+
+    /**
+     * get header with specified key
+     *
+     * @param key
+     * @return
+     */
+    String getHeader(String key);
 }
