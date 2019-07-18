@@ -50,33 +50,22 @@ public class MvcHelper {
             CookieParam cookieParams = parameter.getAnnotation(CookieParam.class);
             if (cookieParams != null) {
                 Cookie cookie = request.getCookie(cookieParams.value() == null ? methodParamNames[i] : cookieParams.value());
-                if (cookie != null) {
-                    methodParams[i] = parseCookie2Para(parameter, cookie);
-                } else {
-                    methodParams[i] = null;
-                }
+                methodParams[i] = parseCookie2Para(parameter, cookie);
                 continue;
             }
 
             HeaderParam headerParam = parameter.getAnnotation(HeaderParam.class);
             if (headerParam != null) {
                 String headParams = request.getHeader(headerParam.value());
-                if (headParams == null) {
-                    methodParams[i] = null;
-                } else {
-                    methodParams[i] = parseObj(parameter, headParams);
-                }
+                methodParams[i] = parseObj(parameter, headParams);
                 continue;
             }
 
             QueryParam queryParam = parameter.getAnnotation(QueryParam.class);
             if (queryParam != null) {
                 List<Object> queryParams = request.getReqParams().get(queryParam.value());
-                if (queryParams == null || queryParams.size() == 0) {
-                    methodParams[i] = null;
-                } else {
-                    methodParams[i] = parseObj(parameter, queryParams);
-                }
+                methodParams[i] = parseQueryPara(parameter, queryParams);
+                continue;
             }
 
             //basic type
@@ -125,11 +114,17 @@ public class MvcHelper {
     /**
      * some special parameter , such as cookie, request, response ...etc.
      */
-    private static Object parseHeader2Para(Parameter parameter, List<Object> headParams) {
+    private static Object parseQueryPara(Parameter parameter, List<Object> headParams) {
+        if (headParams == null || headParams.size() == 0) {
+            return null;
+        }
         return parseObj(parameter, headParams.get(0));
     }
 
     private static Object parseObj(Parameter parameter, Object value) {
+        if (value == null || (value instanceof List && ((List) value).size() == 0)) {
+            return null;
+        }
         return MethodUtil.extractParam(parameter, value);
     }
 }

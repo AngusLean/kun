@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.ws.rs.CookieParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.lang.reflect.Method;
@@ -64,6 +65,24 @@ public class MvcHelperTest {
         Assert.assertArrayEquals(target, methodCallParams);
     }
 
+    @Test
+    public void getMethodCallParamsQuery() throws NoSuchMethodException {
+        Method userMethod = MethodCallParamBasicTest.class.getMethod("query", String.class, int.class);
+        Object[] target = new Object[]{"TEST_USER_NAME", 5};
+        MultivaluedMap multivaluedMap = new MultivaluedHashMap();
+        multivaluedMap.add("age", "5");
+        multivaluedMap.add("user", "TEST_USER_NAME");
+        multivaluedMap.add("user", "zhagnsan");
+
+        Mockito.when(methodInfo.isDecodeReqParam()).thenReturn(true);
+        Mockito.when(methodInfo.getMethod()).thenReturn(userMethod);
+
+        Mockito.when(kunHttpRequest.getReqParams()).thenReturn(multivaluedMap);
+        Object[] methodCallParams = MvcHelper.getMethodCallParams(kunHttpRequest, methodInfo);
+        Assert.assertArrayEquals(target, methodCallParams);
+    }
+
+
     public static class MethodCallParamBasicTest {
 
         public void user(int age, String name) {
@@ -71,6 +90,10 @@ public class MvcHelperTest {
         }
 
         public void content(Float age, @CookieParam(value = "token") String token) {
+
+        }
+
+        public void query(@QueryParam(value = "user") String user, int age) {
 
         }
     }
