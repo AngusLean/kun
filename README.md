@@ -90,6 +90,14 @@ public class UserController {
     public void content(Float age, @CookieParam(value = "token") String token) {
     
     }
+    @Get("/addUser")
+    public void content(int age, @QueryParam(value = "name") String name) {
+    
+    }
+    @Get("/setHeader")
+    public void content(int age, @HeaderParam(value = "names") List<String> names) {
+    
+    }
 }
 ```
 
