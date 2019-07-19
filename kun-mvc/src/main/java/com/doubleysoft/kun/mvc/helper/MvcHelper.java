@@ -40,7 +40,7 @@ public class MvcHelper {
         Method method = methodInfo.getMethod();
         Object[] methodParams = new Object[method.getParameterCount()];
         String[] methodParamNames = AsmUtil.getMethodParamNames(method);
-        Map<String, Object> contentMap = JsonUtil.parse2Map(content);
+
 
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < methodParamNames.length; i++) {
@@ -67,7 +67,7 @@ public class MvcHelper {
                 methodParams[i] = parseQueryPara(parameter, queryParams);
                 continue;
             }
-
+            Map<String, Object> contentMap = JsonUtil.parse2Map(content);
             //basic type
             if (MethodUtil.isBasicType(parameter.getType())) {
                 methodParams[i] = getParameterValue(methodInfo, parameter, methodParamNames[i], reqParams, contentMap);

@@ -18,6 +18,13 @@ public class JsonUtil {
         return JSON.parseObject(content, Map.class);
     }
 
+    public static Map<String, Object> safeParse2Map(String content) {
+        try {
+            return parse2Map(content);
+        } catch (Exception e) {
+            return Collections.EMPTY_MAP;
+        }
+    }
     public static <T> T parseObject(String content, Class<T> clazz) {
         return JSON.parseObject(content, clazz);
     }

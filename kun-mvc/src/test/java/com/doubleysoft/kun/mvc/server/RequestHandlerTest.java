@@ -5,6 +5,7 @@ import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.KunIoc;
 import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
+import com.doubleysoft.kun.mvc.filter.DefaultFilterChain;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
@@ -37,7 +38,7 @@ public class RequestHandlerTest {
 
     @Ignore
     public void handle() {
-        RequestHandler requestHandler = new DefaultRequestHandler();
+        RequestHandler requestHandler = new DefaultRequestHandler(new DefaultFilterChain());
         Ioc            ioc            = new KunIoc(null);
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setClazz(RequestHandlerTestController.class);
