@@ -98,6 +98,13 @@ public class UserController {
     public void content(int age, @HeaderParam(value = "names") List<String> names) {
     
     }
+    /**
+    * if only one parameter in method and request content
+    * is not empty, this parameter will automatic mapped.
+    */
+    @Post("/user")
+    public void addUser(User user){
+    }
 }
 ```
 
