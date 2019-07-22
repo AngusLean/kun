@@ -3,6 +3,7 @@ package com.doubleysoft.kun.mvc.helper;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.ioc.util.AsmUtil;
 import com.doubleysoft.kun.ioc.util.StrUtil;
+import com.doubleysoft.kun.mvc.annotation.BodyParam;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 
 import javax.ws.rs.CookieParam;
@@ -32,14 +33,14 @@ public class MvcHelper {
      */
     private static Object[] getMethodParams(MethodInfo methodInfo, KunHttpRequest request) {
         MultivaluedMap<String, Object> reqParams = request.getReqParams();
-        String content = request.getContent();
+        String                         content   = request.getContent();
         if (reqParams.size() <= 0 && StrUtil.isNullOrEmpty(content)) {
             return new Object[0];
         }
-        Method method = methodInfo.getMethod();
-        Object[] methodParams = new Object[method.getParameterCount()];
-        String[] methodParamNames = AsmUtil.getMethodParamNames(method);
-        Parameter[] parameters = method.getParameters();
+        Method      method           = methodInfo.getMethod();
+        Object[]    methodParams     = new Object[method.getParameterCount()];
+        String[]    methodParamNames = AsmUtil.getMethodParamNames(method);
+        Parameter[] parameters       = method.getParameters();
 
         /**
          * set the parameter with request content when
@@ -74,13 +75,19 @@ public class MvcHelper {
                 methodParams[i] = parseQueryPara(parameter, queryParams);
                 continue;
             }
+
+            BodyParam bodyParam = parameter.getAnnotation(BodyParam.class);
+            if (bodyParam != null) {
+                methodParams[i] = JsonUtil.parseObject(content, parameters[i].getType());
+                continue;
+            }
+
             //basic type
             if (MethodUtil.isBasicType(parameter.getType())) {
                 methodParams[i] = getParameterValue(methodInfo, parameter, methodParamNames[i], reqParams);
                 continue;
             }
 
-            methodParams[i] = JsonUtil.parseObject(content, parameters[i].getType());
         }
         return methodParams;
     }
@@ -89,7 +96,7 @@ public class MvcHelper {
                                             MultivaluedMap<String, Object> reqParams) {
         //for basic type, we mapping param value with name
         List<Object> reqParamValues = reqParams.get(parameterName);
-        Object value;
+        Object       value;
         if (reqParamValues == null) {
             return null;
         } else if (parameter.isVarArgs()) {
