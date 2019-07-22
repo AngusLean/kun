@@ -14,7 +14,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Test;
 
 import javax.ws.rs.Path;
 
@@ -36,14 +36,14 @@ public class RequestHandlerTest {
         kunContext.addBean(RequestHandlerTestController.class);
     }
 
-    @Ignore
+    @Test
     public void handle() {
         RequestHandler requestHandler = new DefaultRequestHandler(new DefaultFilterChain());
         Ioc            ioc            = new KunIoc(null);
         BeanDefinition beanDefinition = new BeanDefinition();
         beanDefinition.setClazz(RequestHandlerTestController.class);
         MethodInfo methodInfo = MethodInfo.builder().beanDefinition(beanDefinition).methodName("index").build();
-        MvcContextHolder.getRouter().addRoute(TEST_REQ_PATH, methodInfo);
+        MvcContextHolder.getRouter().addRoute(Router.RouterKey.builder().absPath(TEST_REQ_PATH).build(), methodInfo);
 
         KunHttpRequest httpRequest = new NettyKunHttpRequest(new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, TEST_REQ_PATH));
         httpRequest.appendContent(TEST_REQ_CONTENT);
@@ -53,7 +53,7 @@ public class RequestHandlerTest {
     }
 
 
-    public class RequestHandlerTestController {
+    public static class RequestHandlerTestController {
 
         @Path(TEST_REQ_PATH)
         public String index(String param) {

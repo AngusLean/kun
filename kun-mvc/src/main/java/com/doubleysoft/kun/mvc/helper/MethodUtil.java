@@ -39,7 +39,9 @@ public class MethodUtil {
             }
             return null;
         }
-        if (type == Boolean.class || type.equals(boolean.class)) {
+        if (type == String.class || type == Object.class) {
+            return value.toString();
+        } else if (type == Boolean.class || type.equals(boolean.class)) {
             return Boolean.valueOf(value.toString());
         } else if (type == Integer.class || type.equals(int.class)) {
             return Integer.valueOf(value.toString());
@@ -53,8 +55,6 @@ public class MethodUtil {
             return Short.valueOf(value.toString());
         } else if (type == Long.class || type.equals(long.class)) {
             return Long.valueOf(value.toString());
-        } else if (type == String.class || type == Object.class) {
-            return value.toString();
         } else if (Collection.class.isAssignableFrom(type)) {
             return JsonUtil.parseObject(value.toString(), Collection.class);
         }

@@ -1,6 +1,6 @@
 package com.doubleysoft.kun.demo;
 
-import com.doubleysoft.kun.mvc.KunMvcApplication;
+import com.doubleysoft.kun.mvc.MvcApplication;
 
 /**
  * @author dongyang.yu
@@ -8,6 +8,6 @@ import com.doubleysoft.kun.mvc.KunMvcApplication;
  */
 public class Application {
     public static void main(String[] args) {
-        KunMvcApplication.boot(Application.class);
+        MvcApplication.boot(Application.class);
     }
 }

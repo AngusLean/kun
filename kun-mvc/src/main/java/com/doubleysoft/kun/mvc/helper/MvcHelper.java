@@ -13,7 +13,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author cupofish@gmail.com
@@ -40,9 +39,17 @@ public class MvcHelper {
         Method method = methodInfo.getMethod();
         Object[] methodParams = new Object[method.getParameterCount()];
         String[] methodParamNames = AsmUtil.getMethodParamNames(method);
-
-
         Parameter[] parameters = method.getParameters();
+
+        /**
+         * set the parameter with request content when
+         * handler method only have one patameter and request content is not empty
+         */
+        if (parameters.length == 1) {
+            if (parameters[0].getAnnotations().length == 0 && !StrUtil.isNullOrEmpty(content)) {
+                return new Object[]{parseObj(parameters[0], content)};
+            }
+        }
         for (int i = 0; i < methodParamNames.length; i++) {
             Parameter parameter = parameters[i];
 
@@ -67,29 +74,24 @@ public class MvcHelper {
                 methodParams[i] = parseQueryPara(parameter, queryParams);
                 continue;
             }
-            Map<String, Object> contentMap = JsonUtil.parse2Map(content);
             //basic type
             if (MethodUtil.isBasicType(parameter.getType())) {
-                methodParams[i] = getParameterValue(methodInfo, parameter, methodParamNames[i], reqParams, contentMap);
+                methodParams[i] = getParameterValue(methodInfo, parameter, methodParamNames[i], reqParams);
                 continue;
             }
 
-            methodParams[i] = JsonUtil.map2Obj(contentMap, parameters[i].getType());
+            methodParams[i] = JsonUtil.parseObject(content, parameters[i].getType());
         }
         return methodParams;
     }
 
     private static Object getParameterValue(MethodInfo methodInfo, Parameter parameter, String parameterName,
-                                            MultivaluedMap<String, Object> reqParams, Map<String, Object> contentMap) {
+                                            MultivaluedMap<String, Object> reqParams) {
         //for basic type, we mapping param value with name
         List<Object> reqParamValues = reqParams.get(parameterName);
         Object value;
         if (reqParamValues == null) {
-            if (!contentMap.containsKey(parameterName)) {
-                return null;
-            }
-            //parameter from http request content
-            value = contentMap.get(parameterName);
+            return null;
         } else if (parameter.isVarArgs()) {
             return reqParamValues.toArray();
         } else {
