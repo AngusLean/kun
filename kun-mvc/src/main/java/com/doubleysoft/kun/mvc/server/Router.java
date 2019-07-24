@@ -10,26 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * 3/24/19 17:42
  */
 public class Router {
-    private ConcurrentHashMap<String, MethodInfo> routerCache;
     private ConcurrentHashMap<RouterKey, MethodInfo> newRouterCache;
 
-
     public Router() {
-        routerCache = new ConcurrentHashMap<>();
         newRouterCache = new ConcurrentHashMap<>();
-    }
-
-    public void addRoute(String key, MethodInfo methodInfo) {
-        routerCache.putIfAbsent(key, methodInfo);
     }
 
     public void addRoute(RouterKey key, MethodInfo methodInfo) {
         newRouterCache.putIfAbsent(key, methodInfo);
     }
-
-   /* public MethodInfo getReqHandler(String reqPath) {
-        return routerCache.get(reqPath);
-    }*/
 
     public MethodInfo getReqHandler(String reqPath) {
         return newRouterCache.get(RouterKey.builder().absPath(reqPath).build());
