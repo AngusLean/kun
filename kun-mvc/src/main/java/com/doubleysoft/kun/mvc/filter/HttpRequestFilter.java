@@ -9,19 +9,24 @@ import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
  */
 public interface HttpRequestFilter {
     /**
-     * run filter if  {@see shouldFilter} return true
+     * run beforeHandle if  {@see afterHandle} return true
      *
      * @param httpRequest
      * @param response
+     * @return return true if execute next route or actual handle method, or else return to client by current response
      */
-    void filter(KunHttpRequest httpRequest, KunHttpResponse response);
+    default boolean beforeHandle(KunHttpRequest httpRequest, KunHttpResponse response) {
+        return true;
+    }
 
     /**
-     * determine whether this filter should be run
+     * determine whether this beforeHandle should be run
      *
      * @param httpRequest
      * @param response
-     * @return
+     * @return return true if execute next route, or else return to client by current response
      */
-    boolean shouldFilter(KunHttpRequest httpRequest, KunHttpResponse response);
+    default boolean afterHandle(KunHttpRequest httpRequest, KunHttpResponse response) {
+        return true;
+    }
 }

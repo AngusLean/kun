@@ -26,7 +26,7 @@ public class DefaultRequestHandler implements RequestHandler {
     public KunHttpResponse handle(KunHttpRequest httpRequest) {
         DefaultKunHttpResponse response = new DefaultKunHttpResponse();
 
-        httpRequestFilter.filter(httpRequest, response);
+        httpRequestFilter.beforeHandle(httpRequest, response);
 
         MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.getReqURI());
         if (reqMethod == null) {
