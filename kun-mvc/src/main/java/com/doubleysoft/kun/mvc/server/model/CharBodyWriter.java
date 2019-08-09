@@ -30,10 +30,10 @@ public class CharBodyWriter implements BodyWritter {
 
     @Override
     public void writeResponse(KunHttpRequest request, KunHttpResponse response, KunContext kunContext, MethodInfo handlerMethod) {
-        Object[] callParam = MvcHelper.getMethodCallParams(request, handlerMethod);
+        Object[] callParams = MvcHelper.getMethodCallParams(request, handlerMethod);
 
         //response content
-        Object responseObj = handlerMethod.execute(kunContext.getBean(handlerMethod.getBeanName()), callParam);
+        Object responseObj = handlerMethod.execute(kunContext.getBean(handlerMethod.getBeanName()), callParams);
         if (responseObj != null) {
             OutputStream outputStream = response.getResponseBody();
             try {
