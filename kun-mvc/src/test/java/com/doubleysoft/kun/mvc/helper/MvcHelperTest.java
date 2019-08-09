@@ -40,7 +40,7 @@ public class MvcHelperTest {
         Mockito.when(methodInfo.isDecodeReqParam()).thenReturn(true);
         Mockito.when(methodInfo.getMethod()).thenReturn(userMethod);
 
-        Mockito.when(kunHttpRequest.getReqParams()).thenReturn(multivaluedMap);
+        Mockito.when(kunHttpRequest.reqParams()).thenReturn(multivaluedMap);
         Object[] methodCallParams = MvcHelper.getMethodCallParams(kunHttpRequest, methodInfo);
         Assert.assertArrayEquals(target, methodCallParams);
     }
@@ -58,8 +58,8 @@ public class MvcHelperTest {
         Mockito.when(methodInfo.isDecodeReqParam()).thenReturn(true);
         Mockito.when(methodInfo.getMethod()).thenReturn(userMethod);
 
-        Mockito.when(kunHttpRequest.getReqParams()).thenReturn(multivaluedMap);
-        Mockito.when(kunHttpRequest.getCookie(any())).thenReturn(cookie);
+        Mockito.when(kunHttpRequest.reqParams()).thenReturn(multivaluedMap);
+        Mockito.when(kunHttpRequest.cookie(any())).thenReturn(cookie);
 
         Object[] methodCallParams = MvcHelper.getMethodCallParams(kunHttpRequest, methodInfo);
         Assert.assertArrayEquals(target, methodCallParams);
@@ -77,7 +77,7 @@ public class MvcHelperTest {
         Mockito.when(methodInfo.isDecodeReqParam()).thenReturn(true);
         Mockito.when(methodInfo.getMethod()).thenReturn(userMethod);
 
-        Mockito.when(kunHttpRequest.getReqParams()).thenReturn(multivaluedMap);
+        Mockito.when(kunHttpRequest.reqParams()).thenReturn(multivaluedMap);
         Object[] methodCallParams = MvcHelper.getMethodCallParams(kunHttpRequest, methodInfo);
         Assert.assertArrayEquals(target, methodCallParams);
     }

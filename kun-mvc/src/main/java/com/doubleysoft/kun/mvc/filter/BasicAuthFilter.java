@@ -12,7 +12,7 @@ public class BasicAuthFilter implements HttpRequestFilter {
 
     @Override
     public boolean beforeHandle(KunHttpRequest httpRequest, KunHttpResponse response) {
-        String authVal = httpRequest.getHeader(AUTH_KEY);
+        String authVal = httpRequest.header(AUTH_KEY);
         if (authVal == null) {
             return true;
         }

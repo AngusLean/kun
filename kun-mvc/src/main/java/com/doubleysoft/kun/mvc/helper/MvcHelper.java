@@ -32,8 +32,8 @@ public class MvcHelper {
      * @return
      */
     private static Object[] getMethodParams(MethodInfo methodInfo, KunHttpRequest request) {
-        MultivaluedMap<String, Object> reqParams = request.getReqParams();
-        String                         content   = request.getContent();
+        MultivaluedMap<String, Object> reqParams = request.reqParams();
+        String                         content   = request.content();
         if (reqParams.size() <= 0 && StrUtil.isNullOrEmpty(content)) {
             return new Object[0];
         }
@@ -57,21 +57,21 @@ public class MvcHelper {
             //cookie
             CookieParam cookieParams = parameter.getAnnotation(CookieParam.class);
             if (cookieParams != null) {
-                Cookie cookie = request.getCookie(cookieParams.value() == null ? methodParamNames[i] : cookieParams.value());
+                Cookie cookie = request.cookie(cookieParams.value() == null ? methodParamNames[i] : cookieParams.value());
                 methodParams[i] = parseCookie2Para(parameter, cookie);
                 continue;
             }
 
             HeaderParam headerParam = parameter.getAnnotation(HeaderParam.class);
             if (headerParam != null) {
-                String headParams = request.getHeader(headerParam.value());
+                String headParams = request.header(headerParam.value());
                 methodParams[i] = parseObj(parameter, headParams);
                 continue;
             }
 
             QueryParam queryParam = parameter.getAnnotation(QueryParam.class);
             if (queryParam != null) {
-                List<Object> queryParams = request.getReqParams().get(queryParam.value());
+                List<Object> queryParams = request.reqParams().get(queryParam.value());
                 methodParams[i] = parseQueryPara(parameter, queryParams);
                 continue;
             }

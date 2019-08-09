@@ -1,5 +1,8 @@
 package com.doubleysoft.kun.mvc.server.model;
 
+import com.doubleysoft.kun.mvc.http.ContentTypeEnum;
+import com.doubleysoft.kun.mvc.http.HttpMethodEnum;
+
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -20,7 +23,7 @@ public interface KunHttpRequest {
      *
      * @return
      */
-    String getContent();
+    String content();
 
     /**
      * the request is keep alive
@@ -35,7 +38,7 @@ public interface KunHttpRequest {
      *
      * @return
      */
-    String getReqURI();
+    String reqURI();
 
     String getReqURL();
 
@@ -44,9 +47,9 @@ public interface KunHttpRequest {
      *
      * @return
      */
-    MultivaluedMap<String, Object> getReqParams();
+    MultivaluedMap<String, Object> reqParams();
 
-    Cookie getCookie(String key);
+    Cookie cookie(String key);
 
     /**
      * get header with specified key
@@ -54,5 +57,19 @@ public interface KunHttpRequest {
      * @param key
      * @return
      */
-    String getHeader(String key);
+    String header(String key);
+
+    /**
+     * get http request method
+     *
+     * @return
+     */
+    HttpMethodEnum method();
+
+    /**
+     * get http request cont-type
+     *
+     * @return
+     */
+    ContentTypeEnum contentType();
 }

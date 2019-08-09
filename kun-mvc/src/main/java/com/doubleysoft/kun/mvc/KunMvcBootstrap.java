@@ -3,6 +3,8 @@ package com.doubleysoft.kun.mvc;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.mvc.filter.DefaultFilterChain;
 import com.doubleysoft.kun.mvc.server.DefaultRequestHandler;
+import com.doubleysoft.kun.mvc.server.RequestHandler;
+import com.doubleysoft.kun.mvc.server.model.BodyWriterChain;
 import com.doubleysoft.kun.mvc.server.netty.NettyServer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +35,7 @@ public class KunMvcBootstrap {
 
     private static void startServer() {
         server = new NettyServer();
-        DefaultRequestHandler requestHandler = new DefaultRequestHandler(new DefaultFilterChain());
+        RequestHandler requestHandler = new DefaultRequestHandler(new DefaultFilterChain(), new BodyWriterChain());
         server.bindProcess(requestHandler);
         server.start(8080);
     }

@@ -3,15 +3,12 @@ package com.doubleysoft.kun.mvc.server;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.filter.HttpRequestFilter;
-import com.doubleysoft.kun.mvc.helper.DateUtil;
-import com.doubleysoft.kun.mvc.helper.MvcHelper;
+import com.doubleysoft.kun.mvc.server.model.BodyWriterChain;
 import com.doubleysoft.kun.mvc.server.model.DefaultKunHttpResponse;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import static com.doubleysoft.kun.mvc.server.Const.*;
 
 /**
  * @author cupofish@gmail.com
@@ -21,16 +18,19 @@ import static com.doubleysoft.kun.mvc.server.Const.*;
 @Slf4j
 public class DefaultRequestHandler implements RequestHandler {
     private final HttpRequestFilter httpRequestFilter;
+    private final BodyWriterChain   bodyWriterChain;
 
     @Override
     public KunHttpResponse handle(KunHttpRequest httpRequest) {
-        DefaultKunHttpResponse response = new DefaultKunHttpResponse();
+        DefaultKunHttpResponse response            = new DefaultKunHttpResponse();
+        boolean                notExecuteByHandler = httpRequestFilter.beforeHandle(httpRequest, response);
+        if (notExecuteByHandler) {
+            return response;
+        }
 
-        httpRequestFilter.beforeHandle(httpRequest, response);
-
-        MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.getReqURI());
+        MethodInfo reqMethod = MvcContextHolder.getRouter().getReqHandler(httpRequest.reqURI());
         if (reqMethod == null) {
-            log.error("Not found request path [{}] mapping", httpRequest.getReqURI());
+            log.error("Not found request path [{}] mapping", httpRequest.reqURI());
             response.setStatus(404);
             return response;
         }
@@ -40,23 +40,7 @@ public class DefaultRequestHandler implements RequestHandler {
 
     private void handle(KunHttpRequest httpRequest, DefaultKunHttpResponse httpResponse, KunContext kunContext,
                         MethodInfo handlerMethod) {
-        Object[] callParam = MvcHelper.getMethodCallParams(httpRequest, handlerMethod);
-
-        //response content
-        Object response = handlerMethod.execute(kunContext.getBean(handlerMethod.getBeanName()), callParam);
-        httpResponse.setContent(response == null ? null : response.toString());
-
-        //response headers
-        setResponseHeaders(httpRequest, httpResponse, handlerMethod);
+        bodyWriterChain.writeResponse(httpRequest, httpResponse, kunContext, handlerMethod);
     }
 
-    private void setResponseHeaders(KunHttpRequest httpRequest, KunHttpResponse httpResponse, MethodInfo handlerMethod) {
-        httpResponse.setStatus(200);
-        httpResponse.getHeaders().put(KEY_DATE, DateUtil.gmtDate());
-        httpResponse.getHeaders().put(KEY_LAST_MODIFIED, DateUtil.gmtDate());
-        httpResponse.getHeaders().put(KEY_CONTENT_TYPE, CONTENT_TYPE_JSON);
-        if (httpRequest.isKeepAlive()) {
-            httpResponse.getHeaders().put(KEY_CONNECTION, KEY_KEEP_ALIVE);
-        }
-    }
 }
