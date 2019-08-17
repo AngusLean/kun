@@ -23,8 +23,10 @@ import static com.doubleysoft.kun.mvc.server.Const.*;
 public class CharBodyWriter implements BodyWritter {
     @Override
     public boolean acceptRequest(ContentTypeEnum contentType, HttpMethodEnum httpMethod) {
-        return contentType == ContentTypeEnum.APPLICATION_JSON &&
-                (httpMethod == HttpMethodEnum.POST ||
+        return (contentType == ContentTypeEnum.APPLICATION_JSON ||
+                contentType == ContentTypeEnum.TEXT_PLAIN)
+
+                && (httpMethod == HttpMethodEnum.POST ||
                         httpMethod == HttpMethodEnum.GET);
     }
 

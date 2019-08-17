@@ -3,6 +3,7 @@ package com.doubleysoft.kun.mvc.server.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,6 @@ public class DefaultKunHttpResponse implements KunHttpResponse {
 
     @Override
     public OutputStream getResponseBody() {
-        return null;
+        return new ByteArrayOutputStream();
     }
 }

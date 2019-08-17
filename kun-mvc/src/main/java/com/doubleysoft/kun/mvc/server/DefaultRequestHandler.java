@@ -24,7 +24,7 @@ public class DefaultRequestHandler implements RequestHandler {
     public KunHttpResponse handle(KunHttpRequest httpRequest) {
         DefaultKunHttpResponse response            = new DefaultKunHttpResponse();
         boolean                notExecuteByHandler = httpRequestFilter.beforeHandle(httpRequest, response);
-        if (notExecuteByHandler) {
+        if (!notExecuteByHandler) {
             return response;
         }
 

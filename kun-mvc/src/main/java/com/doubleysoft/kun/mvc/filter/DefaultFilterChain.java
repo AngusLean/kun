@@ -27,6 +27,9 @@ public class DefaultFilterChain implements HttpRequestFilter {
 
     @Override
     public boolean beforeHandle(KunHttpRequest httpRequest, KunHttpResponse response) {
+        if (this.filters.isEmpty()) {
+            return true;
+        }
         Optional<HttpRequestFilter> illegalFilter = this.filters.stream()
                 .filter(row -> !row.beforeHandle(httpRequest, response))
                 .findAny();

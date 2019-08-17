@@ -97,7 +97,11 @@ public class NettyKunHttpRequest implements KunHttpRequest {
 
     @Override
     public ContentTypeEnum contentType() {
-        return ContentTypeEnum.valueOf(header(KEY_CONTENT_TYPE));
+        String contentType = header(KEY_CONTENT_TYPE);
+        if (contentType == null) {
+            return ContentTypeEnum.TEXT_PLAIN;
+        }
+        return ContentTypeEnum.valueOf(contentType);
     }
 
     @Override
