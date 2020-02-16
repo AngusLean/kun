@@ -52,9 +52,9 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
         boolean keepAlive = httpRequest.isKeepAlive();
         try {
             KunHttpResponse httpResponse = requestHandler.handle(httpRequest);
-            FullHttpResponse fullHttpResponse = setNettyResponse(httpResponse);
+            HttpResponse fullHttpResponse = setNettyResponse(httpResponse);
             //netty4 require set content-length, or else it will not send response,
-            fullHttpResponse.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, fullHttpResponse.content().readableBytes());
+//            fullHttpResponse.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, fullHttpResponse.content().readableBytes());
             //set keep-alive header
             if (keepAlive) {
                 fullHttpResponse.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
@@ -67,11 +67,16 @@ public class KunHttpNettyHandler extends SimpleChannelInboundHandler<KunHttpRequ
         return keepAlive;
     }
 
-    private FullHttpResponse setNettyResponse(KunHttpResponse httpResponse){
-        FullHttpResponse response;
+    private HttpResponse setNettyResponse(KunHttpResponse httpResponse) {
+        HttpResponse response;
         if (httpResponse.getStatus() == OK.code()) {
-            response = new DefaultFullHttpResponse(HTTP_1_1, OK,
-                    Unpooled.copiedBuffer(httpResponse.getContent(), CharsetUtil.UTF_8));
+            if (httpResponse.getContent() == null) {
+                response = new DefaultHttpResponse(HTTP_1_1, OK);
+                response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, 0);
+            } else {
+                response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer(httpResponse.getContent(), CharsetUtil.UTF_8));
+                response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, httpResponse.getContent().getBytes(CharsetUtil.UTF_8).length);
+            }
         } else {
             response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.valueOf(httpResponse.getStatus()));
         }

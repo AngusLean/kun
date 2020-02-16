@@ -9,10 +9,6 @@ import com.doubleysoft.kun.mvc.http.HttpMethodEnum;
 import com.doubleysoft.kun.mvc.server.BodyWritter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-
 import static com.doubleysoft.kun.mvc.server.Const.*;
 
 /**
@@ -23,11 +19,8 @@ import static com.doubleysoft.kun.mvc.server.Const.*;
 public class CharBodyWriter implements BodyWritter {
     @Override
     public boolean acceptRequest(ContentTypeEnum contentType, HttpMethodEnum httpMethod) {
-        return (contentType == ContentTypeEnum.APPLICATION_JSON ||
-                contentType == ContentTypeEnum.TEXT_PLAIN)
-
-                && (httpMethod == HttpMethodEnum.POST ||
-                        httpMethod == HttpMethodEnum.GET);
+        return (contentType == ContentTypeEnum.APPLICATION_JSON || contentType == ContentTypeEnum.TEXT_PLAIN)
+                && (httpMethod == HttpMethodEnum.POST || httpMethod == HttpMethodEnum.GET);
     }
 
     @Override
@@ -37,14 +30,7 @@ public class CharBodyWriter implements BodyWritter {
         //response content
         Object responseObj = handlerMethod.execute(kunContext.getBean(handlerMethod.getBeanName()), callParams);
         if (responseObj != null) {
-            OutputStream outputStream = response.getResponseBody();
-            try {
-                outputStream.write(responseObj.toString().getBytes(Charset.defaultCharset()));
-            } catch (IOException e) {
-                log.info("error in write content:[{}] to response", responseObj, e);
-                response.setStatus(500);
-                return;
-            }
+            response.setContent(responseObj);
         }
 
         //response headers

@@ -34,10 +34,10 @@ public class MvcHelper {
     private static Object[] getMethodParams(MethodInfo methodInfo, KunHttpRequest request) {
         MultivaluedMap<String, Object> reqParams = request.reqParams();
         String                         content   = request.content();
-        if (reqParams.size() <= 0 && StrUtil.isNullOrEmpty(content)) {
+        Method      method           = methodInfo.getMethod();
+        if (method.getParameterCount() <= 0 && StrUtil.isNullOrEmpty(content)) {
             return new Object[0];
         }
-        Method      method           = methodInfo.getMethod();
         Object[]    methodParams     = new Object[method.getParameterCount()];
         String[]    methodParamNames = AsmUtil.getMethodParamNames(method);
         Parameter[] parameters       = method.getParameters();

@@ -1,6 +1,5 @@
 package com.doubleysoft.kun.mvc.server.model;
 
-import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -40,5 +39,5 @@ public interface KunHttpResponse {
      *
      * @return
      */
-    OutputStream getResponseBody();
+    void setContent(Object content);
 }

@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
- */
+
 public class JsonUtil {
     public static Map<String, Object> parse2Map(String content) {
         if (content == null || content.length() == 0) {
