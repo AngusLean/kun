@@ -1,8 +1,8 @@
 package com.doubleysoft.kun.ioc.exception;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public class BeanInstantiationException extends StateException {
     private Class<?> beanClass;

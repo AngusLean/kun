@@ -1,8 +1,8 @@
 package com.doubleysoft.kun.ioc.util;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public class StrUtil {
     public static boolean isNullOrEmpty(String s) {

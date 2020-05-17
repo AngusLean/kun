@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public class MethodUtilTest {
 

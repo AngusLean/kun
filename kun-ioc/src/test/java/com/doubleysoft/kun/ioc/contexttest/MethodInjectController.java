@@ -4,8 +4,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 @Singleton
 public class MethodInjectController {

@@ -6,8 +6,8 @@ import javax.ws.rs.CookieParam;
 import javax.ws.rs.Path;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 @JsonPath("/")
 public class UserController {

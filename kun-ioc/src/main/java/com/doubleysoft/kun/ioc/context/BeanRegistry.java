@@ -1,8 +1,8 @@
 package com.doubleysoft.kun.ioc.context;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public interface BeanRegistry {
     /**

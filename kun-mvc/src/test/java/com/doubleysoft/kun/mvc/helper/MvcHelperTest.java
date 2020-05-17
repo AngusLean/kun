@@ -16,8 +16,8 @@ import java.lang.reflect.Method;
 import static org.mockito.ArgumentMatchers.any;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public class MvcHelperTest {
     private KunHttpRequest kunHttpRequest;

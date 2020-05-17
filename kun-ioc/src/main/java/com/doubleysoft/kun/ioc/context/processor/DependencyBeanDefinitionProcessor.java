@@ -12,8 +12,8 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public class DependencyBeanDefinitionProcessor implements BeanDefinitionProcessor {
     private Set<Class<? extends Annotation>> injectAnnotations;

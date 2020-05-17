@@ -9,8 +9,8 @@ dependencies {
     implementation 'org.ow2.asm:asm'
     implementation 'org.slf4j:slf4j-simple'
     implementation 'io.netty:netty-all'
-
-
+    implementation 'org.projectlombok:lombok'
+    
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
 }

@@ -20,8 +20,8 @@ import org.junit.Ignore;
 import javax.ws.rs.Path;
 
 /**
- * @author dongyang.yu
- * @email dongyang.yu@anxincloud.com
+ * @author cupofish@gmail.com
+ * @email cupofish@gmail.com
  */
 public class RequestHandlerTest {
     private static final String TEST_RESPONSE_STR = "hello world";
