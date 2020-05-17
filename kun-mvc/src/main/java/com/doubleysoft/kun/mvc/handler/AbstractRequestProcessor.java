@@ -1,28 +1,16 @@
-package com.doubleysoft.kun.mvc.server.model;
+package com.doubleysoft.kun.mvc.handler;
 
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.helper.DateUtil;
 import com.doubleysoft.kun.mvc.helper.MvcHelper;
-import com.doubleysoft.kun.mvc.http.ContentTypeEnum;
-import com.doubleysoft.kun.mvc.http.HttpMethodEnum;
-import com.doubleysoft.kun.mvc.server.BodyWritter;
-import lombok.extern.slf4j.Slf4j;
+import com.doubleysoft.kun.mvc.server.RequestProcessor;
+import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
+import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
 
 import static com.doubleysoft.kun.mvc.server.Const.*;
 
-/**
- * @author cupofish@gmail.com
- * 8/9/19 22:20
- */
-@Slf4j
-public class CharBodyWriter implements BodyWritter {
-    @Override
-    public boolean acceptRequest(ContentTypeEnum contentType, HttpMethodEnum httpMethod) {
-        return (contentType == ContentTypeEnum.APPLICATION_JSON || contentType == ContentTypeEnum.TEXT_PLAIN)
-                && (httpMethod == HttpMethodEnum.POST || httpMethod == HttpMethodEnum.GET);
-    }
-
+public abstract class AbstractRequestProcessor implements RequestProcessor {
     @Override
     public void writeResponse(KunHttpRequest request, KunHttpResponse response, KunContext kunContext, MethodInfo handlerMethod) {
         Object[] callParams = MvcHelper.getMethodCallParams(request, handlerMethod);
@@ -30,12 +18,15 @@ public class CharBodyWriter implements BodyWritter {
         //response content
         Object responseObj = handlerMethod.execute(handlerObj, callParams);
         if (responseObj != null) {
-            response.setContent(responseObj);
+            doWriteResponse(request, response, responseObj);
         }
 
         //response headers
         setResponseHeaders(request, response, handlerMethod);
     }
+
+
+    abstract protected void doWriteResponse(KunHttpRequest request, KunHttpResponse response, Object methodResponse);
 
     private void setResponseHeaders(KunHttpRequest httpRequest, KunHttpResponse httpResponse, MethodInfo handlerMethod) {
         httpResponse.setStatus(200);

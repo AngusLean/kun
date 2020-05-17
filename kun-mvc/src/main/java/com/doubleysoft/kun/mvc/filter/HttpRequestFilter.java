@@ -29,4 +29,8 @@ public interface HttpRequestFilter {
     default boolean afterHandle(KunHttpRequest httpRequest, KunHttpResponse response) {
         return true;
     }
+
+    default boolean afterException(KunHttpRequest httpRequest, Exception e) {
+        return true;
+    }
 }

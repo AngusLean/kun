@@ -5,9 +5,10 @@ import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.KunMvcContext;
 import com.doubleysoft.kun.mvc.filter.DefaultFilterChain;
+import com.doubleysoft.kun.mvc.handler.DefaultRequestHandlerBridge;
+import com.doubleysoft.kun.mvc.handler.HttpRequestHandlerChain;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
-import com.doubleysoft.kun.mvc.server.model.ResponseBodyWriterChain;
 import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
@@ -24,12 +25,12 @@ import static org.mockito.Mockito.when;
  * @author cupofish@gmail.com
  * 4/7/19 16:09
  */
-public class DefaultRequestHandlerTest {
+public class DefaultRequestHandlerBridgeTest {
     private RequestHandler requestHandler;
 
     @Before
     public void init() {
-        requestHandler = new DefaultRequestHandler(new DefaultFilterChain(), new ResponseBodyWriterChain());
+        requestHandler = new DefaultRequestHandlerBridge(new DefaultFilterChain(), new HttpRequestHandlerChain());
     }
 
     @Ignore
@@ -46,7 +47,7 @@ public class DefaultRequestHandlerTest {
         Router spy    = Mockito.spy(router);
 
         KunContext kunContext = Mockito.mock(KunMvcContext.class);
-        when(kunContext.getBean("com.doubleysoft.kun.mvc.server.DefaultRequestHandlerTest$DefaultRequestHandlerTestDemo")).thenReturn(new DefaultRequestHandlerTestDemo());
+        when(kunContext.getBean("com.doubleysoft.kun.mvc.server.DefaultRequestHandlerBridgeTest$DefaultRequestHandlerTestDemo")).thenReturn(new DefaultRequestHandlerTestDemo());
         MvcContextHolder.init(kunContext, spy);
 
         doReturn(methodInfo).when(spy).getReqHandler(any());

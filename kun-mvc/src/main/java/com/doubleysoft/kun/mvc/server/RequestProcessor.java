@@ -11,7 +11,7 @@ import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
  * @author cupofish@gmail.com
  * 8/9/19 22:16
  */
-public interface BodyWritter {
+public interface RequestProcessor {
     /**
      * detect whether request can be processed by this writer
      *
