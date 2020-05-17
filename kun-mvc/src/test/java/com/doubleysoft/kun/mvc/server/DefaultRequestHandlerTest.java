@@ -5,9 +5,9 @@ import com.doubleysoft.kun.ioc.context.BeanDefinition;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.KunMvcContext;
 import com.doubleysoft.kun.mvc.filter.DefaultFilterChain;
-import com.doubleysoft.kun.mvc.server.model.BodyWriterChain;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
+import com.doubleysoft.kun.mvc.server.model.ResponseBodyWriterChain;
 import com.doubleysoft.kun.mvc.server.netty.NettyKunHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
@@ -29,7 +29,7 @@ public class DefaultRequestHandlerTest {
 
     @Before
     public void init() {
-        requestHandler = new DefaultRequestHandler(new DefaultFilterChain(), new BodyWriterChain());
+        requestHandler = new DefaultRequestHandler(new DefaultFilterChain(), new ResponseBodyWriterChain());
     }
 
     @Ignore

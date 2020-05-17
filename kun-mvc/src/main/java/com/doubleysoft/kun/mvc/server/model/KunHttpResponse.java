@@ -1,5 +1,7 @@
 package com.doubleysoft.kun.mvc.server.model;
 
+import com.doubleysoft.kun.mvc.http.ContentTypeEnum;
+
 import java.util.Map;
 
 /**
@@ -40,4 +42,11 @@ public interface KunHttpResponse {
      * @return
      */
     void setContent(Object content);
+
+    /**
+     * get http request cont-type
+     *
+     * @return
+     */
+    ContentTypeEnum contentType();
 }

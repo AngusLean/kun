@@ -3,10 +3,10 @@ package com.doubleysoft.kun.mvc.server;
 import com.doubleysoft.kun.ioc.KunContext;
 import com.doubleysoft.kun.ioc.context.MethodInfo;
 import com.doubleysoft.kun.mvc.filter.HttpRequestFilter;
-import com.doubleysoft.kun.mvc.server.model.BodyWriterChain;
 import com.doubleysoft.kun.mvc.server.model.DefaultKunHttpResponse;
 import com.doubleysoft.kun.mvc.server.model.KunHttpRequest;
 import com.doubleysoft.kun.mvc.server.model.KunHttpResponse;
+import com.doubleysoft.kun.mvc.server.model.ResponseBodyWriterChain;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultRequestHandler implements RequestHandler {
     private final HttpRequestFilter httpRequestFilter;
-    private final BodyWriterChain   bodyWriterChain;
+    private final ResponseBodyWriterChain responseBodyWriterChain;
 
     @Override
     public KunHttpResponse handle(KunHttpRequest httpRequest) {
@@ -40,7 +40,7 @@ public class DefaultRequestHandler implements RequestHandler {
 
     private void handle(KunHttpRequest httpRequest, DefaultKunHttpResponse httpResponse, KunContext kunContext,
                         MethodInfo handlerMethod) {
-        bodyWriterChain.writeResponse(httpRequest, httpResponse, kunContext, handlerMethod);
+        responseBodyWriterChain.writeResponse(httpRequest, httpResponse, kunContext, handlerMethod);
     }
 
 }

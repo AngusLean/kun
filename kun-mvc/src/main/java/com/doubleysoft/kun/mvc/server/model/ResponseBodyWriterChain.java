@@ -16,10 +16,10 @@ import static com.doubleysoft.kun.mvc.server.Const.KEY_CONTENT_TYPE;
  * 8/9/19 22:34
  */
 @Slf4j
-public class BodyWriterChain {
+public class ResponseBodyWriterChain {
     private List<BodyWritter> defaultBodyWritter;
 
-    public BodyWriterChain() {
+    public ResponseBodyWriterChain() {
         defaultBodyWritter = new ArrayList<BodyWritter>() {{
             add(new CharBodyWriter());
         }};

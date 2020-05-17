@@ -1,5 +1,6 @@
 package com.doubleysoft.kun.mvc.server.model;
 
+import com.doubleysoft.kun.mvc.http.ContentTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,5 +29,10 @@ public class DefaultKunHttpResponse implements KunHttpResponse {
     @Override
     public void setContent(Object content) {
         this.content = content == null ? null : content.toString();
+    }
+
+    @Override
+    public ContentTypeEnum contentType() {
+        return null;
     }
 }
